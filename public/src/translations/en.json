@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "howItWorks": "How It Works",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "matches": "Matches",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Deliver Your Shipment Fast",
+    "subtitle": "Connecting carriers with shippers worldwide",
+    "description": "Smart platform connecting travelers with available space to those who need fast and secure shipments",
+    "carrierBtn": "I'm a Carrier",
+    "shipperBtn": "I'm a Shipper"
+  },
+  "features": {
+    "title": "Why Fast Shipment?",
+    "subtitle": "The optimal solution for fast and secure deliveries",
+    "feature1": {
+      "title": "Smart Matching",
+      "description": "Advanced algorithm connects shipments with the best carriers"
+    },
+    "feature2": {
+      "title": "Fast Delivery",
+      "description": "Save time and get your shipment as fast as possible"
+    },
+    "feature3": {
+      "title": "Competitive Prices",
+      "description": "Lower costs than traditional shipping companies"
+    },
+    "feature4": {
+      "title": "Live Tracking",
+      "description": "Direct communication with carrier via chat or WhatsApp"
+    },
+    "feature5": {
+      "title": "Safe & Reliable",
+      "description": "User verification system to ensure shipment safety"
+    },
+    "feature6": {
+      "title": "Global Coverage",
+      "description": "Ship from and to anywhere in the world"
+    }
+  },
+  "stats": {
+    "users": "Active Users",
+    "trips": "Completed Trips",
+    "countries": "Countries",
+    "satisfaction": "Customer Satisfaction"
+  },
+  "howItWorks": {
+    "title": "How It Works?",
+    "carrier": {
+      "title": "For Carriers",
+      "step1": "Register Your Trip",
+      "step1Desc": "Add your trip details and available space",
+      "step2": "Find Matches",
+      "step2Desc": "We'll show you shipments matching your trip",
+      "step3": "Connect & Earn",
+      "step3Desc": "Connect with shipper and earn money"
+    },
+    "shipper": {
+      "title": "For Shippers",
+      "step1": "Add Your Shipment",
+      "step1Desc": "Specify shipment details and destination",
+      "step2": "Choose Carrier",
+      "step2Desc": "Select from available carriers",
+      "step3": "Track Shipment",
+      "step3Desc": "Follow your shipment until arrival"
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Join thousands of users who trust Fast Shipment",
+    "button": "Start Free Now"
+  },
+  "footer": {
+    "description": "Smart platform connecting carriers with shippers worldwide",
+    "quickLinks": "Quick Links",
+    "legal": "Legal",
+    "contact": "Contact Us",
+    "terms": "Terms & Conditions",
+    "privacy": "Privacy Policy",
+    "support": "Support",
+    "rights": "All Rights Reserved"
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Welcome Back",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "submit": "Login",
+    "noAccount": "Don't have an account?",
+    "register": "Create New Account"
+  },
+  "register": {
+    "title": "Create New Account",
+    "subtitle": "Join Us Today",
+    "name": "Full Name",
+    "email": "Email",
+    "phone": "Phone Number",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "userType": "User Type",
+    "carrier": "Carrier",
+    "shipper": "Shipper",
+    "carrierType": "Carrier Type",
+    "shipperType": "Shipper Type",
+    "independent": "Independent Traveler",
+    "privateCar": "Private Car",
+    "truck": "Truck",
+    "fleet": "Company/Fleet",
+    "individual": "Individual",
+    "smallBusiness": "Small Business",
+    "largeBusiness": "Large Business/Company",
+    "submit": "Create Account",
+    "hasAccount": "Already have an account?",
+    "login": "Login"
+  },
+  "carrierDashboard": {
+    "title": "Carrier Dashboard",
+    "welcome": "Welcome",
+    "addTrip": "Add New Trip",
+    "myTrips": "My Trips",
+    "fromCity": "From City",
+    "toCity": "To City",
+    "tripDate": "Trip Date",
+    "availableWeight": "Available Weight (kg)",
+    "status": "Status",
+    "actions": "Actions",
+    "viewMatches": "View Matches",
+    "edit": "Edit",
+    "delete": "Delete",
+    "available": "Available",
+    "completed": "Completed",
+    "noTrips": "No trips yet"
+  },
+  "shipperDashboard": {
+    "title": "Shipper Dashboard",
+    "welcome": "Welcome",
+    "addShipment": "Add New Shipment",
+    "myShipments": "My Shipments",
+    "fromCity": "From City",
+    "toCity": "To City",
+    "neededDate": "Needed Date",
+    "weight": "Weight (kg)",
+    "status": "Status",
+    "actions": "Actions",
+    "viewMatches": "View Matches",
+    "edit": "Edit",
+    "delete": "Delete",
+    "pending": "Pending",
+    "matched": "Matched",
+    "completed": "Completed",
+    "noShipments": "No shipments yet"
+  },
+  "matches": {
+    "title": "Available Matches",
+    "forTrip": "Trip Matches",
+    "forShipment": "Shipment Matches",
+    "score": "Match Score",
+    "contact": "Contact",
+    "whatsapp": "WhatsApp",
+    "chat": "Chat",
+    "noMatches": "No matches available"
+  },
+  "chat": {
+    "title": "Chat",
+    "typePlaceholder": "Type your message...",
+    "send": "Send",
+    "openWhatsApp": "Open WhatsApp",
+    "noMessages": "No messages yet"
+  },
+  "about": {
+    "title": "About Us",
+    "description": "Fast Shipment is an innovative platform connecting travelers with available space to people who need to ship their goods. We aim to provide a fast, safe, and economical shipping solution for everyone.",
+    "mission": "Our Mission",
+    "missionText": "We strive to transform how goods are shipped globally by utilizing empty spaces in various transportation methods, saving money and time for everyone.",
+    "vision": "Our Vision",
+    "visionText": "To be the world's leading platform in connecting carriers with shippers, providing safe, reliable, and fast service."
+  },
+  "terms": {
+    "title": "Terms & Conditions",
+    "intro": "Welcome to Fast Shipment. By using this platform, you agree to the following terms and conditions:",
+    "section1Title": "1. Nature of Service",
+    "section1Text": "Fast Shipment is a connection platform only between carriers and shippers. We are not responsible for shipments or transportation. Users are responsible for verifying each other's identity and agreeing on details.",
+    "section2Title": "2. User Responsibility",
+    "section2Text": "Users bear full responsibility for shipment contents and legality. Users must comply with all local and international laws regarding shipping and transportation.",
+    "section3Title": "3. Acceptable Use",
+    "section3Text": "Using the platform to ship illegal or dangerous materials is prohibited. We reserve the right to suspend any account violating these terms.",
+    "section4Title": "4. Disclaimer",
+    "section4Text": "We bear no responsibility for any losses or damages resulting from platform use. Transactions occur directly between users."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "We respect your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and protect your information.",
+    "section1Title": "1. Information We Collect",
+    "section1Text": "We collect information you provide during registration such as name, email, and phone number. We also collect information about your platform usage.",
+    "section2Title": "2. How We Use Your Information",
+    "section2Text": "We use your information to provide and improve our services, communicate with you, and ensure platform security.",
+    "section3Title": "3. Information Sharing",
+    "section3Text": "We don't share your personal information with third parties except with your consent or when legally required.",
+    "section4Title": "4. Data Security",
+    "section4Text": "We use advanced security measures to protect your data from unauthorized access."
+  },
+  "support": {
+    "title": "Support",
+    "subtitle": "We're Here to Help",
+    "description": "If you have any questions or problems, don't hesitate to contact us",
+    "email": "Email",
+    "phone": "Phone",
+    "hours": "Working Hours",
+    "hoursText": "Sunday - Thursday: 9 AM - 6 PM"
+  }
+}
