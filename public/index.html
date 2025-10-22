@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config/supabaseClient.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -18,7 +20,7 @@
                     <span data-lang="ar">الشحنة السريعة</span>
                     <span data-lang="en" style="display: none;">Fast Shipment</span>
                 </div>
-                
+
                 <nav>
                     <ul>
                         <li><a href="#home" data-lang="ar">الرئيسية</a><a href="#home" data-lang="en" style="display: none;">Home</a></li>
@@ -29,7 +31,7 @@
                         <li><a href="pages/general/contact.html" data-lang="ar">اتصل بنا</a><a href="pages/general/contact.html" data-lang="en" style="display: none;">Contact</a></li>
                     </ul>
                 </nav>
-                
+
                 <div class="header-actions">
                     <div class="language-selector">
                         <select id="languageSelect">
@@ -37,7 +39,7 @@
                             <option value="en">English</option>
                         </select>
                     </div>
-                    
+
                     <div class="auth-buttons">
                         <a href="pages/auth/login.html" class="btn btn-outline" data-lang="ar">تسجيل الدخول</a>
                         <a href="pages/auth/login.html" class="btn btn-outline" data-lang="en" style="display: none;">Login</a>
@@ -45,7 +47,7 @@
                         <a href="pages/auth/register.html" class="btn btn-primary" data-lang="en" style="display: none;">Register</a>
                     </div>
                 </div>
-                
+
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -75,10 +77,10 @@
         <div class="container">
             <h1 data-lang="ar">ربط الشاحنين بأصحاب الشحنات حول العالم</h1>
             <h1 data-lang="en" style="display: none;">Connecting Shippers with Carriers Worldwide</h1>
-            
+
             <p data-lang="ar">منصة الشحنة السريعة تربط بين الأشخاص الذين يريدون إرسال شحنات والأشخاص الذين لديهم مساحة فارغة أثناء تنقلاتهم. وفر الوقت والمال مع نظام المطابقة الذكي.</p>
             <p data-lang="en" style="display: none;">Fast Shipment platform connects people who want to send shipments with those who have empty space during their travels. Save time and money with our smart matching system.</p>
-            
+
             <div class="hero-buttons">
                 <button class="btn btn-primary btn-large" id="carrierBtn">
                     <i class="fas fa-truck"></i>
@@ -103,7 +105,7 @@
                 <p data-lang="ar">نوفر حلولاً شاملة لكل أنواع الشحنات والموصلين</p>
                 <p data-lang="en" style="display: none;">We provide comprehensive solutions for all types of shipments and carriers</p>
             </div>
-            
+
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
@@ -118,7 +120,7 @@
                         <span data-lang="en" style="display: none;">More</span>
                     </button>
                 </div>
-                
+
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-car"></i>
@@ -132,7 +134,7 @@
                         <span data-lang="en" style="display: none;">More</span>
                     </button>
                 </div>
-                
+
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-truck"></i>
@@ -146,7 +148,7 @@
                         <span data-lang="en" style="display: none;">More</span>
                     </button>
                 </div>
-                
+
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fas fa-ship"></i>
@@ -173,7 +175,7 @@
                 <p data-lang="ar">4 خطوات بسيطة لربط الشحنات بالموصلين المناسبين</p>
                 <p data-lang="en" style="display: none;">4 simple steps to connect shipments with suitable carriers</p>
             </div>
-            
+
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
@@ -182,7 +184,7 @@
                     <p data-lang="ar">سجل في المنصة واختر نوع خدمتك (موصل شحنات أو صاحب شحنة)</p>
                     <p data-lang="en" style="display: none;">Register on the platform and choose your service type (carrier or shipper)</p>
                 </div>
-                
+
                 <div class="step">
                     <div class="step-number">2</div>
                     <h3 data-lang="ar">إضافة الرحلة/الشحنة</h3>
@@ -190,7 +192,7 @@
                     <p data-lang="ar">أضف تفاصيل رحلتك أو شحنتك مع المسار والتواريخ والمساحة المتاحة</p>
                     <p data-lang="en" style="display: none;">Add details of your trip or shipment with route, dates, and available space</p>
                 </div>
-                
+
                 <div class="step">
                     <div class="step-number">3</div>
                     <h3 data-lang="ar">المطابقة الذكية</h3>
@@ -198,7 +200,7 @@
                     <p data-lang="ar">سيقوم نظامنا بمطابقة الشحنات مع الرحلات المتوافقة تلقائياً</p>
                     <p data-lang="en" style="display: none;">Our system will automatically match shipments with compatible trips</p>
                 </div>
-                
+
                 <div class="step">
                     <div class="step-number">4</div>
                     <h3 data-lang="ar">التواصل والتوصيل</h3>
@@ -219,14 +221,14 @@
                 <p data-lang="ar">لضمان موثوقية وأمان جميع المعاملات</p>
                 <p data-lang="en" style="display: none;">To ensure reliability and security of all transactions</p>
             </div>
-            
+
             <div class="verification-content">
                 <div class="verification-text">
                     <h3 data-lang="ar">توثيق الهوية والمستندات</h3>
                     <h3 data-lang="en" style="display: none;">Identity and Document Verification</h3>
                     <p data-lang="ar">نحن نحرص على توثيق جميع المستخدمين لضمان بيئة آمنة وموثوقة للجميع:</p>
                     <p data-lang="en" style="display: none;">We ensure verification of all users to guarantee a safe and reliable environment for everyone:</p>
-                    
+
                     <ul style="margin: 20px 0; padding-right: 20px;">
                         <li style="margin-bottom: 10px;" data-lang="ar">توثيق الهوية لجميع المستخدمين</li>
                         <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Identity verification for all users</li>
@@ -237,47 +239,16 @@
                         <li style="margin-bottom: 10px;" data-lang="ar">نظام تقييم ومراجعات للمستخدمين</li>
                         <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Rating and review system for users</li>
                     </ul>
-                    
+
                     <button class="btn btn-primary" id="verificationBtn">
                         <span data-lang="ar">ابدأ عملية التوثيق</span>
                         <span data-lang="en" style="display: none;">Start Verification</span>
                     </button>
                 </div>
-                
+
                 <div class="verification-image">
                     <img src="assets/images/verification-process.jpg" alt="Verification Process" data-lang="ar" alt="عملية التوثيق">
                     <img src="assets/images/verification-process.jpg" alt="Verification Process" data-lang="en" style="display: none;" alt="Verification Process">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <h3>10,000+</h3>
-                    <p data-lang="ar">شحنة تم توصيلها</p>
-                    <p data-lang="en" style="display: none;">Shipments Delivered</p>
-                </div>
-                
-                <div class="stat-item">
-                    <h3>5,000+</h3>
-                    <p data-lang="ar">موصل شحنات مسجل</p>
-                    <p data-lang="en" style="display: none;">Registered Carriers</p>
-                </div>
-                
-                <div class="stat-item">
-                    <h3>120+</h3>
-                    <p data-lang="ar">دولة حول العالم</p>
-                    <p data-lang="en" style="display: none;">Countries Worldwide</p>
-                </div>
-                
-                <div class="stat-item">
-                    <h3>98%</h3>
-                    <p data-lang="ar">رضا العملاء</p>
-                    <p data-lang="en" style="display: none;">Customer Satisfaction</p>
                 </div>
             </div>
         </div>
@@ -299,7 +270,7 @@
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3 data-lang="ar">روابط سريعة</h3>
                     <h3 data-lang="en" style="display: none;">Quick Links</h3>
@@ -311,7 +282,7 @@
                         <li><a href="pages/general/about.html" data-lang="ar">من نحن</a><a href="pages/general/about.html" data-lang="en" style="display: none;">About</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3 data-lang="ar">خدمات العملاء</h3>
                     <h3 data-lang="en" style="display: none;">Customer Service</h3>
@@ -323,7 +294,7 @@
                         <li><a href="pages/general/contact.html" data-lang="ar">اتصل بنا</a><a href="pages/general/contact.html" data-lang="en" style="display: none;">Contact Us</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-column">
                     <h3 data-lang="ar">اتصل بنا</h3>
                     <h3 data-lang="en" style="display: none;">Contact Us</h3>
@@ -334,7 +305,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <div class="copyright">
                 <p data-lang="ar">جميع الحقوق محفوظة &copy; 2023 الشحنة السريعة | تصميم وتطوير قايد المصعبي</p>
                 <p data-lang="en" style="display: none;">All rights reserved &copy; 2023 Fast Shipment | Designed and developed by Gaid Al-Masabi</p>
@@ -344,5 +315,6 @@
 
     <script src="assets/js/main.js"></script>
     <script src="assets/js/language-switcher.js"></script>
+    <script src="assets/js/auth.js"></script>
 </body>
 </html>

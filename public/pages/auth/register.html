@@ -45,12 +45,12 @@
                 </div>
             </div>
 
-            <form class="auth-form" id="registerForm">
+            <form class="auth-form" id="register-form">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullName" data-lang="ar">الاسم الكامل</label>
                         <label for="fullName" data-lang="en" style="display: none;">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" required>
+                        <input type="text" id="register-name" name="fullName" required>
                         <i class="fas fa-user input-icon"></i>
                     </div>
                 </div>
@@ -58,21 +58,21 @@
                 <div class="form-group">
                     <label for="email" data-lang="ar">البريد الإلكتروني</label>
                     <label for="email" data-lang="en" style="display: none;">Email Address</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="register-email" name="email" required>
                     <i class="fas fa-envelope input-icon"></i>
                 </div>
 
                 <div class="form-group">
                     <label for="phone" data-lang="ar">رقم الهاتف</label>
                     <label for="phone" data-lang="en" style="display: none;">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="register-phone" name="phone" required>
                     <i class="fas fa-phone input-icon"></i>
                 </div>
 
                 <div class="form-group">
                     <label for="password" data-lang="ar">كلمة المرور</label>
                     <label for="password" data-lang="en" style="display: none;">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="register-password" name="password" required>
                     <i class="fas fa-lock input-icon"></i>
                     <button type="button" class="toggle-password" id="togglePassword">
                         <i class="fas fa-eye"></i>
@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label for="confirmPassword" data-lang="ar">تأكيد كلمة المرور</label>
                     <label for="confirmPassword" data-lang="en" style="display: none;">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <input type="password" id="register-confirm-password" name="confirmPassword" required>
                     <i class="fas fa-lock input-icon"></i>
                 </div>
 
@@ -174,8 +174,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="../../config/supabase-config.js"></script>
-    <script src="../../config/app-config.js"></script>
+    <script src="../../config/supabaseClient.js"></script>
     <script src="../../assets/js/language-switcher.js"></script>
     <script src="../../assets/js/auth.js"></script>
 </body>
