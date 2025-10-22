@@ -11,6 +11,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const userType = document.querySelector('.type-option.active').dataset.type;
             const carrierType = document.getElementById('carrierType').value;
             const shipperType = document.getElementById('shipperType').value;
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+
+            if (!name || !email || !phone || !password || !confirmPassword || !agreeTerms) {
+                alert('يرجى ملء جميع الحقول المطلوبة');
+                return;
+            }
+
+            if (userType === 'carrier' && !carrierType) {
+                alert('يرجى اختيار نوع الموصل');
+                return;
+            }
+
+            if (userType === 'shipper' && !shipperType) {
+                alert('يرجى اختيار نوع المرسل');
+                return;
+            }
 
             if (password !== confirmPassword) {
                 alert('Passwords do not match');
