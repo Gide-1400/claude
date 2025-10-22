@@ -32,7 +32,7 @@ function switchLanguage(language) {
     
     allLangElements.forEach(element => {
         if (element.getAttribute('data-lang') === language) {
-            element.style.display = element.tagName === 'OPTION' ? '' : 'inline';
+            element.style.display = '';
         } else {
             element.style.display = 'none';
         }
