@@ -1,4 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const userTypeOptions = document.querySelectorAll('.type-option');
+    const carrierSubtype = document.getElementById('carrierSubtype');
+    const shipperSubtype = document.getElementById('shipperSubtype');
+    const carrierTypeSelect = document.getElementById('carrierType');
+    const shipperTypeSelect = document.getElementById('shipperType');
+
+    userTypeOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            userTypeOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            const userType = option.dataset.type;
+
+            if (userType === 'carrier') {
+                carrierSubtype.style.display = 'block';
+                shipperSubtype.style.display = 'none';
+                carrierTypeSelect.required = true;
+                shipperTypeSelect.required = false;
+            } else {
+                carrierSubtype.style.display = 'none';
+                shipperSubtype.style.display = 'block';
+                carrierTypeSelect.required = false;
+                shipperTypeSelect.required = true;
+            }
+        });
+    });
+
     const registerForm = document.getElementById('register-form');
     if (registerForm) {
         registerForm.addEventListener('submit', async (e) => {
@@ -88,9 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const { data: { session } } = await supabase.auth.getSession();
         const authButtons = document.querySelector('.auth-buttons');
         const logoutButtonContainer = document.querySelector('.logout-button-container');
+        const heroButtons = document.querySelector('.hero-buttons');
 
         if (session) {
             if (authButtons) authButtons.style.display = 'none';
+            if (heroButtons) heroButtons.style.display = 'none';
             if (logoutButtonContainer) {
                 logoutButtonContainer.style.display = 'block';
             } else {
