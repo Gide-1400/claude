@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="ar">لوحة التحكم - الموصل</title>
+    <title data-lang="en" style="display: none;">Dashboard - Carrier</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span data-lang="ar">الشحنة السريعة</span>
+                    <span data-lang="en" style="display: none;">Fast Shipment</span>
+                </div>
+                
+                <nav class="dashboard-nav">
+                    <ul>
+                        <li><a href="index.html" class="active" data-lang="ar">الرئيسية</a><a href="index.html" class="active" data-lang="en" style="display: none;">Dashboard</a></li>
+                        <li><a href="add-trip.html" data-lang="ar">إضافة رحلة</a><a href="add-trip.html" data-lang="en" style="display: none;">Add Trip</a></li>
+                        <li><a href="my-trips.html" data-lang="ar">رحلاتي</a><a href="my-trips.html" data-lang="en" style="display: none;">My Trips</a></li>
+                        <li><a href="matches.html" data-lang="ar">المطابقات</a><a href="matches.html" data-lang="en" style="display: none;">Matches</a></li>
+                        <li><a href="../messaging/index.html" data-lang="ar">الرسائل</a><a href="../messaging/index.html" data-lang="en" style="display: none;">Messages</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <div class="user-avatar">
+                            <img src="../../assets/images/user-avatar.jpg" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" data-lang="ar">محمد أحمد</span>
+                            <span class="user-name" data-lang="en" style="display: none;">Mohammed Ahmed</span>
+                            <span class="user-role" data-lang="ar">موصل شحنات</span>
+                            <span class="user-role" data-lang="en" style="display: none;">Shipment Carrier</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" data-lang="ar">الملف الشخصي</a>
+                            <a href="profile.html" data-lang="en" style="display: none;">Profile</a>
+                            <a href="../auth/login.html" onclick="logout()" data-lang="ar">تسجيل الخروج</a>
+                            <a href="../auth/login.html" onclick="logout()" data-lang="en" style="display: none;">Logout</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="close-menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html" class="active" data-lang="ar">الرئيسية</a><a href="index.html" class="active" data-lang="en" style="display: none;">Dashboard</a></li>
+            <li><a href="add-trip.html" data-lang="ar">إضافة رحلة</a><a href="add-trip.html" data-lang="en" style="display: none;">Add Trip</a></li>
+            <li><a href="my-trips.html" data-lang="ar">رحلاتي</a><a href="my-trips.html" data-lang="en" style="display: none;">My Trips</a></li>
+            <li><a href="matches.html" data-lang="ar">المطابقات</a><a href="matches.html" data-lang="en" style="display: none;">Matches</a></li>
+            <li><a href="../messaging/index.html" data-lang="ar">الرسائل</a><a href="../messaging/index.html" data-lang="en" style="display: none;">Messages</a></li>
+            <li><a href="profile.html" data-lang="ar">الملف الشخصي</a><a href="profile.html" data-lang="en" style="display: none;">Profile</a></li>
+            <li><a href="../auth/login.html" onclick="logout()" data-lang="ar">تسجيل الخروج</a><a href="../auth/login.html" onclick="logout()" data-lang="en" style="display: none;">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h1 data-lang="ar">مرحباً بعودتك، محمد! 👋</h1>
+                    <h1 data-lang="en" style="display: none;">Welcome back, Mohammed! 👋</h1>
+                    <p data-lang="ar">إليك نظرة عامة على أدائك وعروض الشحن المتاحة</p>
+                    <p data-lang="en" style="display: none;">Here's an overview of your performance and available shipping offers</p>
+                </div>
+                <div class="welcome-actions">
+                    <a href="add-trip.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span data-lang="ar">إضافة رحلة جديدة</span>
+                        <span data-lang="en" style="display: none;">Add New Trip</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Stats Overview -->
+            <section class="stats-overview">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>24</h3>
+                            <p data-lang="ar">رحلة مكتملة</p>
+                            <p data-lang="en" style="display: none;">Completed Trips</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon primary">
+                            <i class="fas fa-truck-loading"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>3</h3>
+                            <p data-lang="ar">رحلات نشطة</p>
+                            <p data-lang="en" style="display: none;">Active Trips</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon warning">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>8</h3>
+                            <p data-lang="ar">مطابقات جديدة</p>
+                            <p data-lang="en" style="display: none;">New Matches</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon secondary">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>2,450 <small>ر.س</small></h3>
+                            <p data-lang="ar">إجمالي الأرباح</p>
+                            <p data-lang="en" style="display: none;">Total Earnings</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <h2 data-lang="ar">إجراءات سريعة</h2>
+                <h2 data-lang="en" style="display: none;">Quick Actions</h2>
+                <div class="actions-grid">
+                    <a href="add-trip.html" class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <h3 data-lang="ar">إضافة رحلة</h3>
+                        <h3 data-lang="en" style="display: none;">Add Trip</h3>
+                        <p data-lang="ar">أضف رحلة جديدة مع مسارك ومساحتك الفارغة</p>
+                        <p data-lang="en" style="display: none;">Add a new trip with your route and empty space</p>
+                    </a>
+                    
+                    <a href="matches.html" class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3 data-lang="ar">عرض المطابقات</h3>
+                        <h3 data-lang="en" style="display: none;">View Matches</h3>
+                        <p data-lang="ar">اطلع على الشحنات المتوافقة مع رحلاتك</p>
+                        <p data-lang="en" style="display: none;">View shipments matching your trips</p>
+                    </a>
+                    
+                    <a href="../messaging/index.html" class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 data-lang="ar">الرسائل</h3>
+                        <h3 data-lang="en" style="display: none;">Messages</h3>
+                        <p data-lang="ar">تواصل مع أصحاب الشحنات</p>
+                        <p data-lang="en" style="display: none;">Communicate with shippers</p>
+                    </a>
+                    
+                    <a href="profile.html" class="action-card">
+                        <div class="action-icon">
+                            <i class="fas fa-user-cog"></i>
+                        </div>
+                        <h3 data-lang="ar">إدارة الحساب</h3>
+                        <h3 data-lang="en" style="display: none;">Manage Account</h3>
+                        <p data-lang="ar">عدل معلومات حسابك وإعداداتك</p>
+                        <p data-lang="en" style="display: none;">Edit your account info and settings</p>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Recent Matches -->
+            <section class="recent-section">
+                <div class="section-header">
+                    <h2 data-lang="ar">المطابقات الحديثة</h2>
+                    <h2 data-lang="en" style="display: none;">Recent Matches</h2>
+                    <a href="matches.html" class="view-all" data-lang="ar">عرض الكل</a>
+                    <a href="matches.html" class="view-all" data-lang="en" style="display: none;">View All</a>
+                </div>
+                
+                <div class="matches-grid">
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="match-info">
+                                <h4 data-lang="ar">أجهزة إلكترونية</h4>
+                                <h4 data-lang="en" style="display: none;">Electronic Devices</h4>
+                                <span class="match-score">95%</span>
+                            </div>
+                            <span class="match-status pending" data-lang="ar">بانتظار الرد</span>
+                            <span class="match-status pending" data-lang="en" style="display: none;">Pending</span>
+                        </div>
+                        
+                        <div class="match-details">
+                            <div class="route">
+                                <span class="from" data-lang="ar">الرياض</span>
+                                <span class="from" data-lang="en" style="display: none;">Riyadh</span>
+                                <i class="fas fa-arrow-left"></i>
+                                <span class="to" data-lang="ar">جدة</span>
+                                <span class="to" data-lang="en" style="display: none;">Jeddah</span>
+                            </div>
+                            <div class="match-meta">
+                                <span><i class="fas fa-weight-hanging"></i> 150 كجم</span>
+                                <span><i class="fas fa-calendar"></i> 15 ديسمبر</span>
+                            </div>
+                        </div>
+                        
+                        <div class="match-actions">
+                            <button class="btn btn-outline btn-sm" data-lang="ar">رفض</button>
+                            <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Reject</button>
+                            <button class="btn btn-primary btn-sm" data-lang="ar">قبول</button>
+                            <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Accept</button>
+                        </div>
+                    </div>
+                    
+                    <div class="match-card">
+                        <div class="match-header">
+                            <div class="match-info">
+                                <h4 data-lang="ar">ملابس ومستلزمات</h4>
+                                <h4 data-lang="en" style="display: none;">Clothes & Supplies</h4>
+                                <span class="match-score">88%</span>
+                            </div>
+                            <span class="match-status accepted" data-lang="ar">مقبول</span>
+                            <span class="match-status accepted" data-lang="en" style="display: none;">Accepted</span>
+                        </div>
+                        
+                        <div class="match-details">
+                            <div class="route">
+                                <span class="from" data-lang="ar">الدمام</span>
+                                <span class="from" data-lang="en" style="display: none;">Dammam</span>
+                                <i class="fas fa-arrow-left"></i>
+                                <span class="to" data-lang="ar">الرياض</span>
+                                <span class="to" data-lang="en" style="display: none;">Riyadh</span>
+                            </div>
+                            <div class="match-meta">
+                                <span><i class="fas fa-weight-hanging"></i> 80 كجم</span>
+                                <span><i class="fas fa-calendar"></i> 12 ديسمبر</span>
+                            </div>
+                        </div>
+                        
+                        <div class="match-actions">
+                            <button class="btn btn-outline btn-sm" data-lang="ar">التفاصيل</button>
+                            <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Details</button>
+                            <button class="btn btn-primary btn-sm" data-lang="ar">محادثة</button>
+                            <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Chat</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Active Trips -->
+            <section class="recent-section">
+                <div class="section-header">
+                    <h2 data-lang="ar">رحلاتي النشطة</h2>
+                    <h2 data-lang="en" style="display: none;">My Active Trips</h2>
+                    <a href="my-trips.html" class="view-all" data-lang="ar">عرض الكل</a>
+                    <a href="my-trips.html" class="view-all" data-lang="en" style="display: none;">View All</a>
+                </div>
+                
+                <div class="trips-grid">
+                    <div class="trip-card">
+                        <div class="trip-header">
+                            <h4 data-lang="ar">الرياض ← جدة</h4>
+                            <h4 data-lang="en" style="display: none;">Riyadh → Jeddah</h4>
+                            <span class="trip-status active" data-lang="ar">نشط</span>
+                            <span class="trip-status active" data-lang="en" style="display: none;">Active</span>
+                        </div>
+                        
+                        <div class="trip-details">
+                            <div class="trip-meta">
+                                <span><i class="fas fa-calendar"></i> 20 ديسمبر 2023</span>
+                                <span><i class="fas fa-weight-hanging"></i> 500/1500 كجم</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 33%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="trip-actions">
+                            <button class="btn btn-outline btn-sm" data-lang="ar">تعديل</button>
+                            <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Edit</button>
+                            <button class="btn btn-primary btn-sm" data-lang="ar">إدارة</button>
+                            <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Manage</button>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-card">
+                        <div class="trip-header">
+                            <h4 data-lang="ar">الدمام ← الرياض</h4>
+                            <h4 data-lang="en" style="display: none;">Dammam → Riyadh</h4>
+                            <span class="trip-status soon" data-lang="ar">قريباً</span>
+                            <span class="trip-status soon" data-lang="en" style="display: none;">Soon</span>
+                        </div>
+                        
+                        <div class="trip-details">
+                            <div class="trip-meta">
+                                <span><i class="fas fa-calendar"></i> 25 ديسمبر 2023</span>
+                                <span><i class="fas fa-weight-hanging"></i> 0/800 كجم</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="trip-actions">
+                            <button class="btn btn-outline btn-sm" data-lang="ar">تعديل</button>
+                            <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Edit</button>
+                            <button class="btn btn-primary btn-sm" data-lang="ar">ترويج</button>
+                            <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Promote</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language-switcher.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+</body>
+</html>
