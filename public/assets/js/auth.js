@@ -15,6 +15,15 @@ function initAuth() {
     initPasswordToggle();
 }
 
+// Ensure supabase client exists
+function ensureSupabase() {
+    if (!window.supabase) {
+        console.error('Supabase client is not initialized. Make sure createClient(...) is called and assigned to window.supabase');
+        showAlert('error', 'خطأ في التهيئة: عميل Supabase غير موجود', 'Initialization error: Supabase client not found');
+        throw new Error('Supabase client not initialized');
+    }
+}
+
 // Form initialization
 function initForms() {
     const loginForm = document.getElementById('loginForm');
@@ -48,15 +57,19 @@ function initUserTypeSelection() {
                 
                 // Show/hide appropriate subtype sections
                 if (userType === 'carrier') {
-                    carrierSubtype.style.display = 'block';
-                    shipperSubtype.style.display = 'none';
-                    document.getElementById('carrierType').required = true;
-                    document.getElementById('shipperType').required = false;
+                    if (carrierSubtype) carrierSubtype.style.display = 'block';
+                    if (shipperSubtype) shipperSubtype.style.display = 'none';
+                    const c = document.getElementById('carrierType');
+                    const s = document.getElementById('shipperType');
+                    if (c) c.required = true;
+                    if (s) s.required = false;
                 } else {
-                    carrierSubtype.style.display = 'none';
-                    shipperSubtype.style.display = 'block';
-                    document.getElementById('carrierType').required = false;
-                    document.getElementById('shipperType').required = true;
+                    if (carrierSubtype) carrierSubtype.style.display = 'none';
+                    if (shipperSubtype) shipperSubtype.style.display = 'block';
+                    const c = document.getElementById('carrierType');
+                    const s = document.getElementById('shipperType');
+                    if (c) c.required = false;
+                    if (s) s.required = true;
                 }
             });
         });
@@ -72,14 +85,20 @@ function initPasswordToggle() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');
             
+            if (!passwordInput) return;
+            
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
+                if (icon) {
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
             } else {
                 passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                if (icon) {
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
             }
         });
     }
@@ -89,10 +108,16 @@ function initPasswordToggle() {
 async function handleLogin(e) {
     e.preventDefault();
     
+    try {
+        ensureSupabase();
+    } catch (err) {
+        return;
+    }
+    
     const form = e.target;
     const formData = new FormData(form);
-    const email = formData.get('email');
-    const password = formData.get('password');
+    const email = (formData.get('email') || '').toString().trim();
+    const password = (formData.get('password') || '').toString();
     const rememberMe = formData.get('rememberMe');
     
     // Basic validation
@@ -103,41 +128,56 @@ async function handleLogin(e) {
     
     // Show loading state
     const submitBtn = form.querySelector('.btn-auth');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
-    submitBtn.disabled = true;
+    const originalText = submitBtn ? submitBtn.innerHTML : null;
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
+        submitBtn.disabled = true;
+    }
     
     try {
-        // Simulate API call - replace with actual Supabase authentication
-        const { user, error } = await window.supabase.auth.signIn({
+        // Use supabase-js v2+ method for password sign-in
+        const { data, error } = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password
         });
         
         if (error) throw error;
         
+        // data contains { user, session }
+        const user = data?.user ?? null;
+        const session = data?.session ?? null;
+        
+        if (!user) {
+            throw new Error('No user returned from authentication');
+        }
+        
         // Success - redirect to dashboard
         showAlert('success', 'تم تسجيل الدخول بنجاح', 'Login successful');
         
-        // Store user session
+        // Store user session - prefer session object if available
+        const storeData = session ?? user;
         if (rememberMe) {
-            localStorage.setItem('userSession', JSON.stringify(user));
+            localStorage.setItem('userSession', JSON.stringify(storeData));
         } else {
-            sessionStorage.setItem('userSession', JSON.stringify(user));
+            sessionStorage.setItem('userSession', JSON.stringify(storeData));
         }
         
-        // Redirect based on user type
+        // Redirect based on user type (modify as needed)
         setTimeout(() => {
+            // Example: redirect to carrier dashboard; customize per your app logic
             window.location.href = '../carrier/index.html';
-        }, 1500);
+        }, 1200);
         
     } catch (error) {
         console.error('Login error:', error);
-        showAlert('error', 'خطأ في تسجيل الدخول: ' + error.message, 'Login error: ' + error.message);
+        const msg = error?.message || String(error);
+        showAlert('error', 'خطأ في تسجيل الدخول: ' + msg, 'Login error: ' + msg);
     } finally {
         // Reset button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
+        if (submitBtn && originalText !== null) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
     }
 }
 
@@ -145,17 +185,23 @@ async function handleLogin(e) {
 async function handleRegister(e) {
     e.preventDefault();
     
+    try {
+        ensureSupabase();
+    } catch (err) {
+        return;
+    }
+    
     const form = e.target;
     const formData = new FormData(form);
     
-    const fullName = formData.get('fullName');
-    const email = formData.get('email');
-    const phone = formData.get('phone');
-    const password = formData.get('password');
-    const confirmPassword = formData.get('confirmPassword');
+    const fullName = (formData.get('fullName') || '').toString().trim();
+    const email = (formData.get('email') || '').toString().trim();
+    const phone = (formData.get('phone') || '').toString().trim();
+    const password = (formData.get('password') || '').toString();
+    const confirmPassword = (formData.get('confirmPassword') || '').toString();
     const userType = document.querySelector('.type-option.active')?.getAttribute('data-type');
-    const carrierType = formData.get('carrierType');
-    const shipperType = formData.get('shipperType');
+    const carrierType = (formData.get('carrierType') || '').toString();
+    const shipperType = (formData.get('shipperType') || '').toString();
     const agreeTerms = formData.get('agreeTerms');
     
     // Validation
@@ -176,36 +222,51 @@ async function handleRegister(e) {
     
     // Show loading state
     const submitBtn = form.querySelector('.btn-auth');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
-    submitBtn.disabled = true;
+    const originalText = submitBtn ? submitBtn.innerHTML : null;
+    if (submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
+        submitBtn.disabled = true;
+    }
     
     try {
-        // Create user in Supabase Auth
-        const { user, error: authError } = await window.supabase.auth.signUp({
+        // Create user in Supabase Auth (v2 signUp)
+        const { data: signUpData, error: authError } = await window.supabase.auth.signUp({
             email: email,
-            password: password
+            password: password,
+            options: {
+                // You can add email_redirect_to or data here if needed
+            }
         });
         
         if (authError) throw authError;
         
-        // Create user profile in database
-        const { data, error: dbError } = await window.supabase
-            .from('users')
-            .insert([
-                {
-                    id: user.id,
-                    email: email,
-                    name: fullName,
-                    phone: phone,
-                    user_type: userType,
-                    carrier_type: userType === 'carrier' ? carrierType : null,
-                    shipper_type: userType === 'shipper' ? shipperType : null,
-                    verified: false
-                }
-            ]);
+        const createdUser = signUpData?.user ?? null;
+        const createdSession = signUpData?.session ?? null;
         
-        if (dbError) throw dbError;
+        if (!createdUser) {
+            // In some setups signUp returns only confirmation info; handle accordingly
+            showAlert('success', 'تم إرسال رسالة تفعيل الحساب إلى بريدك الإلكتروني', 'Verification email sent');
+        }
+        
+        // Create user profile in database if user id is available
+        if (createdUser?.id) {
+            const { data, error: dbError } = await window.supabase
+                .from('users')
+                .insert([
+                    {
+                        id: createdUser.id,
+                        email: email,
+                        name: fullName,
+                        phone: phone,
+                        user_type: userType,
+                        carrier_type: userType === 'carrier' ? carrierType : null,
+                        shipper_type: userType === 'shipper' ? shipperType : null,
+                        verified: false
+                    }
+                ]);
+            
+            if (dbError) throw dbError;
+        }
         
         // Success
         showAlert('success', 'تم إنشاء الحساب بنجاح! يرجى تفعيل حسابك عبر البريد الإلكتروني', 'Account created successfully! Please verify your email');
@@ -213,15 +274,18 @@ async function handleRegister(e) {
         // Redirect to verification page
         setTimeout(() => {
             window.location.href = 'verification.html';
-        }, 2000);
+        }, 1600);
         
     } catch (error) {
         console.error('Registration error:', error);
-        showAlert('error', 'خطأ في إنشاء الحساب: ' + error.message, 'Registration error: ' + error.message);
+        const msg = error?.message || String(error);
+        showAlert('error', 'خطأ في إنشاء الحساب: ' + msg, 'Registration error: ' + msg);
     } finally {
         // Reset button state
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
+        if (submitBtn && originalText !== null) {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
     }
 }
 
@@ -263,7 +327,7 @@ function showAlert(type, messageAr, messageEn) {
     alert.innerHTML = `
         <div style="display: flex; align-items: center; justify-content: space-between;">
             <span>${message}</span>
-            <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">×</button>
+            <button type="button" onclick="this.closest('.alert-message').remove()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">×</button>
         </div>
     `;
     
@@ -290,19 +354,39 @@ function checkAuth() {
         return null;
     }
     
-    return JSON.parse(userSession);
+    try {
+        return JSON.parse(userSession);
+    } catch (err) {
+        return null;
+    }
 }
 
 // Logout function
-function logout() {
+async function logout() {
+    // Clear local/session storage
     localStorage.removeItem('userSession');
     sessionStorage.removeItem('userSession');
     
-    // Sign out from Supabase
-    window.supabase.auth.signOut();
+    try {
+        ensureSupabase();
+    } catch (err) {
+        // still redirect
+        window.location.href = 'pages/auth/login.html';
+        return;
+    }
     
-    // Redirect to login
-    window.location.href = 'pages/auth/login.html';
+    // Sign out from Supabase (v2)
+    try {
+        const { error } = await window.supabase.auth.signOut();
+        if (error) {
+            console.error('Sign out error:', error);
+        }
+    } catch (err) {
+        console.error('Sign out failed:', err);
+    } finally {
+        // Redirect to login
+        window.location.href = 'pages/auth/login.html';
+    }
 }
 
 // Export functions for global use
