@@ -90,7 +90,7 @@
                     <div class="form-group">
                         <label for="carrierType" data-lang="ar">نوع الموصل</label>
                         <label for="carrierType" data-lang="en" style="display: none;">Carrier Type</label>
-                        <select id="carrierType" name="carrierType" required>
+                        <select id="carrierType" name="carrierType">
                             <option value="" data-lang="ar">اختر نوع الموصل</option>
                             <option value="" data-lang="en" style="display: none;">Select Carrier Type</option>
                             <option value="individual" data-lang="ar">مسافر مستقل (تصل إلى 20 كجم)</option>
@@ -178,5 +178,75 @@
     <script src="../../config/app-config.js"></script>
     <script src="../../assets/js/language-switcher.js"></script>
     <script src="../../assets/js/auth.js"></script>
+    
+    <!-- التحكم في التحقق من الحقول -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerForm = document.getElementById('registerForm');
+        const carrierType = document.getElementById('carrierType');
+        const shipperType = document.getElementById('shipperType');
+        const carrierSubtype = document.getElementById('carrierSubtype');
+        const shipperSubtype = document.getElementById('shipperSubtype');
+        
+        // التحكم في عرض الحقول حسب نوع المستخدم
+        document.querySelectorAll('.type-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                
+                const userType = this.dataset.type;
+                if (userType === 'carrier') {
+                    carrierSubtype.style.display = 'block';
+                    shipperSubtype.style.display = 'none';
+                } else {
+                    carrierSubtype.style.display = 'none';
+                    shipperSubtype.style.display = 'block';
+                }
+            });
+        });
+        
+        // التحقق من صحة النموذج قبل الإرسال
+        registerForm.addEventListener('submit', function(e) {
+            const activeType = document.querySelector('.type-option.active').dataset.type;
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            
+            // التحقق من الحقول الأساسية
+            if (!fullName || !email || !phone || !password || !confirmPassword || !agreeTerms) {
+                e.preventDefault();
+                alert('يجب تعبئة جميع الحقول المطلوبة');
+                return false;
+            }
+            
+            // التحقق من تطابق كلمات المرور
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('كلمات المرور غير متطابقة');
+                return false;
+            }
+            
+            // التحقق من نوع المستخدم
+            if (activeType === 'carrier') {
+                if (!carrierType.value) {
+                    e.preventDefault();
+                    alert('يرجى اختيار نوع الموصل');
+                    carrierType.focus();
+                    return false;
+                }
+            } else if (activeType === 'shipper') {
+                if (!shipperType.value) {
+                    e.preventDefault();
+                    alert('يرجى اختيار نوع المرسل');
+                    shipperType.focus();
+                    return false;
+                }
+            }
+        });
+    });
+    </script>
 </body>
 </html>
