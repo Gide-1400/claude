@@ -250,20 +250,19 @@ async function handleRegister(e) {
         
         // Create user profile in database if user id is available
         if (createdUser?.id) {
+            const userData = {
+                id: createdUser.id,
+                email: email,
+                name: fullName,
+                phone: phone,
+                user_type: userType,
+                carrier_type: userType === 'carrier' ? carrierType : null,
+                shipper_type: userType === 'shipper' ? shipperType : null
+            };
+
             const { data, error: dbError } = await window.supabase
                 .from('users')
-                .insert([
-                    {
-                        id: createdUser.id,
-                        email: email,
-                        name: fullName,
-                        phone: phone,
-                        user_type: userType,
-                        carrier_type: userType === 'carrier' ? carrierType : null,
-                        shipper_type: userType === 'shipper' ? shipperType : null,
-                        verified: false
-                    }
-                ]);
+                .insert([userData]);
             
             if (dbError) throw dbError;
         }
