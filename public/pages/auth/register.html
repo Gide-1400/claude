@@ -46,6 +46,8 @@
             </div>
 
             <form class="auth-form" id="registerForm">
+                <input type="hidden" id="userType" name="userType" value="carrier">
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fullName" data-lang="ar">الاسم الكامل</label>
@@ -126,7 +128,7 @@
 
                 <div class="form-options">
                     <label class="checkbox-container">
-                        <input type="checkbox" id="agreeTerms" required>
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
                         <span class="checkmark"></span>
                         <span data-lang="ar">أوافق على <a href="../general/terms.html">الشروط والأحكام</a> و <a href="../general/privacy.html">سياسة الخصوصية</a></span>
                         <span data-lang="en" style="display: none;">I agree to the <a href="../general/terms.html">Terms & Conditions</a> and <a href="../general/privacy.html">Privacy Policy</a></span>
@@ -177,74 +179,118 @@
     <script src="../../config/supabase-config.js"></script>
     <script src="../../config/app-config.js"></script>
     <script src="../../assets/js/language-switcher.js"></script>
-    <script src="../../assets/js/auth.js"></script>
     
-    <!-- التحكم في التحقق من الحقول -->
+    <!-- استبدال ملف auth.js بتحقق محلي -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const registerForm = document.getElementById('registerForm');
-        const carrierType = document.getElementById('carrierType');
-        const shipperType = document.getElementById('shipperType');
+        // التحكم في نوع المستخدم
+        const userTypeSelector = document.querySelector('.user-type-selector');
         const carrierSubtype = document.getElementById('carrierSubtype');
         const shipperSubtype = document.getElementById('shipperSubtype');
+        const userTypeInput = document.getElementById('userType');
+        const carrierType = document.getElementById('carrierType');
+        const shipperType = document.getElementById('shipperType');
         
-        // التحكم في عرض الحقول حسب نوع المستخدم
+        // إضافة مستمع للأحداث لاختيار نوع المستخدم
         document.querySelectorAll('.type-option').forEach(option => {
             option.addEventListener('click', function() {
-                document.querySelectorAll('.type-option').forEach(opt => opt.classList.remove('active'));
+                // إزالة الفئة النشطة من جميع الخيارات
+                document.querySelectorAll('.type-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                
+                // إضافة الفئة النشطة للخيار المختار
                 this.classList.add('active');
                 
+                // تحديث نوع المستخدم المخفي
                 const userType = this.dataset.type;
+                userTypeInput.value = userType;
+                
+                // عرض/إخفاء الحقول المناسبة
                 if (userType === 'carrier') {
                     carrierSubtype.style.display = 'block';
                     shipperSubtype.style.display = 'none';
+                    carrierType.required = true;
+                    shipperType.required = false;
                 } else {
                     carrierSubtype.style.display = 'none';
                     shipperSubtype.style.display = 'block';
+                    carrierType.required = false;
+                    shipperType.required = true;
                 }
             });
         });
         
-        // التحقق من صحة النموذج قبل الإرسال
+        // التحكم في إظهار/إخفاء كلمة المرور
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('fa-eye');
+                this.querySelector('i').classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        // التحقق من صحة النموذج
+        const registerForm = document.getElementById('registerForm');
+        
         registerForm.addEventListener('submit', function(e) {
-            const activeType = document.querySelector('.type-option.active').dataset.type;
-            const fullName = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const password = document.getElementById('password').value.trim();
-            const confirmPassword = document.getElementById('confirmPassword').value.trim();
-            const agreeTerms = document.getElementById('agreeTerms').checked;
+            e.preventDefault(); // منع الإرسال الافتراضي
+            
+            // جمع البيانات
+            const formData = new FormData(this);
+            const userType = document.querySelector('.type-option.active').dataset.type;
             
             // التحقق من الحقول الأساسية
-            if (!fullName || !email || !phone || !password || !confirmPassword || !agreeTerms) {
-                e.preventDefault();
-                alert('يجب تعبئة جميع الحقول المطلوبة');
-                return false;
+            const requiredFields = ['fullName', 'email', 'phone', 'password', 'confirmPassword'];
+            let isValid = true;
+            let errorMessage = '';
+            
+            // التحقق من الحقول المطلوبة
+            for (let field of requiredFields) {
+                if (!formData.get(field) || formData.get(field).trim() === '') {
+                    isValid = false;
+                    errorMessage = 'يرجى ملء جميع الحقول المطلوبة';
+                    break;
+                }
             }
             
             // التحقق من تطابق كلمات المرور
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('كلمات المرور غير متطابقة');
-                return false;
+            if (isValid && formData.get('password') !== formData.get('confirmPassword')) {
+                isValid = false;
+                errorMessage = 'كلمات المرور غير متطابقة';
             }
             
             // التحقق من نوع المستخدم
-            if (activeType === 'carrier') {
-                if (!carrierType.value) {
-                    e.preventDefault();
-                    alert('يرجى اختيار نوع الموصل');
-                    carrierType.focus();
-                    return false;
-                }
-            } else if (activeType === 'shipper') {
-                if (!shipperType.value) {
-                    e.preventDefault();
-                    alert('يرجى اختيار نوع المرسل');
-                    shipperType.focus();
-                    return false;
+            if (isValid) {
+                if (userType === 'carrier' && (!formData.get('carrierType') || formData.get('carrierType') === '')) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار نوع الموصل';
+                } else if (userType === 'shipper' && (!formData.get('shipperType') || formData.get('shipperType') === '')) {
+                    isValid = false;
+                    errorMessage = 'يرجى اختيار نوع المرسل';
                 }
             }
+            
+            // التحقق من الموافقة على الشروط
+            if (isValid && !document.getElementById('agreeTerms').checked) {
+                isValid = false;
+                errorMessage = 'يرجى الموافقة على الشروط والأحكام';
+            }
+            
+            if (!isValid) {
+                alert(errorMessage);
+                return false;
+            }
+            
+            // إذا كانت البيانات صحيحة، يمكن إرسالها
+            // هنا يمكنك إضافة كود إرسال البيانات إلى الخادم
+            console.log('البيانات جاهزة للإرسال:', Object.fromEntries(formData));
+            alert('تم التسجيل بنجاح!');
+            // window.location.href = 'login.html'; // لإعادة التوجيه
         });
     });
     </script>
