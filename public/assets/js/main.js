@@ -1,5 +1,4 @@
 // Main JavaScript for Fast Shipment Platform
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
@@ -196,11 +195,16 @@ function initSmoothScrolling() {
 
 // Initialize Supabase client
 function initSupabase() {
-    const SUPABASE_URL = 'https://chmistqmcmmmjqeanudu.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobWlzdHFtY21tbWpxZWFudWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NDg1MTEsImV4cCI6MjA3NjIyNDUxMX0.Ho-3nEs3_w5Xmna2z0HQF6dDjh8MkiBzD10N_6vuEKs';
-    
-    window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log('Supabase client initialized');
+    // Supabase is loaded via CDN in HTML
+    if (typeof supabase !== 'undefined' && typeof supabase.createClient === 'function') {
+        const SUPABASE_URL = 'https://chmistqmcmmmjqeanudu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobWlzdHFtY21tbWpxZWFudWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NDg1MTEsImV4cCI6MjA3NjIyNDUxMX0.Ho-3nEs3_w5Xmna2z0HQF6dDjh8MkiBzD10N_6vuEKs';
+        
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        console.log('Supabase client initialized');
+    } else {
+        console.error('Supabase library not loaded properly');
+    }
 }
 
 // Utility function to get URL parameters
