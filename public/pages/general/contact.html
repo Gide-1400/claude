@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا</title>
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/general.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <!-- Navigation bar content -->
+            <ul>
+                <li><a href="../../index.html">الرئيسية</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="contact.html" class="active">اتصل بنا</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="container">
+        <h1>اتصل بنا</h1>
+        <p>إذا كان لديك أي أسئلة أو استفسارات، فلا تتردد في التواصل معنا.</p>
+        <form class="contact-form">
+            <div class="form-group">
+                <label for="name">الاسم الكامل:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">البريد الإلكتروني:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject">الموضوع:</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message">رسالتك:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">إرسال الرسالة</button>
+        </form>
+        <div class="contact-info">
+            <h3>معلومات الاتصال</h3>
+            <p>البريد الإلكتروني: gide1979@gmail.com</p>
+            <p>الهاتف: +966551519723</p>
+            <p>العنوان: الرياض، المملكة العربية السعودية</p>
+        </div>
+    </main>
+    <footer>
+        <!-- Footer content -->
+        <p>&copy; 2023 الشحنة السريعة. جميع الحقوق محفوظة.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../../config/supabase-config.js"></script>
+    <script src="../../../assets/js/language-switcher.js"></script>
+    <script src="../../../assets/js/main.js"></script>
+</body>
+</html>
+
