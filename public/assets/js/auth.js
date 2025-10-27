@@ -1,21 +1,19 @@
-// Authentication JavaScript for Fast Shipment Platform
+// Authentication JavaScript for Fast Shipment Platform (modified)
+// - Works with Supabase Auth v2
+// - Stores only safe user info in browser storage
+// - Handles pending_users when signUp does not immediately return a user
+// - Routes user by user_type from public.users
 
 document.addEventListener('DOMContentLoaded', function() {
     initAuth();
 });
 
 function initAuth() {
-    // Initialize form functionality
     initForms();
-    
-    // Initialize user type selection
     initUserTypeSelection();
-    
-    // Initialize password toggling
     initPasswordToggle();
 }
 
-// Ensure supabase client exists
 function ensureSupabase() {
     if (!window.supabase) {
         console.error('Supabase client is not initialized. Make sure createClient(...) is called and assigned to window.supabase');
@@ -24,38 +22,32 @@ function ensureSupabase() {
     }
 }
 
-// Form initialization
 function initForms() {
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
-    
+
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
-    
+
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
     }
 }
 
-// User type selection
 function initUserTypeSelection() {
     const typeOptions = document.querySelectorAll('.type-option');
     const carrierSubtype = document.getElementById('carrierSubtype');
     const shipperSubtype = document.getElementById('shipperSubtype');
-    
+
     if (typeOptions.length > 0) {
         typeOptions.forEach(option => {
             option.addEventListener('click', function() {
-                // Remove active class from all options
                 typeOptions.forEach(opt => opt.classList.remove('active'));
-                
-                // Add active class to clicked option
                 this.classList.add('active');
-                
+
                 const userType = this.getAttribute('data-type');
-                
-                // Show/hide appropriate subtype sections
+
                 if (userType === 'carrier') {
                     if (carrierSubtype) carrierSubtype.style.display = 'block';
                     if (shipperSubtype) shipperSubtype.style.display = 'none';
@@ -76,17 +68,16 @@ function initUserTypeSelection() {
     }
 }
 
-// Password toggle functionality
 function initPasswordToggle() {
     const togglePassword = document.getElementById('togglePassword');
-    
+
     if (togglePassword) {
         togglePassword.addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');
-            
+
             if (!passwordInput) return;
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 if (icon) {
@@ -104,76 +95,130 @@ function initPasswordToggle() {
     }
 }
 
-// Handle login form submission
+// Safe storage: only minimal user info
+function storeSafeUser(userObj, rememberMe) {
+    if (!userObj) return;
+    const safe = {
+        id: userObj.id,
+        email: userObj.email,
+        user_type: userObj.user_type || null,
+        name: userObj.name || null
+    };
+    try {
+        const serialized = JSON.stringify(safe);
+        if (rememberMe) {
+            localStorage.setItem('fastship_user', serialized);
+        } else {
+            sessionStorage.setItem('fastship_user', serialized);
+        }
+    } catch (err) {
+        console.warn('Failed to store user info locally:', err);
+    }
+}
+
+async function fetchUserProfile(authUserId) {
+    ensureSupabase();
+    if (!authUserId) return null;
+    const { data, error } = await window.supabase
+        .from('users')
+        .select('id, auth_user_id, email, name, user_type, carrier_type, shipper_type')
+        .eq('auth_user_id', authUserId)
+        .single();
+    if (error) {
+        // if not found, try by id (in case your public.users.id equals auth id)
+        const { data: data2, error: err2 } = await window.supabase
+            .from('users')
+            .select('id, auth_user_id, email, name, user_type, carrier_type, shipper_type')
+            .eq('id', authUserId)
+            .single();
+        if (err2) return null;
+        return data2;
+    }
+    return data;
+}
+
+function getStoredUser() {
+    const raw = localStorage.getItem('fastship_user') || sessionStorage.getItem('fastship_user');
+    if (!raw) return null;
+    try {
+        return JSON.parse(raw);
+    } catch (err) {
+        return null;
+    }
+}
+
+// Login handler
 async function handleLogin(e) {
     e.preventDefault();
-    
-    try {
-        ensureSupabase();
-    } catch (err) {
-        return;
-    }
-    
+    try { ensureSupabase(); } catch (err) { return; }
+
     const form = e.target;
     const formData = new FormData(form);
     const email = (formData.get('email') || '').toString().trim();
     const password = (formData.get('password') || '').toString();
-    const rememberMe = formData.get('rememberMe');
-    
-    // Basic validation
+    const rememberMe = !!formData.get('rememberMe');
+
     if (!email || !password) {
         showAlert('error', 'يرجى ملء جميع الحقول المطلوبة', 'Please fill all required fields');
         return;
     }
-    
-    // Show loading state
+
     const submitBtn = form.querySelector('.btn-auth');
     const originalText = submitBtn ? submitBtn.innerHTML : null;
     if (submitBtn) {
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
         submitBtn.disabled = true;
     }
-    
+
     try {
-        // Use supabase-js v2+ method for password sign-in
+        // Supabase Auth v2 signInWithPassword
         const { data, error } = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password
         });
-        
+
         if (error) throw error;
-        
-        // data contains { user, session }
+
         const user = data?.user ?? null;
         const session = data?.session ?? null;
-        
+
         if (!user) {
-            throw new Error('No user returned from authentication');
+            // No user returned; ask user to verify email or check credentials
+            showAlert('error', 'تعذر تسجيل الدخول. يرجى التحقق من البريد/كلمة المرور أو تفعيل الحساب', 'Login failed. Check credentials or verify your email');
+            return;
         }
-        
-        // Success - redirect to dashboard
+
+        // Fetch profile to find user_type
+        const profile = await fetchUserProfile(user.id);
+
+        // Store safe user info only
+        storeSafeUser({
+            id: user.id,
+            email: user.email,
+            user_type: profile?.user_type || null,
+            name: profile?.name || null
+        }, rememberMe);
+
         showAlert('success', 'تم تسجيل الدخول بنجاح', 'Login successful');
-        
-        // Store user session - prefer session object if available
-        const storeData = session ?? user;
-        if (rememberMe) {
-            localStorage.setItem('userSession', JSON.stringify(storeData));
-        } else {
-            sessionStorage.setItem('userSession', JSON.stringify(storeData));
-        }
-        
-        // Redirect based on user type (modify as needed)
+
+        // Redirect based on user_type
         setTimeout(() => {
-            // Example: redirect to carrier dashboard; customize per your app logic
-            window.location.href = '../carrier/index.html';
-        }, 1200);
-        
+            const userType = profile?.user_type || null;
+            if (userType === 'carrier') {
+                window.location.href = '../carrier/index.html';
+            } else if (userType === 'shipper') {
+                window.location.href = '../shipper/index.html';
+            } else {
+                // default dashboard if type missing
+                window.location.href = '../pages/general/support.html';
+            }
+        }, 800);
+
     } catch (error) {
         console.error('Login error:', error);
         const msg = error?.message || String(error);
         showAlert('error', 'خطأ في تسجيل الدخول: ' + msg, 'Login error: ' + msg);
     } finally {
-        // Reset button state
         if (submitBtn && originalText !== null) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -181,19 +226,14 @@ async function handleLogin(e) {
     }
 }
 
-// Handle register form submission
+// Register handler
 async function handleRegister(e) {
     e.preventDefault();
-    
-    try {
-        ensureSupabase();
-    } catch (err) {
-        return;
-    }
-    
+    try { ensureSupabase(); } catch (err) { return; }
+
     const form = e.target;
     const formData = new FormData(form);
-    
+
     const fullName = (formData.get('fullName') || '').toString().trim();
     const email = (formData.get('email') || '').toString().trim();
     const phone = (formData.get('phone') || '').toString().trim();
@@ -203,55 +243,48 @@ async function handleRegister(e) {
     const carrierType = (formData.get('carrierType') || '').toString();
     const shipperType = (formData.get('shipperType') || '').toString();
     const agreeTerms = formData.get('agreeTerms');
-    
-    // Validation
+
     if (!fullName || !email || !phone || !password || !confirmPassword || !userType || !agreeTerms) {
         showAlert('error', 'يرجى ملء جميع الحقول المطلوبة', 'Please fill all required fields');
         return;
     }
-    
+
     if (password !== confirmPassword) {
         showAlert('error', 'كلمات المرور غير متطابقة', 'Passwords do not match');
         return;
     }
-    
+
     if (password.length < 6) {
         showAlert('error', 'كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'Password must be at least 6 characters');
         return;
     }
-    
-    // Show loading state
+
     const submitBtn = form.querySelector('.btn-auth');
     const originalText = submitBtn ? submitBtn.innerHTML : null;
     if (submitBtn) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري إنشاء الحساب...';
         submitBtn.disabled = true;
     }
-    
+
     try {
-        // Create user in Supabase Auth (v2 signUp)
+        // signUp - Supabase will send confirmation email if enabled in project settings
         const { data: signUpData, error: authError } = await window.supabase.auth.signUp({
             email: email,
             password: password,
             options: {
-                // You can add email_redirect_to or data here if needed
+                // redirect to a verification page on your site after email confirmation
+                // emailRedirectTo: 'https://yourdomain.com/pages/auth/verification.html'
             }
         });
-        
+
         if (authError) throw authError;
-        
+
         const createdUser = signUpData?.user ?? null;
-        const createdSession = signUpData?.session ?? null;
-        
-        if (!createdUser) {
-            // In some setups signUp returns only confirmation info; handle accordingly
-            showAlert('success', 'تم إرسال رسالة تفعيل الحساب إلى بريدك الإلكتروني', 'Verification email sent');
-        }
-        
-        // Create user profile in database if user id is available
+
+        // If createdUser exists (immediate creation), create profile row in public.users
         if (createdUser?.id) {
             const userData = {
-                id: createdUser.id,
+                auth_user_id: createdUser.id,
                 email: email,
                 name: fullName,
                 phone: phone,
@@ -260,39 +293,64 @@ async function handleRegister(e) {
                 shipper_type: userType === 'shipper' ? shipperType : null
             };
 
-            const { data, error: dbError } = await window.supabase
+            const { data: dbData, error: dbError } = await window.supabase
                 .from('users')
                 .insert([userData]);
-            
-            if (dbError) throw dbError;
+
+            if (dbError) {
+                console.warn('Failed to insert profile:', dbError);
+                // Attempt to rollback auth user? Typically admin action required; inform user
+                showAlert('error', 'حدث خطأ أثناء إنشاء الملف الشخصي. يرجى التواصل مع الدعم', 'Failed to create profile. Contact support');
+            } else {
+                // success - store safe info (no tokens)
+                storeSafeUser({
+                    id: createdUser.id,
+                    email: email,
+                    user_type: userType,
+                    name: fullName
+                }, false);
+            }
+        } else {
+            // createdUser not returned: store as pending to create profile after confirmation
+            // Insert into pending_users so an admin/background worker can link later
+            const pending = {
+                email: email,
+                phone: phone,
+                name: fullName,
+                user_type: userType,
+                carrier_type: userType === 'carrier' ? carrierType : null,
+                shipper_type: userType === 'shipper' ? shipperType : null
+            };
+            const { data: pData, error: pErr } = await window.supabase
+                .from('pending_users')
+                .upsert(pending, { onConflict: ['email'] });
+
+            if (pErr) {
+                console.warn('Failed to save pending user:', pErr);
+            }
         }
-        
-        // Success
-        showAlert('success', 'تم إنشاء الحساب بنجاح! يرجى تفعيل حسابك عبر البريد الإلكتروني', 'Account created successfully! Please verify your email');
-        
-        // Redirect to verification page
+
+        // Inform user to check email if project sends confirmation
+        showAlert('success', 'تم إنشاء الحساب! يرجى التحقق من بريدك لتأكيد الحساب', 'Account created! Please check your email to confirm the account');
+
         setTimeout(() => {
             window.location.href = 'verification.html';
-        }, 1600);
-        
+        }, 1400);
+
     } catch (error) {
         console.error('Registration error:', error);
-        let msgAr = error?.message || String(error);
-        let msgEn = error?.message || String(error);
-        
-        // Handle specific Supabase auth errors
-        if (msgAr.includes('User already registered')) {
-            msgAr = 'هذا البريد الإلكتروني مسجل بالفعل. يرجى <a href="login.html" style="color: white; text-decoration: underline;">تسجيل الدخول</a> أو استخدام بريد إلكتروني مختلف';
-            msgEn = 'This email is already registered. Please <a href="login.html" style="color: white; text-decoration: underline;">sign in</a> or use a different email';
-        } else if (msgAr.includes('AuthApiError')) {
-            // Generic auth error message
-            msgAr = 'حدث خطأ في التسجيل. يرجى التحقق من البيانات والمحاولة مرة أخرى';
-            msgEn = 'An error occurred during registration. Please check your data and try again';
+        let msg = error?.message || String(error);
+
+        if (msg.includes('User already registered') || msg.includes('already registered')) {
+            msg = 'هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول أو استخدام بريد إلكتروني مختلف';
+        } else if (msg.includes('invalid')) {
+            msg = 'بيانات غير صحيحة. يرجى التحقق والمحاولة مرة أخرى';
+        } else {
+            msg = 'حدث خطأ أثناء إنشاء الحساب. إذا استمر، يرجى التواصل مع الدعم';
         }
-        
-        showAlert('error', 'خطأ في إنشاء الحساب: ' + msgAr, 'Registration error: ' + msgEn);
+
+        showAlert('error', 'خطأ في إنشاء الحساب: ' + msg, 'Registration error: ' + msg);
     } finally {
-        // Reset button state
         if (submitBtn && originalText !== null) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
@@ -300,17 +358,15 @@ async function handleRegister(e) {
     }
 }
 
-// Show alert message
 function showAlert(type, messageAr, messageEn) {
-    // Remove existing alerts
     const existingAlert = document.querySelector('.alert-message');
     if (existingAlert) {
         existingAlert.remove();
     }
-    
+
     const currentLang = document.documentElement.lang || 'ar';
     const message = currentLang === 'ar' ? messageAr : messageEn;
-    
+
     const alert = document.createElement('div');
     alert.className = `alert-message alert-${type}`;
     alert.style.cssText = `
@@ -326,7 +382,7 @@ function showAlert(type, messageAr, messageEn) {
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         animation: slideIn 0.3s ease;
     `;
-    
+
     if (type === 'success') {
         alert.style.background = 'var(--success)';
     } else if (type === 'error') {
@@ -334,16 +390,15 @@ function showAlert(type, messageAr, messageEn) {
     } else {
         alert.style.background = 'var(--primary)';
     }
-    
-    // Create alert content with HTML support
+
     const alertContent = document.createElement('div');
     alertContent.style.display = 'flex';
     alertContent.style.alignItems = 'center';
     alertContent.style.justifyContent = 'space-between';
-    
+
     const messageSpan = document.createElement('span');
-    messageSpan.innerHTML = message; // Use innerHTML to allow HTML tags
-    
+    messageSpan.innerHTML = message;
+
     const closeButton = document.createElement('button');
     closeButton.type = 'button';
     closeButton.innerHTML = '×';
@@ -355,14 +410,13 @@ function showAlert(type, messageAr, messageEn) {
     closeButton.onclick = function() {
         alert.remove();
     };
-    
+
     alertContent.appendChild(messageSpan);
     alertContent.appendChild(closeButton);
     alert.appendChild(alertContent);
-    
+
     document.body.appendChild(alert);
-    
-    // Auto remove after 5 seconds
+
     setTimeout(() => {
         if (alert.parentElement) {
             alert.remove();
@@ -370,41 +424,31 @@ function showAlert(type, messageAr, messageEn) {
     }, 5000);
 }
 
-// Check if user is authenticated
 function checkAuth() {
-    const userSession = localStorage.getItem('userSession') || sessionStorage.getItem('userSession');
-    
+    const userSession = getStoredUser();
+
     if (!userSession) {
-        // Redirect to login if not authenticated
-        if (!window.location.pathname.includes('login.html') && 
-            !window.location.pathname.includes('register.html')) {
+        if (!window.location.pathname.includes('login.html') &&
+            !window.location.pathname.includes('register.html') &&
+            !window.location.pathname.includes('verification.html')) {
             window.location.href = 'pages/auth/login.html';
         }
         return null;
     }
-    
-    try {
-        return JSON.parse(userSession);
-    } catch (err) {
-        return null;
-    }
+
+    return userSession;
 }
 
-// Logout function
 async function logout() {
     // Clear local/session storage
-    localStorage.removeItem('userSession');
-    sessionStorage.removeItem('userSession');
-    
-    try {
-        ensureSupabase();
-    } catch (err) {
-        // still redirect
+    localStorage.removeItem('fastship_user');
+    sessionStorage.removeItem('fastship_user');
+
+    try { ensureSupabase(); } catch (err) {
         window.location.href = 'pages/auth/login.html';
         return;
     }
-    
-    // Sign out from Supabase (v2)
+
     try {
         const { error } = await window.supabase.auth.signOut();
         if (error) {
@@ -413,12 +457,11 @@ async function logout() {
     } catch (err) {
         console.error('Sign out failed:', err);
     } finally {
-        // Redirect to login
         window.location.href = 'pages/auth/login.html';
     }
 }
 
-// Export functions for global use
+// Expose functions globally if needed
 window.handleLogin = handleLogin;
 window.handleRegister = handleRegister;
 window.showAlert = showAlert;
