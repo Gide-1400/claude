@@ -222,7 +222,7 @@ async function loadDashboardData() {
         if (!user) return;
         
         // Load user stats
-        const { data: stats, error: statsError } = await window.supabase
+        const { data: stats, error: statsError } = await window.supabaseClient
             .from('user_stats')
             .select('*')
             .eq('user_id', user.id)
@@ -233,7 +233,7 @@ async function loadDashboardData() {
         }
         
         // Load recent matches
-        const { data: matches, error: matchesError } = await window.supabase
+        const { data: matches, error: matchesError } = await window.supabaseClient
             .from('matches')
             .select(`
                 *,
@@ -254,7 +254,7 @@ async function loadDashboardData() {
         }
         
         // Load active trips
-        const { data: trips, error: tripsError } = await window.supabase
+        const { data: trips, error: tripsError } = await window.supabaseClient
             .from('trips')
             .select('*')
             .eq('user_id', user.id)
@@ -297,7 +297,7 @@ function logout() {
         sessionStorage.removeItem('userSession');
         
         // Sign out from Supabase
-        window.supabase.auth.signOut();
+        window.supabaseClient.auth.signOut();
         
         // Redirect to login
         window.location.href = '../auth/login.html';
