@@ -160,6 +160,9 @@ if (document.readyState === 'loading') {
     initAccessibility();
 }
 
+// Debug logging
+console.log('Accessibility script loaded successfully at:', new Date());
+
 // Export functions for manual use
 window.AccessibilityUtils = {
     updateLabels: updateAccessibilityLabels,

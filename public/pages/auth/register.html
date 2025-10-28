@@ -187,5 +187,26 @@
     <script src="../../assets/js/language-switcher.js"></script>
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/auth.js"></script>
+    
+    <!-- Inline accessibility fix for immediate deployment -->
+    <script>
+        console.log('Register page loaded with accessibility - ' + new Date());
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fix all buttons without proper labels
+            const buttonsWithoutLabels = document.querySelectorAll('button:not([aria-label]):not([title])');
+            buttonsWithoutLabels.forEach(btn => {
+                if (btn.querySelector('.fa-eye, .fa-eye-slash')) {
+                    btn.setAttribute('title', 'إظهار/إخفاء كلمة المرور');
+                    btn.setAttribute('aria-label', 'إظهار أو إخفاء كلمة المرور');
+                } else if (btn.querySelector('.fa-google')) {
+                    btn.setAttribute('title', 'تسجيل الدخول بواسطة Google');
+                    btn.setAttribute('aria-label', 'تسجيل الدخول بواسطة Google');
+                }
+            });
+            
+            console.log('Register page accessibility fixes applied successfully');
+        });
+    </script>
 </body>
 </html>

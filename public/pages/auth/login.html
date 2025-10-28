@@ -127,5 +127,35 @@
     </script>
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/auth-simple.js"></script>
+    
+    <!-- Inline accessibility fix for immediate deployment -->
+    <script>
+        console.log('Login page loaded with accessibility - ' + new Date());
+        
+        // Immediate accessibility fix for toggle password button
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('togglePassword');
+            if (toggleBtn && !toggleBtn.hasAttribute('aria-label')) {
+                // Fallback if main accessibility script doesn't work
+                toggleBtn.setAttribute('title', 'إظهار/إخفاء كلمة المرور');
+                toggleBtn.setAttribute('aria-label', 'إظهار أو إخفاء كلمة المرور');
+                console.log('Manual accessibility fix applied to toggle button');
+            }
+            
+            // Fix all buttons without proper labels
+            const buttonsWithoutLabels = document.querySelectorAll('button:not([aria-label]):not([title])');
+            buttonsWithoutLabels.forEach(btn => {
+                if (btn.querySelector('.fa-eye, .fa-eye-slash')) {
+                    btn.setAttribute('title', 'إظهار/إخفاء كلمة المرور');
+                    btn.setAttribute('aria-label', 'إظهار أو إخفاء كلمة المرور');
+                } else if (btn.querySelector('.fa-google')) {
+                    btn.setAttribute('title', 'تسجيل الدخول بواسطة Google');
+                    btn.setAttribute('aria-label', 'تسجيل الدخول بواسطة Google');
+                }
+            });
+            
+            console.log('All accessibility fixes applied successfully');
+        });
+    </script>
 </body>
 </html>
