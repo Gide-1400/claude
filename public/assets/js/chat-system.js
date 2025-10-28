@@ -1,12 +1,16 @@
-// Real-time Chat System for Fast Shipment Platform
-// Handles messaging between carriers and shippers with WhatsApp integration
+/**
+ * Chat System - نظام الرسائل والدردشة المحسن
+ * للتفاوض بين الناقلين وأصحاب الشحنات
+ */
 
 class ChatSystem {
     constructor() {
         this.supabase = window.supabaseClient;
         this.currentUser = null;
-        this.activeChat = null;
+        this.activeConversations = new Map();
+        this.messagePollingInterval = null;
         this.messageSubscription = null;
+        this.init();
     }
 
     /**

@@ -1,10 +1,91 @@
-// Smart Matching Engine for Fast Shipment Platform
-// Matches carriers with shippers based on route, date, and capacity
+/**
+ * Smart Matching Engine - خوارزمية المطابقة الذكية
+ * تربط الشحنات مع الرحلات المناسبة وتحسب درجة التطابق
+ */
 
 class MatchingEngine {
     constructor() {
         this.supabase = window.supabaseClient;
         this.currentUser = null;
+        this.cities = this.loadCities();
+        this.initialized = false;
+        this.init();
+    }
+
+    async init() {
+        try {
+            // انتظار تحميل Supabase
+            if (!window.supabaseClient) {
+                await this.waitForSupabase();
+                this.supabase = window.supabaseClient;
+            }
+            this.initialized = true;
+            console.log('MatchingEngine: تم تهيئة محرك المطابقة بنجاح');
+        } catch (error) {
+            console.error('MatchingEngine: خطأ في التهيئة:', error);
+        }
+    }
+
+    /**
+     * البحث عن رحلات مناسبة للشحنة
+     */
+    async findMatchingTrips(shipmentId) {
+        try {
+            if (!this.initialized) await this.init();
+
+            // جلب تفاصيل الشحنة
+            const { data: shipment, error: shipmentError } = await this.supabase
+                .from('shipments')
+                .select('*')
+                .eq('id', shipmentId)
+                .single();
+
+            if (shipmentError || !shipment) {
+                throw new Error('لم يتم العثور على الشحنة');
+            }
+
+            // البحث عن الرحلات المناسبة
+            const { data: trips, error: tripsError } = await this.supabase
+                .from('trips')
+                .select(`
+                    *,
+                    users (
+                        id,
+                        name,
+                        phone,
+                        carrier_type
+                    )
+                `)
+                .eq('from_city', shipment.from_city)
+                .eq('to_city', shipment.to_city)
+                .eq('status', 'available')
+                .gte('available_weight', shipment.weight)
+                .gte('trip_date', shipment.needed_date);
+
+            if (tripsError) {
+                throw new Error('خطأ في البحث عن الرحلات');
+            }
+
+            // حساب درجة التطابق لكل رحلة
+            const matchedTrips = trips.map(trip => {
+                const matchScore = this.calculateMatchScore(shipment, trip);
+                return {
+                    ...trip,
+                    matchScore,
+                    compatibility: this.getCompatibilityLevel(matchScore)
+                };
+            });
+
+            // ترتيب حسب درجة التطابق
+            matchedTrips.sort((a, b) => b.matchScore - a.matchScore);
+
+            console.log(`تم العثور على ${matchedTrips.length} رحلة مناسبة للشحنة ${shipmentId}`);
+            return matchedTrips;
+
+        } catch (error) {
+            console.error('خطأ في البحث عن الرحلات المطابقة:', error);
+            return [];
+        }
     }
 
     /**
@@ -12,23 +93,58 @@ class MatchingEngine {
      * @param {Object} trip - The carrier's trip details
      * @returns {Array} - Array of matching shipments with scores
      */
-    async findMatchingShipments(trip) {
+    async findMatchingShipments(tripId) {
         try {
-            if (!trip) return [];
+            if (!this.initialized) await this.init();
 
-            // Get all available shipments
-            const { data: shipments, error } = await this.supabase
-                .from('shipments')
-                .select('*, users!inner(name, phone, email)')
-                .eq('status', 'pending')
-                .eq('is_dummy', false)
-                .gte('needed_date', new Date().toISOString().split('T')[0]);
+            // جلب تفاصيل الرحلة
+            const { data: trip, error: tripError } = await this.supabase
+                .from('trips')
+                .select('*')
+                .eq('id', tripId)
+                .single();
 
-            if (error) throw error;
-
-            if (!shipments || shipments.length === 0) {
-                return [];
+            if (tripError || !trip) {
+                throw new Error('لم يتم العثور على الرحلة');
             }
+
+            // البحث عن الشحنات المناسبة
+            const { data: shipments, error: shipmentsError } = await this.supabase
+                .from('shipments')
+                .select(`
+                    *,
+                    users (
+                        id,
+                        name,
+                        phone,
+                        shipper_type
+                    )
+                `)
+                .eq('from_city', trip.from_city)
+                .eq('to_city', trip.to_city)
+                .eq('status', 'pending')
+                .lte('weight', trip.available_weight)
+                .lte('needed_date', trip.trip_date);
+
+            if (shipmentsError) {
+                throw new Error('خطأ في البحث عن الشحنات');
+            }
+
+            // حساب درجة التطابق لكل شحنة
+            const matchedShipments = shipments.map(shipment => {
+                const matchScore = this.calculateMatchScore(shipment, trip);
+                return {
+                    ...shipment,
+                    matchScore,
+                    compatibility: this.getCompatibilityLevel(matchScore)
+                };
+            });
+
+            // ترتيب حسب درجة التطابق
+            matchedShipments.sort((a, b) => b.matchScore - a.matchScore);
+
+            console.log(`تم العثور على ${matchedShipments.length} شحنة مناسبة للرحلة ${tripId}`);
+            return matchedShipments;
 
             // Calculate match score for each shipment
             const matches = shipments
@@ -281,16 +397,83 @@ class MatchingEngine {
      * Calculate approximate distance between two cities
      * In production, use a real distance calculation API
      */
-    calculateDistance(trip, shipment) {
-        // This is a placeholder
-        // In production, integrate with Google Maps Distance Matrix API or similar
-        return Math.floor(Math.random() * 500) + 100; // km
+    /**
+     * حساب درجة التطابق بين الشحنة والرحلة
+     */
+    calculateMatchScore(shipment, trip) {
+        let score = 0;
+
+        // تطابق المدن (50 نقطة)
+        if (shipment.from_city === trip.from_city && shipment.to_city === trip.to_city) {
+            score += 50;
+        }
+
+        // تطابق التاريخ (25 نقطة)
+        const shipmentDate = new Date(shipment.needed_date);
+        const tripDate = new Date(trip.trip_date);
+        const daysDiff = Math.abs((tripDate - shipmentDate) / (1000 * 60 * 60 * 24));
+        
+        if (daysDiff === 0) {
+            score += 25; // نفس اليوم
+        } else if (daysDiff <= 3) {
+            score += 20; // خلال 3 أيام
+        } else if (daysDiff <= 7) {
+            score += 15; // خلال أسبوع
+        } else if (daysDiff <= 14) {
+            score += 10; // خلال أسبوعين
+        }
+
+        // تطابق الوزن (15 نقطة)
+        if (trip.available_weight >= shipment.weight) {
+            const weightRatio = shipment.weight / trip.available_weight;
+            if (weightRatio >= 0.8) {
+                score += 15; // استغلال ممتاز للمساحة
+            } else if (weightRatio >= 0.5) {
+                score += 12; // استغلال جيد
+            } else if (weightRatio >= 0.2) {
+                score += 8; // استغلال مقبول
+            } else {
+                score += 5; // استغلال ضعيف
+            }
+        }
+
+        // تطابق نوع الناقل/الشاحن (10 نقاط)
+        if (this.isCompatibleType(shipment.shipper_type, trip.carrier_type)) {
+            score += 10;
+        }
+
+        return Math.min(score, 100); // الحد الأقصى 100
     }
 
     /**
-     * Save a match to the database
+     * تحديد مستوى التوافق بناءً على الدرجة
      */
-    async saveMatch(tripId, shipmentId, matchScore) {
+    getCompatibilityLevel(score) {
+        if (score >= 80) return { level: 'excellent', text: 'ممتاز', color: '#28a745' };
+        if (score >= 60) return { level: 'good', text: 'جيد', color: '#007bff' };
+        if (score >= 40) return { level: 'fair', text: 'مقبول', color: '#ffc107' };
+        return { level: 'poor', text: 'ضعيف', color: '#dc3545' };
+    }
+
+    /**
+     * فحص توافق أنواع الناقل والشاحن
+     */
+    isCompatibleType(shipperType, carrierType) {
+        const compatibility = {
+            'individual': ['individual', 'car_owner'],
+            'small_business': ['car_owner', 'truck_owner'],
+            'medium_business': ['truck_owner', 'fleet_owner'],
+            'large_business': ['fleet_owner'],
+            'enterprise': ['fleet_owner']
+        };
+
+        return compatibility[shipperType]?.includes(carrierType) || false;
+    }
+
+    /**
+     * إنشاء مطابقة جديدة في قاعدة البيانات
+     */
+    async createMatch(tripId, shipmentId, matchScore) {
         try {
             const { data, error } = await this.supabase
                 .from('matches')
@@ -303,136 +486,91 @@ class MatchingEngine {
                 .select()
                 .single();
 
-            if (error) throw error;
+            if (error) {
+                if (error.code === '23505') { // Unique constraint violation
+                    console.log('المطابقة موجودة بالفعل');
+                    return { success: true, exists: true };
+                }
+                throw error;
+            }
 
-            return data;
+            console.log('تم إنشاء مطابقة جديدة:', data.id);
+            return { success: true, match: data };
 
         } catch (error) {
-            // Check if match already exists
-            if (error.code === '23505') {
-                console.log('Match already exists');
-                return null;
-            }
-            console.error('Error saving match:', error);
-            throw error;
+            console.error('خطأ في إنشاء المطابقة:', error);
+            return { success: false, error };
         }
     }
 
     /**
-     * Get all matches for a user
+     * جلب جميع المطابقات للمستخدم
      */
     async getUserMatches(userId, userType) {
         try {
-            let query = this.supabase
-                .from('matches')
-                .select(`
-                    *,
-                    trips!inner(*, users!inner(name, phone, email)),
-                    shipments!inner(*, users!inner(name, phone, email))
-                `);
-
+            let query;
+            
             if (userType === 'carrier') {
-                query = query.eq('trips.user_id', userId);
+                query = this.supabase
+                    .from('matches')
+                    .select(`
+                        *,
+                        trips!inner (
+                            *,
+                            users (name, phone)
+                        ),
+                        shipments (
+                            *,
+                            users (name, phone)
+                        )
+                    `)
+                    .eq('trips.user_id', userId);
             } else {
-                query = query.eq('shipments.user_id', userId);
+                query = this.supabase
+                    .from('matches')
+                    .select(`
+                        *,
+                        trips (
+                            *,
+                            users (name, phone)
+                        ),
+                        shipments!inner (
+                            *,
+                            users (name, phone)
+                        )
+                    `)
+                    .eq('shipments.user_id', userId);
             }
 
             const { data, error } = await query.order('created_at', { ascending: false });
 
             if (error) throw error;
 
-            return data || [];
+            return data;
 
         } catch (error) {
-            console.error('Error getting user matches:', error);
+            console.error('خطأ في جلب مطابقات المستخدم:', error);
             return [];
         }
     }
 
-    /**
-     * Update match status
-     */
-    async updateMatchStatus(matchId, status) {
-        try {
-            const { data, error } = await this.supabase
-                .from('matches')
-                .update({ status: status })
-                .eq('id', matchId)
-                .select()
-                .single();
-
-            if (error) throw error;
-
-            return data;
-
-        } catch (error) {
-            console.error('Error updating match status:', error);
-            throw error;
+    // وظائف مساعدة
+    async waitForSupabase(timeout = 5000) {
+        const start = Date.now();
+        while (!window.supabaseClient && (Date.now() - start) < timeout) {
+            await new Promise(resolve => setTimeout(resolve, 100));
         }
+        return !!window.supabaseClient;
     }
 
-    /**
-     * Auto-generate matches for a new trip
-     */
-    async autoMatchTrip(tripId) {
-        try {
-            // Get trip details
-            const { data: trip, error: tripError } = await this.supabase
-                .from('trips')
-                .select('*')
-                .eq('id', tripId)
-                .single();
-
-            if (tripError) throw tripError;
-
-            // Find matching shipments
-            const matches = await this.findMatchingShipments(trip);
-
-            // Save top 10 matches
-            const topMatches = matches.slice(0, 10);
-            
-            for (const match of topMatches) {
-                await this.saveMatch(tripId, match.id, match.matchScore);
-            }
-
-            return topMatches.length;
-
-        } catch (error) {
-            console.error('Error auto-matching trip:', error);
-            return 0;
-        }
-    }
-
-    /**
-     * Auto-generate matches for a new shipment
-     */
-    async autoMatchShipment(shipmentId) {
-        try {
-            // Get shipment details
-            const { data: shipment, error: shipmentError } = await this.supabase
-                .from('shipments')
-                .select('*')
-                .eq('id', shipmentId)
-                .single();
-
-            if (shipmentError) throw shipmentError;
-
-            // Find matching trips
-            const matches = await this.findMatchingTrips(shipment);
-
-            // Save top 10 matches
-            const topMatches = matches.slice(0, 10);
-            
-            for (const match of topMatches) {
-                await this.saveMatch(match.id, shipmentId, match.matchScore);
-            }
-
-            return topMatches.length;
-
-        } catch (error) {
-            console.error('Error auto-matching shipment:', error);
-            return 0;
-        }
+    loadCities() {
+        // قائمة بالمدن العالمية
+        return [
+            'الرياض', 'جدة', 'الدمام', 'مكة المكرمة', 'المدينة المنورة',
+            'دبي', 'أبوظبي', 'الكويت', 'الدوحة', 'المنامة', 'مسقط',
+            'لندن', 'باريس', 'برلين', 'روما', 'مدريد',
+            'نيويورك', 'لوس أنجلوس', 'تورونتو', 'طوكيو', 'بكين'
+        ];
     }
 }
 

@@ -9,13 +9,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
-// ============================================
-// 📊 جداول قاعدة البيانات - SQL
-// ============================================
-// انسخ هذا الكود وشغله في Supabase SQL Editor
-
-/*
-
 -- جدول المستخدمين
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

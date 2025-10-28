@@ -18,6 +18,9 @@ function initApp() {
     // Initialize language switcher
     initLanguageSwitcher();
     
+    // Initialize global city search
+    initGlobalFeatures();
+    
     // Initialize Supabase client
     initSupabase();
 }
@@ -210,7 +213,180 @@ function getUrlParameter(name) {
     return urlParams.get(name);
 }
 
+// Initialize global features like city search and carrier type handlers
+function initGlobalFeatures() {
+    // Handle carrier type buttons
+    initCarrierTypeButtons();
+    
+    // Handle city selection events
+    initCitySelectionHandlers();
+    
+    // Initialize global statistics
+    updateGlobalStatistics();
+}
+
+function initCarrierTypeButtons() {
+    const carrierBtn = document.getElementById('carrierBtn');
+    const shipperBtn = document.getElementById('shipperBtn');
+    
+    if (carrierBtn) {
+        carrierBtn.addEventListener('click', () => {
+            showCarrierTypeSelection();
+        });
+    }
+    
+    if (shipperBtn) {
+        shipperBtn.addEventListener('click', () => {
+            window.location.href = 'pages/shipper/add-shipment.html';
+        });
+    }
+}
+
+function showCarrierTypeSelection() {
+    const modal = document.createElement('div');
+    modal.className = 'carrier-type-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay" onclick="closeCarrierTypeModal()"></div>
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeCarrierTypeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 data-lang="ar">اختر نوع وسيلة النقل</h3>
+            <h3 data-lang="en" style="display: none;">Choose Your Transport Type</h3>
+            
+            <div class="transport-types">
+                <div class="transport-option" onclick="selectTransportType('individual')">
+                    <i class="fas fa-user"></i>
+                    <span data-lang="ar">مسافر فردي</span>
+                    <span data-lang="en" style="display: none;">Individual Traveler</span>
+                    <small data-lang="ar">طائرة، قطار، حافلة (حتى 20 كيلو)</small>
+                    <small data-lang="en" style="display: none;">Plane, Train, Bus (up to 20kg)</small>
+                </div>
+                
+                <div class="transport-option" onclick="selectTransportType('car')">
+                    <i class="fas fa-car"></i>
+                    <span data-lang="ar">صاحب سيارة</span>
+                    <span data-lang="en" style="display: none;">Car Owner</span>
+                    <small data-lang="ar">سيارة، بيك أب (حتى 1.5 طن)</small>
+                    <small data-lang="en" style="display: none;">Car, Pickup (up to 1.5 tons)</small>
+                </div>
+                
+                <div class="transport-option" onclick="selectTransportType('truck')">
+                    <i class="fas fa-truck"></i>
+                    <span data-lang="ar">صاحب شاحنة</span>
+                    <span data-lang="en" style="display: none;">Truck Owner</span>
+                    <small data-lang="ar">دينة، شاحنة (حتى 50 طن)</small>
+                    <small data-lang="en" style="display: none;">Small/Large Truck (up to 50 tons)</small>
+                </div>
+                
+                <div class="transport-option" onclick="selectTransportType('fleet')">
+                    <i class="fas fa-building"></i>
+                    <span data-lang="ar">شركة أسطول</span>
+                    <span data-lang="en" style="display: none;">Fleet Company</span>
+                    <small data-lang="ar">أساطيل، سفن (حتى 1000 طن)</small>
+                    <small data-lang="en" style="display: none;">Fleets, Ships (up to 1000 tons)</small>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 100);
+}
+
+function closeCarrierTypeModal() {
+    const modal = document.querySelector('.carrier-type-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 300);
+    }
+}
+
+function selectTransportType(type) {
+    closeCarrierTypeModal();
+    
+    // Store transport type in session
+    sessionStorage.setItem('selectedTransportType', type);
+    
+    // Redirect to add trip page
+    window.location.href = `pages/carrier/add-trip.html?type=${type}`;
+}
+
+function initCitySelectionHandlers() {
+    // Listen for city selection events
+    document.addEventListener('citySelected', (event) => {
+        const cityData = event.detail;
+        console.log('City selected:', cityData);
+        
+        // Store in session for use in forms
+        sessionStorage.setItem('selectedCity', JSON.stringify(cityData));
+        
+        // Update UI to show selection
+        showCitySelectionConfirmation(cityData);
+    });
+}
+
+function showCitySelectionConfirmation(cityData) {
+    const currentLang = window.currentLanguage || 'ar';
+    const cityName = currentLang === 'ar' ? cityData.name : cityData.name_en;
+    const countryName = currentLang === 'ar' ? cityData.country_ar : cityData.country;
+    
+    // Create confirmation toast
+    const toast = document.createElement('div');
+    toast.className = 'city-selection-toast';
+    toast.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>${currentLang === 'ar' ? 'تم اختيار' : 'Selected'}: ${cityName}, ${countryName}</span>
+    `;
+    
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add('active'), 100);
+    setTimeout(() => {
+        toast.classList.remove('active');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function updateGlobalStatistics() {
+    // Simulated global statistics
+    const stats = {
+        totalUsers: 15420,
+        activeRoutes: 2847,
+        countriesServed: 85,
+        successfulDeliveries: 8964
+    };
+    
+    // Update stats if elements exist
+    const elements = {
+        totalUsers: document.getElementById('totalUsers'),
+        activeRoutes: document.getElementById('activeRoutes'),
+        countriesServed: document.getElementById('countriesServed'),
+        successfulDeliveries: document.getElementById('successfulDeliveries')
+    };
+    
+    Object.keys(elements).forEach(key => {
+        if (elements[key]) {
+            animateNumber(elements[key], stats[key]);
+        }
+    });
+}
+
+function animateNumber(element, target) {
+    let current = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current).toLocaleString();
+    }, 20);
+}
+
 // Export functions for use in other modules
 window.initApp = initApp;
 window.showServiceDetails = showServiceDetails;
+window.closeCarrierTypeModal = closeCarrierTypeModal;
+window.selectTransportType = selectTransportType;
 

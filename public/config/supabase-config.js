@@ -63,8 +63,10 @@ window.isSupabaseReady = function() {
 
 // Configuration constants
 window.APP_CONFIG = {
-    APP_NAME: 'FastShip Saudi Arabia',
-    APP_NAME_AR: 'الشحنة السريعة',
+    APP_NAME: 'FastShip Global',
+    APP_NAME_AR: 'الشحنة السريعة العالمية',
+    APP_SLOGAN: 'Connecting Carriers & Shippers Worldwide',
+    APP_SLOGAN_AR: 'ربط الموصلين وأصحاب الشحنات حول العالم',
     VERSION: '1.0.0',
     SUPPORTED_LANGUAGES: ['ar', 'en'],
     DEFAULT_LANGUAGE: 'ar',
@@ -72,22 +74,69 @@ window.APP_CONFIG = {
         NAME: 'قايد المصعبي',
         NAME_EN: 'Gaid Al-Masabi',
         PHONE: '+966551519723',
-        EMAIL: 'gide1979@gmail.com'
+        EMAIL: 'gide1979@gmail.com',
+        COPYRIGHT: '© 2024 FastShip Global Platform. All rights reserved.',
+        COPYRIGHT_AR: '© 2024 منصة الشحنة السريعة العالمية. جميع الحقوق محفوظة.'
     },
     FEATURES: {
-        EMAIL_VERIFICATION: false, // Set to true if you enable email verification in Supabase
+        EMAIL_VERIFICATION: false,
         REALTIME_CHAT: true,
         AUTO_MATCHING: true,
         WHATSAPP_INTEGRATION: true,
-        NOTIFICATIONS: true
+        NOTIFICATIONS: true,
+        GLOBAL_CITIES: true,
+        MULTI_LANGUAGE: true,
+        CARRIER_TYPES: ['individual', 'car_owner', 'truck_owner', 'fleet_owner'],
+        SHIPPER_TYPES: ['individual', 'small_business', 'medium_business', 'large_business', 'enterprise']
     },
     LIMITS: {
-        MAX_TRIP_WEIGHT: 50000,  // kg
-        MIN_TRIP_WEIGHT: 1,       // kg
-        MAX_SHIPMENT_WEIGHT: 10000, // kg
-        MIN_SHIPMENT_WEIGHT: 1,    // kg
-        MAX_UPLOAD_SIZE: 5,        // MB
-        MAX_MESSAGE_LENGTH: 1000   // characters
+        // Individual travelers (plane, bus, train, taxi)
+        INDIVIDUAL_MAX_WEIGHT: 20,      // kg
+        INDIVIDUAL_MIN_WEIGHT: 1,       // kg
+        
+        // Car owners (private cars, pickup trucks)
+        CAR_MAX_WEIGHT: 1500,           // kg
+        CAR_MIN_WEIGHT: 50,             // kg
+        
+        // Truck owners (small trucks, big trucks)
+        TRUCK_MAX_WEIGHT: 50000,        // kg (50 tons)
+        TRUCK_MIN_WEIGHT: 1000,         // kg (1 ton)
+        
+        // Fleet owners (companies, shipping fleets)
+        FLEET_MAX_WEIGHT: 1000000,      // kg (1000 tons)
+        FLEET_MIN_WEIGHT: 10000,        // kg (10 tons)
+        
+        // General limits
+        MAX_UPLOAD_SIZE: 10,            // MB
+        MAX_MESSAGE_LENGTH: 2000,       // characters
+        MAX_CITIES_PER_ROUTE: 10,       // waypoints
+        MAX_ROUTE_DISTANCE: 20000       // km (half way around earth)
+    },
+    REGIONS: {
+        MIDDLE_EAST: ['Saudi Arabia', 'UAE', 'Kuwait', 'Qatar', 'Bahrain', 'Oman', 'Jordan', 'Lebanon', 'Iraq', 'Iran'],
+        EUROPE: ['United Kingdom', 'Germany', 'France', 'Italy', 'Spain', 'Netherlands', 'Switzerland', 'Austria'],
+        ASIA: ['China', 'Japan', 'India', 'Singapore', 'Thailand', 'Malaysia', 'Indonesia', 'Philippines', 'South Korea'],
+        AMERICAS: ['United States', 'Canada', 'Mexico', 'Brazil', 'Argentina'],
+        AFRICA: ['Egypt', 'Nigeria', 'South Africa', 'Morocco', 'Kenya', 'Ethiopia'],
+        OCEANIA: ['Australia', 'New Zealand']
+    },
+    TRANSPORT_TYPES: {
+        INDIVIDUAL: {
+            ar: ['طائرة', 'حافلة', 'قطار', 'تاكسي'],
+            en: ['Plane', 'Bus', 'Train', 'Taxi']
+        },
+        CAR: {
+            ar: ['سيارة صغيرة', 'بيك أب', 'فان'],
+            en: ['Small Car', 'Pickup Truck', 'Van']
+        },
+        TRUCK: {
+            ar: ['دينة', 'شاحنة صغيرة', 'تريلا', 'مقطورة'],
+            en: ['Small Truck', 'Medium Truck', 'Semi-Truck', 'Trailer']
+        },
+        FLEET: {
+            ar: ['أسطول شاحنات', 'قطارات', 'طائرات شحن', 'سفن'],
+            en: ['Truck Fleet', 'Trains', 'Cargo Planes', 'Ships']
+        }
     }
 };
 

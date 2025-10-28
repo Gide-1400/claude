@@ -423,33 +423,88 @@ $$ LANGUAGE plpgsql;
 -- INITIAL DATA / SEED (Optional)
 -- ============================================
 
--- Insert some sample Saudi Arabian cities for autocomplete
+-- Global Cities Table - Users can add any city worldwide
 CREATE TABLE IF NOT EXISTS cities (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name_ar TEXT NOT NULL,
-    name_en TEXT NOT NULL,
-    country TEXT DEFAULT 'Saudi Arabia',
-    lat DECIMAL(10, 8),
-    lng DECIMAL(11, 8)
+    name TEXT NOT NULL, -- City name as entered by user
+    country TEXT, -- Country name
+    state_province TEXT, -- State/Province/Region
+    lat DECIMAL(10, 8), -- Will be populated by geocoding API
+    lng DECIMAL(11, 8), -- Will be populated by geocoding API
+    timezone TEXT, -- Timezone for the city
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    is_verified BOOLEAN DEFAULT false, -- Admin can verify popular cities
+    usage_count INTEGER DEFAULT 1, -- How many times this city was used
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    UNIQUE(name, country) -- Prevent duplicate city-country combinations
 );
 
-INSERT INTO cities (name_ar, name_en, lat, lng) VALUES
-('الرياض', 'Riyadh', 24.7136, 46.6753),
-('جدة', 'Jeddah', 21.4858, 39.1925),
-('مكة المكرمة', 'Makkah', 21.3891, 39.8579),
-('المدينة المنورة', 'Madinah', 24.5247, 39.5692),
-('الدمام', 'Dammam', 26.4367, 50.1039),
-('الطائف', 'Taif', 21.2703, 40.4158),
-('تبوك', 'Tabuk', 28.3838, 36.5550),
-('القصيم', 'Qassim', 26.3260, 43.9750),
-('أبها', 'Abha', 18.2164, 42.5053),
-('الخبر', 'Khobar', 26.2172, 50.1971),
-('الأحساء', 'Al-Ahsa', 25.3600, 49.5860),
-('حائل', 'Hail', 27.5219, 41.6902),
-('جازان', 'Jazan', 16.8892, 42.5511),
-('نجران', 'Najran', 17.5644, 44.2290),
-('ينبع', 'Yanbu', 24.0894, 38.0618)
-ON CONFLICT DO NOTHING;
+-- Insert some popular global cities as seed data
+INSERT INTO cities (name, country, state_province, lat, lng, timezone, is_verified, usage_count) VALUES
+-- Major Global Cities
+('New York', 'United States', 'New York', 40.7128, -74.0060, 'America/New_York', true, 100),
+('London', 'United Kingdom', 'England', 51.5074, -0.1278, 'Europe/London', true, 100),
+('Tokyo', 'Japan', 'Tokyo', 35.6762, 139.6503, 'Asia/Tokyo', true, 100),
+('Paris', 'France', 'Île-de-France', 48.8566, 2.3522, 'Europe/Paris', true, 100),
+('Dubai', 'United Arab Emirates', 'Dubai', 25.2048, 55.2708, 'Asia/Dubai', true, 100),
+('Singapore', 'Singapore', 'Singapore', 1.3521, 103.8198, 'Asia/Singapore', true, 100),
+('Hong Kong', 'Hong Kong', 'Hong Kong', 22.3193, 114.1694, 'Asia/Hong_Kong', true, 100),
+('Sydney', 'Australia', 'New South Wales', -33.8688, 151.2093, 'Australia/Sydney', true, 100),
+('Istanbul', 'Turkey', 'Istanbul', 41.0082, 28.9784, 'Europe/Istanbul', true, 100),
+('Cairo', 'Egypt', 'Cairo', 30.0444, 31.2357, 'Africa/Cairo', true, 100),
+
+-- Middle East Cities
+('Riyadh', 'Saudi Arabia', 'Riyadh Region', 24.7136, 46.6753, 'Asia/Riyadh', true, 90),
+('Jeddah', 'Saudi Arabia', 'Makkah Region', 21.4858, 39.1925, 'Asia/Riyadh', true, 80),
+('Makkah', 'Saudi Arabia', 'Makkah Region', 21.3891, 39.8579, 'Asia/Riyadh', true, 70),
+('Medina', 'Saudi Arabia', 'Medina Region', 24.5247, 39.5692, 'Asia/Riyadh', true, 60),
+('Dammam', 'Saudi Arabia', 'Eastern Region', 26.4367, 50.1039, 'Asia/Riyadh', true, 50),
+('Kuwait City', 'Kuwait', 'Al Asimah', 29.3117, 47.4818, 'Asia/Kuwait', true, 60),
+('Doha', 'Qatar', 'Doha', 25.2854, 51.5310, 'Asia/Qatar', true, 60),
+('Manama', 'Bahrain', 'Capital', 26.0667, 50.5577, 'Asia/Bahrain', true, 40),
+('Muscat', 'Oman', 'Muscat', 23.5859, 58.4059, 'Asia/Muscat', true, 40),
+('Abu Dhabi', 'United Arab Emirates', 'Abu Dhabi', 24.2539, 54.3773, 'Asia/Dubai', true, 70),
+('Amman', 'Jordan', 'Amman', 31.9539, 35.9106, 'Asia/Amman', true, 50),
+('Beirut', 'Lebanon', 'Beirut', 33.8938, 35.5018, 'Asia/Beirut', true, 50),
+('Baghdad', 'Iraq', 'Baghdad', 33.3152, 44.3661, 'Asia/Baghdad', true, 40),
+('Tehran', 'Iran', 'Tehran', 35.6892, 51.3890, 'Asia/Tehran', true, 60),
+
+-- European Cities
+('Berlin', 'Germany', 'Berlin', 52.5200, 13.4050, 'Europe/Berlin', true, 80),
+('Madrid', 'Spain', 'Madrid', 40.4168, -3.7038, 'Europe/Madrid', true, 70),
+('Rome', 'Italy', 'Lazio', 41.9028, 12.4964, 'Europe/Rome', true, 70),
+('Amsterdam', 'Netherlands', 'North Holland', 52.3676, 4.9041, 'Europe/Amsterdam', true, 60),
+('Vienna', 'Austria', 'Vienna', 48.2082, 16.3738, 'Europe/Vienna', true, 50),
+('Zurich', 'Switzerland', 'Zurich', 47.3769, 8.5417, 'Europe/Zurich', true, 60),
+
+-- Asian Cities
+('Mumbai', 'India', 'Maharashtra', 19.0760, 72.8777, 'Asia/Kolkata', true, 90),
+('Delhi', 'India', 'Delhi', 28.7041, 77.1025, 'Asia/Kolkata', true, 90),
+('Bangkok', 'Thailand', 'Bangkok', 13.7563, 100.5018, 'Asia/Bangkok', true, 80),
+('Manila', 'Philippines', 'Metro Manila', 14.5995, 120.9842, 'Asia/Manila', true, 70),
+('Jakarta', 'Indonesia', 'Jakarta', -6.2088, 106.8456, 'Asia/Jakarta', true, 80),
+('Kuala Lumpur', 'Malaysia', 'Federal Territory', 3.1390, 101.6869, 'Asia/Kuala_Lumpur', true, 70),
+('Seoul', 'South Korea', 'Seoul', 37.5665, 126.9780, 'Asia/Seoul', true, 80),
+('Beijing', 'China', 'Beijing', 39.9042, 116.4074, 'Asia/Shanghai', true, 90),
+('Shanghai', 'China', 'Shanghai', 31.2304, 121.4737, 'Asia/Shanghai', true, 90),
+
+-- African Cities
+('Lagos', 'Nigeria', 'Lagos', 6.5244, 3.3792, 'Africa/Lagos', true, 70),
+('Casablanca', 'Morocco', 'Casablanca-Settat', 33.5731, -7.5898, 'Africa/Casablanca', true, 60),
+('Johannesburg', 'South Africa', 'Gauteng', -26.2041, 28.0473, 'Africa/Johannesburg', true, 60),
+('Nairobi', 'Kenya', 'Nairobi', -1.2921, 36.8219, 'Africa/Nairobi', true, 50),
+('Addis Ababa', 'Ethiopia', 'Addis Ababa', 9.1450, 38.7451, 'Africa/Addis_Ababa', true, 40),
+
+-- American Cities
+('Los Angeles', 'United States', 'California', 34.0522, -118.2437, 'America/Los_Angeles', true, 90),
+('Chicago', 'United States', 'Illinois', 41.8781, -87.6298, 'America/Chicago', true, 80),
+('Miami', 'United States', 'Florida', 25.7617, -80.1918, 'America/New_York', true, 70),
+('Toronto', 'Canada', 'Ontario', 43.6532, -79.3832, 'America/Toronto', true, 70),
+('Mexico City', 'Mexico', 'Mexico City', 19.4326, -99.1332, 'America/Mexico_City', true, 80),
+('São Paulo', 'Brazil', 'São Paulo', -23.5505, -46.6333, 'America/Sao_Paulo', true, 80),
+('Buenos Aires', 'Argentina', 'Buenos Aires', -34.6037, -58.3816, 'America/Argentina/Buenos_Aires', true, 70)
+
+ON CONFLICT (name, country) DO NOTHING;
 
 -- ============================================
 -- VERIFICATION

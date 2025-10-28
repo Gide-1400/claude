@@ -114,15 +114,42 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الدخول...';
             
             try {
-                // Login
-                const { data, error } = await window.supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
+                let data = null;
+                let error = null;
+                
+                // Try Supabase first
+                if (window.supabaseClient) {
+                    try {
+                        const result = await window.supabaseClient.auth.signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+                        data = result.data;
+                        error = result.error;
+                    } catch (supabaseError) {
+                        console.warn('Supabase login failed, trying backup auth:', supabaseError);
+                        error = supabaseError;
+                    }
+                }
+                
+                // If Supabase failed, try backup auth
+                if (error || !data?.user) {
+                    console.log('Using backup authentication system');
+                    const backupResult = window.backupAuth.login(email, password);
+                    
+                    if (backupResult.success) {
+                        // Simulate Supabase response structure
+                        data = { user: backupResult.user };
+                        error = null;
+                        console.log('Backup auth successful');
+                    } else {
+                        error = { message: backupResult.error };
+                    }
+                }
                 
                 if (error) {
                     let errorMessage = 'خطأ في تسجيل الدخول';
-                    if (error.message.includes('Invalid login credentials')) {
+                    if (error.message.includes('Invalid') || error.message.includes('credentials')) {
                         errorMessage = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
                     } else if (error.message.includes('Email not confirmed')) {
                         errorMessage = 'يرجى تأكيد بريدك الإلكتروني أولاً';
@@ -146,6 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Store user info in session
                 sessionStorage.setItem('user_email', email);
                 sessionStorage.setItem('user_id', data.user.id);
+                sessionStorage.setItem('user_name', email.split('@')[0]);
+                sessionStorage.setItem('justLoggedIn', 'true'); // Mark as just logged in
                 
                 // Get user profile and store
                 window.supabaseClient

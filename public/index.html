@@ -98,26 +98,90 @@
         </ul>
     </div>
 
+    <!-- Global Connection Banner -->
+    <div class="global-banner">
+        <div class="container">
+            <div class="global-banner-content">
+                <i class="fas fa-globe"></i>
+                <span data-lang="ar">منصة عالمية تربط بين المسافرين وأصحاب الشحنات في جميع أنحاء العالم</span>
+                <span data-lang="en" style="display: none;">Global platform connecting travelers and shippers worldwide</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
-            <h1 data-lang="ar">ربط الشاحنين بأصحاب الشحنات حول العالم</h1>
-            <h1 data-lang="en" style="display: none;">Connecting Shippers with Carriers Worldwide</h1>
+            <h1 data-lang="ar">منصة الشحن العالمية - ربط المسافرين بأصحاب الشحنات</h1>
+            <h1 data-lang="en" style="display: none;">Global Shipping Platform - Connecting Travelers with Shippers</h1>
             
-            <p data-lang="ar">منصة الشحنة السريعة تربط بين الأشخاص الذين يريدون إرسال شحنات والأشخاص الذين لديهم مساحة فارغة أثناء تنقلاتهم. وفر الوقت والمال مع نظام المطابقة الذكي.</p>
-            <p data-lang="en" style="display: none;">Fast Shipment platform connects people who want to send shipments with those who have empty space during their travels. Save time and money with our smart matching system.</p>
+            <p data-lang="ar">أول منصة عالمية تربط المسافرين (بالسيارة، الشاحنة، الطائرة، القطار، الحافلة) مع أصحاب الشحنات حول العالم. وفر المال واستفد من المساحة الفارغة أثناء سفرك.</p>
+            <p data-lang="en" style="display: none;">First global platform connecting travelers (by car, truck, plane, train, bus) with shippers worldwide. Save money and utilize empty space during your travels.</p>
             
+            <!-- Quick City Search -->
+            <div class="quick-search">
+                <div class="search-box">
+                    <input type="text" id="citySearch" 
+                           data-placeholder-ar="ابحث عن مدينتك (الرياض، دبي، لندن، نيويورك...)" 
+                           data-placeholder-en="Search your city (Riyadh, Dubai, London, New York...)"
+                           placeholder="ابحث عن مدينتك (الرياض، دبي، لندن، نيويورك...)" 
+                           class="city-search-input">
+                    <div class="search-suggestions">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-lang="ar">مقترحات: الرياض، دبي، لندن، باريس، نيويورك، طوكيو</span>
+                        <span data-lang="en" style="display: none;">Suggestions: Riyadh, Dubai, London, Paris, New York, Tokyo</span>
+                    </div>
+                </div>
+                <div id="cityResults" class="city-results" style="display: none;"></div>
+            </div>
+
             <div class="hero-buttons">
                 <button class="btn btn-primary btn-large" id="carrierBtn">
-                    <i class="fas fa-truck"></i>
-                    <span data-lang="ar">أنا موصل شحنات</span>
-                    <span data-lang="en" style="display: none;">I'm a Carrier</span>
+                    <i class="fas fa-route"></i>
+                    <span data-lang="ar">أنا مسافر - لدي مساحة</span>
+                    <span data-lang="en" style="display: none;">I'm Traveling - Have Space</span>
                 </button>
                 <button class="btn btn-outline btn-large" id="shipperBtn">
                     <i class="fas fa-box"></i>
                     <span data-lang="ar">لدي شحنة لأرسلها</span>
                     <span data-lang="en" style="display: none;">I Have a Shipment</span>
                 </button>
+            </div>
+
+            <!-- Carrier Types -->
+            <div class="carrier-types">
+                <h3 data-lang="ar">أنواع المسافرين المتاحة:</h3>
+                <h3 data-lang="en" style="display: none;">Available Traveler Types:</h3>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <i class="fas fa-user"></i>
+                        <span data-lang="ar">مسافر فردي</span>
+                        <span data-lang="en" style="display: none;">Individual Traveler</span>
+                        <small data-lang="ar">طائرة، قطار، حافلة</small>
+                        <small data-lang="en" style="display: none;">Plane, Train, Bus</small>
+                    </div>
+                    <div class="type-card">
+                        <i class="fas fa-car"></i>
+                        <span data-lang="ar">صاحب سيارة</span>
+                        <span data-lang="en" style="display: none;">Car Owner</span>
+                        <small data-lang="ar">سيارة، بيك أب</small>
+                        <small data-lang="en" style="display: none;">Car, Pickup</small>
+                    </div>
+                    <div class="type-card">
+                        <i class="fas fa-truck"></i>
+                        <span data-lang="ar">صاحب شاحنة</span>
+                        <span data-lang="en" style="display: none;">Truck Owner</span>
+                        <small data-lang="ar">دينة، شاحنة</small>
+                        <small data-lang="en" style="display: none;">Small/Large Truck</small>
+                    </div>
+                    <div class="type-card">
+                        <i class="fas fa-building"></i>
+                        <span data-lang="ar">شركة أسطول</span>
+                        <span data-lang="en" style="display: none;">Fleet Company</span>
+                        <small data-lang="ar">أساطيل، سفن</small>
+                        <small data-lang="en" style="display: none;">Fleets, Ships</small>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -925,5 +989,8 @@
     
     <!-- Accessibility Enhancement Script -->
     <script src="assets/js/accessibility.js"></script>
+    
+    <!-- Global City Search Script -->
+    <script src="assets/js/city-search.js"></script>
 </body>
 </html>
