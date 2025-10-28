@@ -194,11 +194,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     .eq('auth_user_id', data.user.id)
                     .single()
                     .then(({ data: profile, error: profileError }) => {
-                        let userType = 'shipper';
+                        let userType = 'carrier'; // Default to carrier for now
                         let userName = email.split('@')[0];
                         
                         if (profile && !profileError) {
-                            userType = profile.user_type || 'shipper';
+                            userType = profile.user_type || 'carrier';
                             userName = profile.name || userName;
                             
                             // Store ALL profile data
@@ -209,28 +209,44 @@ document.addEventListener('DOMContentLoaded', function() {
                             sessionStorage.setItem('user_authenticated', 'true');
                             sessionStorage.setItem('auth_timestamp', Date.now().toString());
                             
-                            console.log('User profile loaded:', { userType, userName });
+                            // Update localStorage too
+                            const localData = JSON.parse(localStorage.getItem('fastship_user') || '{}');
+                            localData.type = userType;
+                            localData.name = userName;
+                            localStorage.setItem('fastship_user', JSON.stringify(localData));
+                            
+                            console.log('✅ User profile loaded successfully:', { userType, userName, email });
                         } else {
+                            console.warn('⚠️ Profile not found, creating default profile...');
+                            
                             // Create profile if doesn't exist
                             const newProfile = {
                                 auth_user_id: data.user.id,
                                 email: email,
                                 name: userName,
-                                user_type: 'shipper',
-                                shipper_type: 'individual'
+                                user_type: 'carrier', // Default to carrier
+                                carrier_type: 'individual'
                             };
                             
                             window.supabaseClient
                                 .from('users')
                                 .insert([newProfile])
-                                .then(() => {
-                                    sessionStorage.setItem('user_type', 'shipper');
+                                .then(({ error: insertError }) => {
+                                    if (!insertError) {
+                                        console.log('✅ New user profile created');
+                                    }
+                                    
+                                    sessionStorage.setItem('user_type', 'carrier');
                                     sessionStorage.setItem('user_name', userName);
-                                    sessionStorage.setItem('shipper_type', 'individual');
+                                    sessionStorage.setItem('carrier_type', 'individual');
                                     sessionStorage.setItem('user_authenticated', 'true');
                                     sessionStorage.setItem('auth_timestamp', Date.now().toString());
                                     
-                                    console.log('New user profile created');
+                                    // Update localStorage
+                                    const localData = JSON.parse(localStorage.getItem('fastship_user') || '{}');
+                                    localData.type = 'carrier';
+                                    localData.name = userName;
+                                    localStorage.setItem('fastship_user', JSON.stringify(localData));
                                 });
                         }
                         
@@ -243,24 +259,38 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ? '../../pages/carrier/index.html' 
                                 : '../../pages/shipper/index.html';
                             
-                            console.log('Redirecting to dashboard:', dashboardUrl);
+                            console.log('→ Redirecting to dashboard:', dashboardUrl);
+                            console.log('→ Session data being passed:', {
+                                email: sessionStorage.getItem('user_email'),
+                                type: sessionStorage.getItem('user_type'),
+                                authenticated: sessionStorage.getItem('user_authenticated')
+                            });
+                            
                             window.location.href = dashboardUrl;
                         }, 1500);
                     })
                     .catch((err) => {
-                        console.error('Profile error:', err);
+                        console.error('❌ Profile error:', err);
                         
-                        // Set default values even on error
-                        sessionStorage.setItem('user_type', 'shipper');
-                        sessionStorage.setItem('user_name', email.split('@')[0]);
-                        sessionStorage.setItem('shipper_type', 'individual');
+                        // Set default values even on error - carrier as default
+                        const userName = email.split('@')[0];
+                        sessionStorage.setItem('user_type', 'carrier');
+                        sessionStorage.setItem('user_name', userName);
+                        sessionStorage.setItem('carrier_type', 'individual');
                         sessionStorage.setItem('user_authenticated', 'true');
                         sessionStorage.setItem('auth_timestamp', Date.now().toString());
                         
-                        // Default redirect on error - go to shipper dashboard
+                        // Update localStorage
+                        const localData = JSON.parse(localStorage.getItem('fastship_user') || '{}');
+                        localData.type = 'carrier';
+                        localData.name = userName;
+                        localStorage.setItem('fastship_user', JSON.stringify(localData));
+                        
+                        // Default redirect on error - go to carrier dashboard
                         showAlert('success', 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'Login successful! Redirecting...');
                         setTimeout(() => {
-                            window.location.href = '../../pages/shipper/index.html';
+                            console.log('→ Redirecting to carrier dashboard (error fallback)');
+                            window.location.href = '../../pages/carrier/index.html';
                         }, 1500);
                     });
                 

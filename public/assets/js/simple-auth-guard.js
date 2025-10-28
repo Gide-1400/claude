@@ -149,19 +149,29 @@ class SimpleAuthGuard {
             // No session - check if user just logged in
             const justLoggedIn = sessionStorage.getItem('justLoggedIn');
             if (justLoggedIn) {
-                console.log('SimpleAuthGuard: User just logged in, allowing access');
+                console.log('✅ SimpleAuthGuard: User just logged in, allowing access');
+                sessionStorage.removeItem('justLoggedIn'); // Clean up
                 return;
             }
             
-            // Check stored session data
+            // Check stored session data - even email alone is enough
             const storedEmail = sessionStorage.getItem('user_email');
             if (storedEmail) {
-                console.log('SimpleAuthGuard: Found stored session data, allowing access');
+                console.log('✅ SimpleAuthGuard: Found stored email, allowing access');
+                
+                // Ensure user_type is set
+                if (!sessionStorage.getItem('user_type')) {
+                    const currentPath = window.location.pathname;
+                    const userType = currentPath.includes('/carrier/') ? 'carrier' : 'shipper';
+                    sessionStorage.setItem('user_type', userType);
+                    console.log('→ Set user_type based on path:', userType);
+                }
+                
                 return;
             }
             
             // Only redirect if we're absolutely sure user is not authenticated
-            console.log('SimpleAuthGuard: No authentication found, redirecting...');
+            console.log('❌ SimpleAuthGuard: No authentication found, redirecting...');
             this.redirectToLogin();
             
         } catch (error) {
