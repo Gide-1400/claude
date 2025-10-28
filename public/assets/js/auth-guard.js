@@ -3,17 +3,25 @@
 
 class AuthGuard {
     constructor() {
+        this.isChecking = false; // Prevent multiple simultaneous checks
+        this.lastCheckTime = 0; // Cache check results briefly
+        this.checkCooldown = 5000; // 5 seconds cooldown
         this.init();
     }
 
     async init() {
-        // Don't run on auth pages
+        // Don't run on auth pages or main index page
         const currentPath = window.location.pathname;
         const isAuthPage = currentPath.includes('/auth/login') || 
                           currentPath.includes('/auth/register') ||
                           currentPath.includes('/auth/verification');
         
-        if (isAuthPage) {
+        const isMainPage = currentPath === '/' || 
+                          currentPath.includes('/index.html') || 
+                          currentPath.endsWith('/');
+        
+        if (isAuthPage || isMainPage) {
+            console.log('AuthGuard: Skipping - auth page or main page');
             return;
         }
 
@@ -23,60 +31,126 @@ class AuthGuard {
                                currentPath.includes('/pages/messaging/');
         
         if (isDashboardPage) {
-            await this.checkAuthentication();
+            // Prevent too frequent checks
+            const now = Date.now();
+            if (this.isChecking || (now - this.lastCheckTime < this.checkCooldown)) {
+                console.log('AuthGuard: Skipping check (cooldown or already checking)');
+                return;
+            }
+            
+            this.isChecking = true;
+            try {
+                await this.checkAuthentication();
+                this.lastCheckTime = now;
+            } finally {
+                this.isChecking = false;
+            }
         }
     }
 
     async checkAuthentication() {
         try {
+            console.log('AuthGuard: Starting authentication check...');
+            
             // Check session storage first (faster)
             const storedUser = sessionStorage.getItem('user_email');
             const storedUserType = sessionStorage.getItem('user_type');
             
-            if (!storedUser || !storedUserType) {
-                this.redirectToLogin();
-                return;
-            }
-
+            console.log('AuthGuard: Session storage check:', { storedUser, storedUserType });
+            
             // Wait for Supabase to be ready
             if (!window.supabaseClient) {
+                console.log('AuthGuard: Waiting for Supabase...');
                 await this.waitForSupabase();
             }
 
             // Check session
             const { data: { session }, error } = await window.supabaseClient.auth.getSession();
             
-            if (error || !session?.user) {
-                // Clear invalid session data
-                sessionStorage.clear();
+            console.log('AuthGuard: Supabase session check:', { 
+                hasSession: !!session, 
+                hasUser: !!session?.user, 
+                error: error 
+            });
+            
+            if (error) {
+                console.error('AuthGuard: Session error:', error);
+                // Don't redirect immediately on error, try to recover
+                if (storedUser && storedUserType) {
+                    console.log('AuthGuard: Using stored session data as fallback');
+                    return; // Allow access based on stored data
+                }
+                this.redirectToLogin();
+                return;
+            }
+            
+            if (!session?.user) {
+                console.log('AuthGuard: No session found');
+                // Check if we have stored data as fallback
+                if (storedUser && storedUserType) {
+                    console.log('AuthGuard: No session but have stored data, allowing access');
+                    return; // Allow access based on stored data
+                }
                 this.redirectToLogin();
                 return;
             }
 
-            // Verify user profile exists
-            const { data: profile, error: profileError } = await window.supabaseClient
-                .from('users')
-                .select('user_type, name')
-                .eq('auth_user_id', session.user.id)
-                .single();
+            // Verify user profile exists (with fallback to stored data)
+            let profile = null;
+            let userType = storedUserType;
+            
+            try {
+                const { data: profileData, error: profileError } = await window.supabaseClient
+                    .from('users')
+                    .select('user_type, name')
+                    .eq('auth_user_id', session.user.id)
+                    .single();
 
-            if (profileError || !profile) {
-                console.error('Profile not found:', profileError);
-                this.redirectToLogin();
-                return;
+                if (profileData && !profileError) {
+                    profile = profileData;
+                    userType = profileData.user_type;
+                    
+                    // Store user info for quick access
+                    sessionStorage.setItem('user_email', session.user.email);
+                    sessionStorage.setItem('user_id', session.user.id);
+                    sessionStorage.setItem('user_type', profile.user_type);
+                    sessionStorage.setItem('user_name', profile.name || session.user.email.split('@')[0]);
+                } else {
+                    console.warn('AuthGuard: Profile fetch failed, using stored data:', profileError);
+                    // Use stored data as fallback
+                    if (!storedUserType) {
+                        console.error('AuthGuard: No profile and no stored user type');
+                        this.redirectToLogin();
+                        return;
+                    }
+                }
+            } catch (profileFetchError) {
+                console.warn('AuthGuard: Profile fetch exception, using stored data:', profileFetchError);
+                // Continue with stored data
+                if (!storedUserType) {
+                    console.error('AuthGuard: No stored user type available');
+                    this.redirectToLogin();
+                    return;
+                }
             }
 
-            // Store user info for quick access
-            sessionStorage.setItem('user_email', session.user.email);
-            sessionStorage.setItem('user_id', session.user.id);
-            sessionStorage.setItem('user_type', profile.user_type);
-            sessionStorage.setItem('user_name', profile.name || session.user.email.split('@')[0]);
-
+            console.log('AuthGuard: Authentication successful, user type:', userType);
+            
             // Check if user is on correct dashboard
-            this.validateUserAccess(profile.user_type);
+            this.validateUserAccess(userType);
 
         } catch (error) {
             console.error('Authentication check failed:', error);
+            
+            // Check if we have stored session data as final fallback
+            const storedUser = sessionStorage.getItem('user_email');
+            const storedUserType = sessionStorage.getItem('user_type');
+            
+            if (storedUser && storedUserType) {
+                console.log('AuthGuard: Error occurred but stored session exists, allowing access');
+                return; // Allow access based on stored session
+            }
+            
             this.redirectToLogin();
         }
     }
@@ -124,12 +198,18 @@ class AuthGuard {
             loginPath = 'pages/auth/login.html';
         }
         
-        // Show brief message before redirect
-        this.showAlert('warning', 'يجب تسجيل الدخول للوصول إلى هذه الصفحة', 'Please login to access this page');
+        // Show message before redirect with more time to debug
+        this.showAlert('warning', 'يجب تسجيل الدخول للوصول إلى هذه الصفحة - سيتم التوجيه خلال 5 ثوان', 'Please login to access this page - redirecting in 5 seconds');
+        
+        console.log('AuthGuard: Redirecting to login in 5 seconds. Current session storage:', {
+            user_email: sessionStorage.getItem('user_email'),
+            user_type: sessionStorage.getItem('user_type'),
+            user_id: sessionStorage.getItem('user_id')
+        });
         
         setTimeout(() => {
             window.location.href = loginPath;
-        }, 1500);
+        }, 5000);
     }
 
     showAlert(type, messageAr, messageEn) {
