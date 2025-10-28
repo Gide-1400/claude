@@ -75,6 +75,7 @@ function initPasswordToggle() {
         togglePassword.addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');
+            const currentLang = document.documentElement.lang || 'ar';
 
             if (!passwordInput) return;
 
@@ -84,12 +85,18 @@ function initPasswordToggle() {
                     icon.classList.remove('fa-eye');
                     icon.classList.add('fa-eye-slash');
                 }
+                // Update accessibility attributes
+                this.title = currentLang === 'ar' ? 'إخفاء كلمة المرور' : 'Hide Password';
+                this.setAttribute('aria-label', currentLang === 'ar' ? 'إخفاء كلمة المرور' : 'Hide password');
             } else {
                 passwordInput.type = 'password';
                 if (icon) {
                     icon.classList.remove('fa-eye-slash');
                     icon.classList.add('fa-eye');
                 }
+                // Update accessibility attributes
+                this.title = currentLang === 'ar' ? 'إظهار كلمة المرور' : 'Show Password';
+                this.setAttribute('aria-label', currentLang === 'ar' ? 'إظهار كلمة المرور' : 'Show password');
             }
         });
     }

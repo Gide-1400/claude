@@ -37,7 +37,13 @@
                     <label for="password" data-lang="en" style="display: none;">Password</label>
                     <input type="password" id="password" name="password" required>
                     <i class="fas fa-lock input-icon"></i>
-                    <button type="button" class="toggle-password" id="togglePassword">
+                    <button type="button" class="toggle-password" id="togglePassword" 
+                            title="إظهار/إخفاء كلمة المرور" 
+                            aria-label="إظهار أو إخفاء كلمة المرور"
+                            data-title-ar="إظهار/إخفاء كلمة المرور"
+                            data-title-en="Show/Hide Password"
+                            data-label-ar="إظهار أو إخفاء كلمة المرور"
+                            data-label-en="Show or hide password">
                         <i class="fas fa-eye"></i>
                     </button>
                 </div>
@@ -64,7 +70,13 @@
                 </div>
 
                 <div class="social-auth">
-                    <button type="button" class="btn btn-social btn-google">
+                    <button type="button" class="btn btn-social btn-google" 
+                            title="المتابعة مع جوجل" 
+                            aria-label="تسجيل الدخول باستخدام حساب جوجل"
+                            data-title-ar="المتابعة مع جوجل"
+                            data-title-en="Continue with Google"
+                            data-label-ar="تسجيل الدخول باستخدام حساب جوجل"
+                            data-label-en="Sign in with Google account">
                         <i class="fab fa-google"></i>
                         <span data-lang="ar">المتابعة مع جوجل</span>
                         <span data-lang="en" style="display: none;">Continue with Google</span>
@@ -114,5 +126,6 @@
         window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     </script>
     <script src="../../assets/js/auth-simple.js"></script>
+    <script src="../../assets/js/accessibility.js"></script>
 </body>
 </html>
