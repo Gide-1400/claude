@@ -178,6 +178,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 sessionStorage.setItem('user_authenticated', 'true'); // Persistent marker
                 sessionStorage.setItem('auth_timestamp', Date.now().toString()); // Timestamp
                 
+                // Also store in localStorage as backup
+                localStorage.setItem('fastship_user', JSON.stringify({
+                    email: email,
+                    id: data.user.id,
+                    name: email.split('@')[0],
+                    authenticated: true,
+                    timestamp: Date.now()
+                }));
+                
                 // Get user profile and store
                 window.supabaseClient
                     .from('users')
@@ -226,12 +235,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         // Show success message
-                        showAlert('success', 'تم تسجيل الدخول بنجاح!', 'Login successful!');
+                        showAlert('success', 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'Login successful! Redirecting...');
                         
-                        // Redirect to home page instead of dashboard
+                        // Redirect directly to dashboard based on user type
                         setTimeout(() => {
-                            window.location.href = '../../index.html';
-                        }, 1000);
+                            const dashboardUrl = userType === 'carrier' 
+                                ? '../../pages/carrier/index.html' 
+                                : '../../pages/shipper/index.html';
+                            
+                            console.log('Redirecting to dashboard:', dashboardUrl);
+                            window.location.href = dashboardUrl;
+                        }, 1500);
                     })
                     .catch((err) => {
                         console.error('Profile error:', err);
@@ -243,11 +257,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         sessionStorage.setItem('user_authenticated', 'true');
                         sessionStorage.setItem('auth_timestamp', Date.now().toString());
                         
-                        // Default redirect on error - go to home page
-                        showAlert('success', 'تم تسجيل الدخول بنجاح!', 'Login successful!');
+                        // Default redirect on error - go to shipper dashboard
+                        showAlert('success', 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'Login successful! Redirecting...');
                         setTimeout(() => {
-                            window.location.href = '../../index.html';
-                        }, 1000);
+                            window.location.href = '../../pages/shipper/index.html';
+                        }, 1500);
                     });
                 
             } catch (err) {

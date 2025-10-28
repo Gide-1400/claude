@@ -25,7 +25,7 @@ class SimpleAuthGuard {
             // Wait a moment for all auth systems to initialize
             setTimeout(async () => {
                 await this.checkAuth();
-            }, 100);
+            }, 300); // Increased from 100ms to 300ms for better reliability
         }
     }
 
@@ -80,6 +80,30 @@ class SimpleAuthGuard {
             if (storedData.email && storedData.id && storedData.type) {
                 console.log('✅ SimpleAuthGuard: Valid session data found, allowing access');
                 return; // Allow access based on session data
+            }
+            
+            // Check localStorage backup
+            try {
+                const localUser = localStorage.getItem('fastship_user');
+                if (localUser) {
+                    const userData = JSON.parse(localUser);
+                    const timeSinceAuth = Date.now() - userData.timestamp;
+                    
+                    if (userData.authenticated && timeSinceAuth < 7 * 24 * 60 * 60 * 1000) { // 7 days
+                        console.log('✅ SimpleAuthGuard: Valid localStorage backup found, allowing access');
+                        
+                        // Restore session data
+                        sessionStorage.setItem('user_email', userData.email);
+                        sessionStorage.setItem('user_id', userData.id);
+                        sessionStorage.setItem('user_name', userData.name);
+                        sessionStorage.setItem('user_authenticated', 'true');
+                        sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                        
+                        return; // Allow access
+                    }
+                }
+            } catch (e) {
+                console.warn('LocalStorage check failed:', e);
             }
             
             // Check backup auth first (faster)
