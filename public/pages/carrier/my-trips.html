@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="ar">رحلاتي - الشحنة السريعة</title>
+    <title data-lang="en" style="display: none;">My Trips - Fast Shipment</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span data-lang="ar">الشحنة السريعة</span>
+                    <span data-lang="en" style="display: none;">Fast Shipment</span>
+                </div>
+                
+                <nav class="dashboard-nav">
+                    <ul>
+                        <li><a href="index.html" data-lang="ar">الرئيسية</a><a href="index.html" data-lang="en" style="display: none;">Dashboard</a></li>
+                        <li><a href="add-trip.html" data-lang="ar">إضافة رحلة</a><a href="add-trip.html" data-lang="en" style="display: none;">Add Trip</a></li>
+                        <li><a href="my-trips.html" class="active" data-lang="ar">رحلاتي</a><a href="my-trips.html" class="active" data-lang="en" style="display: none;">My Trips</a></li>
+                        <li><a href="matches.html" data-lang="ar">المطابقات</a><a href="matches.html" data-lang="en" style="display: none;">Matches</a></li>
+                        <li><a href="../messaging/index.html" data-lang="ar">الرسائل</a><a href="../messaging/index.html" data-lang="en" style="display: none;">Messages</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <div class="user-avatar">
+                            <img src="../../assets/images/user-avatar.jpg" alt="User Avatar">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" data-lang="ar">محمد أحمد</span>
+                            <span class="user-name" data-lang="en" style="display: none;">Mohammed Ahmed</span>
+                            <span class="user-role" data-lang="ar">موصل شحنات</span>
+                            <span class="user-role" data-lang="en" style="display: none;">Shipment Carrier</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.html" data-lang="ar">الملف الشخصي</a>
+                            <a href="profile.html" data-lang="en" style="display: none;">Profile</a>
+                            <a href="../auth/login.html" onclick="logout()" data-lang="ar">تسجيل الخروج</a>
+                            <a href="../auth/login.html" onclick="logout()" data-lang="en" style="display: none;">Logout</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header-internal">
+                <h1 data-lang="ar">رحلاتي</h1>
+                <h1 data-lang="en" style="display: none;">My Trips</h1>
+                <p data-lang="ar">إدارة وعرض جميع رحلاتك النشطة والمكتملة</p>
+                <p data-lang="en" style="display: none;">Manage and view all your active and completed trips</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <div class="filter-options">
+                    <select id="statusFilter">
+                        <option value="all" data-lang="ar">جميع الرحلات</option>
+                        <option value="all" data-lang="en" style="display: none;">All Trips</option>
+                        <option value="active" data-lang="ar">نشطة</option>
+                        <option value="active" data-lang="en" style="display: none;">Active</option>
+                        <option value="completed" data-lang="ar">مكتملة</option>
+                        <option value="completed" data-lang="en" style="display: none;">Completed</option>
+                        <option value="upcoming" data-lang="ar">قادمة</option>
+                        <option value="upcoming" data-lang="en" style="display: none;">Upcoming</option>
+                    </select>
+                    
+                    <select id="dateFilter">
+                        <option value="all" data-lang="ar">جميع التواريخ</option>
+                        <option value="all" data-lang="en" style="display: none;">All Dates</option>
+                        <option value="week" data-lang="ar">آخر أسبوع</option>
+                        <option value="week" data-lang="en" style="display: none;">Last Week</option>
+                        <option value="month" data-lang="ar">آخر شهر</option>
+                        <option value="month" data-lang="en" style="display: none;">Last Month</option>
+                        <option value="year" data-lang="ar">آخر سنة</option>
+                        <option value="year" data-lang="en" style="display: none;">Last Year</option>
+                    </select>
+                </div>
+                
+                <div class="search-box">
+                    <input type="text" id="searchTrips" placeholder="ابحث في الرحلات..." data-lang="ar">
+                    <input type="text" id="searchTripsEn" style="display: none;" placeholder="Search trips..." data-lang="en">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+
+            <!-- Trips List -->
+            <div class="trips-list">
+                <!-- Active Trips -->
+                <div class="trips-category">
+                    <h2 data-lang="ar">الرحلات النشطة</h2>
+                    <h2 data-lang="en" style="display: none;">Active Trips</h2>
+                    
+                    <div class="trips-grid">
+                        <div class="trip-card detailed">
+                            <div class="trip-header">
+                                <div class="trip-info">
+                                    <h4 data-lang="ar">الرياض ← جدة</h4>
+                                    <h4 data-lang="en" style="display: none;">Riyadh → Jeddah</h4>
+                                    <span class="trip-id">#TR-12345</span>
+                                </div>
+                                <span class="trip-status active" data-lang="ar">نشط</span>
+                                <span class="trip-status active" data-lang="en" style="display: none;">Active</span>
+                            </div>
+                            
+                            <div class="trip-details">
+                                <div class="trip-meta">
+                                    <span><i class="fas fa-calendar"></i> 20 ديسمبر 2023</span>
+                                    <span><i class="fas fa-weight-hanging"></i> 500/1500 كجم</span>
+                                    <span><i class="fas fa-money-bill-wave"></i> 5 ر.س/كجم</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 33%"></div>
+                                    <span class="progress-text" data-lang="ar">33% ممتلئ</span>
+                                    <span class="progress-text" data-lang="en" style="display: none;">33% full</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-stats">
+                                <div class="stat">
+                                    <span class="stat-value">3</span>
+                                    <span class="stat-label" data-lang="ar">مطابقة</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Matches</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">1,250</span>
+                                    <span class="stat-label" data-lang="ar">ر.س أرباح</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">SAR Earnings</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">5</span>
+                                    <span class="stat-label" data-lang="ar">أيام متبقية</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Days left</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-actions">
+                                <button class="btn btn-outline btn-sm" data-lang="ar">تعديل</button>
+                                <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Edit</button>
+                                <button class="btn btn-primary btn-sm" data-lang="ar">إدارة</button>
+                                <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Manage</button>
+                                <button class="btn btn-secondary btn-sm" data-lang="ar">إلغاء</button>
+                                <button class="btn btn-secondary btn-sm" data-lang="en" style="display: none;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Trips -->
+                <div class="trips-category">
+                    <h2 data-lang="ar">الرحلات القادمة</h2>
+                    <h2 data-lang="en" style="display: none;">Upcoming Trips</h2>
+                    
+                    <div class="trips-grid">
+                        <div class="trip-card detailed">
+                            <div class="trip-header">
+                                <div class="trip-info">
+                                    <h4 data-lang="ar">الدمام ← الرياض</h4>
+                                    <h4 data-lang="en" style="display: none;">Dammam → Riyadh</h4>
+                                    <span class="trip-id">#TR-12346</span>
+                                </div>
+                                <span class="trip-status soon" data-lang="ar">قريباً</span>
+                                <span class="trip-status soon" data-lang="en" style="display: none;">Soon</span>
+                            </div>
+                            
+                            <div class="trip-details">
+                                <div class="trip-meta">
+                                    <span><i class="fas fa-calendar"></i> 25 ديسمبر 2023</span>
+                                    <span><i class="fas fa-weight-hanging"></i> 0/800 كجم</span>
+                                    <span><i class="fas fa-money-bill-wave"></i> 4 ر.س/كجم</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                    <span class="progress-text" data-lang="ar">0% ممتلئ</span>
+                                    <span class="progress-text" data-lang="en" style="display: none;">0% full</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-stats">
+                                <div class="stat">
+                                    <span class="stat-value">2</span>
+                                    <span class="stat-label" data-lang="ar">مطابقة</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Matches</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">0</span>
+                                    <span class="stat-label" data-lang="ar">ر.س أرباح</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">SAR Earnings</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">10</span>
+                                    <span class="stat-label" data-lang="ar">أيام متبقية</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Days left</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-actions">
+                                <button class="btn btn-outline btn-sm" data-lang="ar">تعديل</button>
+                                <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Edit</button>
+                                <button class="btn btn-primary btn-sm" data-lang="ar">ترويج</button>
+                                <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Promote</button>
+                                <button class="btn btn-secondary btn-sm" data-lang="ar">إلغاء</button>
+                                <button class="btn btn-secondary btn-sm" data-lang="en" style="display: none;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Trips -->
+                <div class="trips-category">
+                    <h2 data-lang="ar">الرحلات المكتملة</h2>
+                    <h2 data-lang="en" style="display: none;">Completed Trips</h2>
+                    
+                    <div class="trips-grid">
+                        <div class="trip-card detailed">
+                            <div class="trip-header">
+                                <div class="trip-info">
+                                    <h4 data-lang="ar">جدة ← مكة</h4>
+                                    <h4 data-lang="en" style="display: none;">Jeddah → Makkah</h4>
+                                    <span class="trip-id">#TR-12344</span>
+                                </div>
+                                <span class="trip-status completed" data-lang="ar">مكتمل</span>
+                                <span class="trip-status completed" data-lang="en" style="display: none;">Completed</span>
+                            </div>
+                            
+                            <div class="trip-details">
+                                <div class="trip-meta">
+                                    <span><i class="fas fa-calendar"></i> 10 ديسمبر 2023</span>
+                                    <span><i class="fas fa-weight-hanging"></i> 300/500 كجم</span>
+                                    <span><i class="fas fa-money-bill-wave"></i> 1,200 ر.س أرباح</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 60%"></div>
+                                    <span class="progress-text" data-lang="ar">60% تم إنجازه</span>
+                                    <span class="progress-text" data-lang="en" style="display: none;">60% completed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-stats">
+                                <div class="stat">
+                                    <span class="stat-value">4.8</span>
+                                    <span class="stat-label" data-lang="ar">تقييم</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Rating</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">1,200</span>
+                                    <span class="stat-label" data-lang="ar">ر.س أرباح</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">SAR Earnings</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">3</span>
+                                    <span class="stat-label" data-lang="ar">شحنات</span>
+                                    <span class="stat-label" data-lang="en" style="display: none;">Shipments</span>
+                                </div>
+                            </div>
+                            
+                            <div class="trip-actions">
+                                <button class="btn btn-outline btn-sm" data-lang="ar">تفاصيل</button>
+                                <button class="btn btn-outline btn-sm" data-lang="en" style="display: none;">Details</button>
+                                <button class="btn btn-primary btn-sm" data-lang="ar">إعادة</button>
+                                <button class="btn btn-primary btn-sm" data-lang="en" style="display: none;">Repeat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-route"></i>
+                </div>
+                <h3 data-lang="ar">لا توجد رحلات</h3>
+                <h3 data-lang="en" style="display: none;">No Trips Found</h3>
+                <p data-lang="ar">لم تقم بإضافة أي رحلات بعد. ابدأ بإضافة رحلتك الأولى!</p>
+                <p data-lang="en" style="display: none;">You haven't added any trips yet. Start by adding your first trip!</p>
+                <a href="add-trip.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                    <span data-lang="ar">إضافة رحلة جديدة</span>
+                    <span data-lang="en" style="display: none;">Add New Trip</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <script src="../../assets/js/auth-guard.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language-switcher.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+</body>
+</html>

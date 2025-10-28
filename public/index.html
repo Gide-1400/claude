@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشحنة السريعة - ربط الشاحنين بأصحاب الشحنات</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span data-lang="ar">الشحنة السريعة</span>
+                    <span data-lang="en" style="display: none;">Fast Shipment</span>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#home" data-lang="ar">الرئيسية</a><a href="#home" data-lang="en" style="display: none;">Home</a></li>
+                        <li><a href="#services" data-lang="ar">خدماتنا</a><a href="#services" data-lang="en" style="display: none;">Services</a></li>
+                        <li><a href="#how-it-works" data-lang="ar">كيف تعمل</a><a href="#how-it-works" data-lang="en" style="display: none;">How It Works</a></li>
+                        <li><a href="#verification" data-lang="ar">التوثيق</a><a href="#verification" data-lang="en" style="display: none;">Verification</a></li>
+                        <li><a href="pages/general/about.html" data-lang="ar">من نحن</a><a href="pages/general/about.html" data-lang="en" style="display: none;">About</a></li>
+                        <li><a href="pages/general/contact.html" data-lang="ar">اتصل بنا</a><a href="pages/general/contact.html" data-lang="en" style="display: none;">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    
+                    <div class="auth-buttons">
+                        <a href="pages/auth/login.html" class="btn btn-outline" data-lang="ar">تسجيل الدخول</a>
+                        <a href="pages/auth/login.html" class="btn btn-outline" data-lang="en" style="display: none;">Login</a>
+                        <a href="pages/auth/register.html" class="btn btn-primary" data-lang="ar">إنشاء حساب</a>
+                        <a href="pages/auth/register.html" class="btn btn-primary" data-lang="en" style="display: none;">Register</a>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <button class="close-menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="#home" data-lang="ar">الرئيسية</a><a href="#home" data-lang="en" style="display: none;">Home</a></li>
+            <li><a href="#services" data-lang="ar">خدماتنا</a><a href="#services" data-lang="en" style="display: none;">Services</a></li>
+            <li><a href="#how-it-works" data-lang="ar">كيف تعمل</a><a href="#how-it-works" data-lang="en" style="display: none;">How It Works</a></li>
+            <li><a href="#verification" data-lang="ar">التوثيق</a><a href="#verification" data-lang="en" style="display: none;">Verification</a></li>
+            <li><a href="pages/general/about.html" data-lang="ar">من نحن</a><a href="pages/general/about.html" data-lang="en" style="display: none;">About</a></li>
+            <li><a href="pages/general/contact.html" data-lang="ar">اتصل بنا</a><a href="pages/general/contact.html" data-lang="en" style="display: none;">Contact</a></li>
+            <li><a href="pages/auth/login.html" data-lang="ar">تسجيل الدخول</a><a href="pages/auth/login.html" data-lang="en" style="display: none;">Login</a></li>
+            <li><a href="pages/auth/register.html" data-lang="ar">إنشاء حساب</a><a href="pages/auth/register.html" data-lang="en" style="display: none;">Register</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1 data-lang="ar">ربط الشاحنين بأصحاب الشحنات حول العالم</h1>
+            <h1 data-lang="en" style="display: none;">Connecting Shippers with Carriers Worldwide</h1>
+            
+            <p data-lang="ar">منصة الشحنة السريعة تربط بين الأشخاص الذين يريدون إرسال شحنات والأشخاص الذين لديهم مساحة فارغة أثناء تنقلاتهم. وفر الوقت والمال مع نظام المطابقة الذكي.</p>
+            <p data-lang="en" style="display: none;">Fast Shipment platform connects people who want to send shipments with those who have empty space during their travels. Save time and money with our smart matching system.</p>
+            
+            <div class="hero-buttons">
+                <button class="btn btn-primary btn-large" id="carrierBtn">
+                    <i class="fas fa-truck"></i>
+                    <span data-lang="ar">أنا موصل شحنات</span>
+                    <span data-lang="en" style="display: none;">I'm a Carrier</span>
+                </button>
+                <button class="btn btn-outline btn-large" id="shipperBtn">
+                    <i class="fas fa-box"></i>
+                    <span data-lang="ar">لدي شحنة لأرسلها</span>
+                    <span data-lang="en" style="display: none;">I Have a Shipment</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-lang="ar">خدماتنا</h2>
+                <h2 data-lang="en" style="display: none;">Our Services</h2>
+                <p data-lang="ar">نوفر حلولاً شاملة لكل أنواع الشحنات والموصلين</p>
+                <p data-lang="en" style="display: none;">We provide comprehensive solutions for all types of shipments and carriers</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 data-lang="ar">مسافرون مستقلون</h3>
+                    <h3 data-lang="en" style="display: none;">Individual Travelers</h3>
+                    <p data-lang="ar">للمسافرين بالطائرة أو القطار أو الحافلة مع مساحة تصل إلى 20 كجم</p>
+                    <p data-lang="en" style="display: none;">For travelers by plane, train, or bus with up to 20kg space</p>
+                    <button class="btn btn-outline service-btn" data-service="individual">
+                        <span data-lang="ar">المزيد</span>
+                        <span data-lang="en" style="display: none;">More</span>
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3 data-lang="ar">أصحاب السيارات</h3>
+                    <h3 data-lang="en" style="display: none;">Car Owners</h3>
+                    <p data-lang="ar">لأصحاب السيارات الخاصة مع مساحة تصل إلى 1500 كجم</p>
+                    <p data-lang="en" style="display: none;">For private car owners with up to 1500kg space</p>
+                    <button class="btn btn-outline service-btn" data-service="car">
+                        <span data-lang="ar">المزيد</span>
+                        <span data-lang="en" style="display: none;">More</span>
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3 data-lang="ar">أصحاب الشاحنات</h3>
+                    <h3 data-lang="en" style="display: none;">Truck Owners</h3>
+                    <p data-lang="ar">لأصحاب الشاحنات مع مساحة تصل إلى 50 طن</p>
+                    <p data-lang="en" style="display: none;">For truck owners with up to 50 tons space</p>
+                    <button class="btn btn-outline service-btn" data-service="truck">
+                        <span data-lang="ar">المزيد</span>
+                        <span data-lang="en" style="display: none;">More</span>
+                    </button>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-ship"></i>
+                    </div>
+                    <h3 data-lang="ar">أساطيل الشحن</h3>
+                    <h3 data-lang="en" style="display: none;">Shipping Fleets</h3>
+                    <p data-lang="ar">للشركات وأساطيل الشحن مع مساحات تصل إلى 1000 طن</p>
+                    <p data-lang="en" style="display: none;">For companies and shipping fleets with up to 1000 tons space</p>
+                    <button class="btn btn-outline service-btn" data-service="fleet">
+                        <span data-lang="ar">المزيد</span>
+                        <span data-lang="en" style="display: none;">More</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-lang="ar">كيف تعمل المنصة</h2>
+                <h2 data-lang="en" style="display: none;">How It Works</h2>
+                <p data-lang="ar">4 خطوات بسيطة لربط الشحنات بالموصلين المناسبين</p>
+                <p data-lang="en" style="display: none;">4 simple steps to connect shipments with suitable carriers</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3 data-lang="ar">إنشاء حساب</h3>
+                    <h3 data-lang="en" style="display: none;">Create Account</h3>
+                    <p data-lang="ar">سجل في المنصة واختر نوع خدمتك (موصل شحنات أو صاحب شحنة)</p>
+                    <p data-lang="en" style="display: none;">Register on the platform and choose your service type (carrier or shipper)</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3 data-lang="ar">إضافة الرحلة/الشحنة</h3>
+                    <h3 data-lang="en" style="display: none;">Add Trip/Shipment</h3>
+                    <p data-lang="ar">أضف تفاصيل رحلتك أو شحنتك مع المسار والتواريخ والمساحة المتاحة</p>
+                    <p data-lang="en" style="display: none;">Add details of your trip or shipment with route, dates, and available space</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3 data-lang="ar">المطابقة الذكية</h3>
+                    <h3 data-lang="en" style="display: none;">Smart Matching</h3>
+                    <p data-lang="ar">سيقوم نظامنا بمطابقة الشحنات مع الرحلات المتوافقة تلقائياً</p>
+                    <p data-lang="en" style="display: none;">Our system will automatically match shipments with compatible trips</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3 data-lang="ar">التواصل والتوصيل</h3>
+                    <h3 data-lang="en" style="display: none;">Communication & Delivery</h3>
+                    <p data-lang="ar">تواصل مع الطرف الآخر عبر المنصة ورتب تفاصيل التوصيل</p>
+                    <p data-lang="en" style="display: none;">Communicate with the other party through the platform and arrange delivery details</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Verification Section -->
+    <section class="verification" id="verification">
+        <div class="container">
+            <div class="section-title">
+                <h2 data-lang="ar">نظام التوثيق</h2>
+                <h2 data-lang="en" style="display: none;">Verification System</h2>
+                <p data-lang="ar">لضمان موثوقية وأمان جميع المعاملات</p>
+                <p data-lang="en" style="display: none;">To ensure reliability and security of all transactions</p>
+            </div>
+            
+            <div class="verification-content">
+                <div class="verification-text">
+                    <h3 data-lang="ar">توثيق الهوية والمستندات</h3>
+                    <h3 data-lang="en" style="display: none;">Identity and Document Verification</h3>
+                    <p data-lang="ar">نحن نحرص على توثيق جميع المستخدمين لضمان بيئة آمنة وموثوقة للجميع:</p>
+                    <p data-lang="en" style="display: none;">We ensure verification of all users to guarantee a safe and reliable environment for everyone:</p>
+                    
+                    <ul style="margin: 20px 0; padding-right: 20px;">
+                        <li style="margin-bottom: 10px;" data-lang="ar">توثيق الهوية لجميع المستخدمين</li>
+                        <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Identity verification for all users</li>
+                        <li style="margin-bottom: 10px;" data-lang="ar">توثيق مستندات المركبات للموصلين</li>
+                        <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Vehicle document verification for carriers</li>
+                        <li style="margin-bottom: 10px;" data-lang="ar">توثيق السجلات التجارية لأصحاب المتاجر</li>
+                        <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Business registration verification for store owners</li>
+                        <li style="margin-bottom: 10px;" data-lang="ar">نظام تقييم ومراجعات للمستخدمين</li>
+                        <li style="margin-bottom: 10px;" data-lang="en" style="display: none;">Rating and review system for users</li>
+                    </ul>
+                    
+                    <button class="btn btn-primary" id="verificationBtn">
+                        <span data-lang="ar">ابدأ عملية التوثيق</span>
+                        <span data-lang="en" style="display: none;">Start Verification</span>
+                    </button>
+                </div>
+                
+                <div class="verification-image">
+                    <img src="assets/images/verification-process.jpg" alt="Verification Process" data-lang="ar" alt="عملية التوثيق">
+                    <img src="assets/images/verification-process.jpg" alt="Verification Process" data-lang="en" style="display: none;" alt="Verification Process">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>10,000+</h3>
+                    <p data-lang="ar">شحنة تم توصيلها</p>
+                    <p data-lang="en" style="display: none;">Shipments Delivered</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>5,000+</h3>
+                    <p data-lang="ar">موصل شحنات مسجل</p>
+                    <p data-lang="en" style="display: none;">Registered Carriers</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>120+</h3>
+                    <p data-lang="ar">دولة حول العالم</p>
+                    <p data-lang="en" style="display: none;">Countries Worldwide</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p data-lang="ar">رضا العملاء</p>
+                    <p data-lang="en" style="display: none;">Customer Satisfaction</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 data-lang="ar">الشحنة السريعة</h3>
+                    <h3 data-lang="en" style="display: none;">Fast Shipment</h3>
+                    <p data-lang="ar">منصة ربط بين الشاحنين وأصحاب الشحنات حول العالم باستخدام تقنيات المطابقة الذكية.</p>
+                    <p data-lang="en" style="display: none;">A platform connecting carriers with shippers worldwide using smart matching technologies.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 data-lang="ar">روابط سريعة</h3>
+                    <h3 data-lang="en" style="display: none;">Quick Links</h3>
+                    <ul>
+                        <li><a href="#home" data-lang="ar">الرئيسية</a><a href="#home" data-lang="en" style="display: none;">Home</a></li>
+                        <li><a href="#services" data-lang="ar">خدماتنا</a><a href="#services" data-lang="en" style="display: none;">Services</a></li>
+                        <li><a href="#how-it-works" data-lang="ar">كيف تعمل</a><a href="#how-it-works" data-lang="en" style="display: none;">How It Works</a></li>
+                        <li><a href="#verification" data-lang="ar">التوثيق</a><a href="#verification" data-lang="en" style="display: none;">Verification</a></li>
+                        <li><a href="pages/general/about.html" data-lang="ar">من نحن</a><a href="pages/general/about.html" data-lang="en" style="display: none;">About</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 data-lang="ar">خدمات العملاء</h3>
+                    <h3 data-lang="en" style="display: none;">Customer Service</h3>
+                    <ul>
+                        <li><a href="pages/general/support.html" data-lang="ar">الدعم الفني</a><a href="pages/general/support.html" data-lang="en" style="display: none;">Technical Support</a></li>
+                        <li><a href="pages/general/faq.html" data-lang="ar">الأسئلة الشائعة</a><a href="pages/general/faq.html" data-lang="en" style="display: none;">FAQ</a></li>
+                        <li><a href="pages/general/terms.html" data-lang="ar">الشروط والأحكام</a><a href="pages/general/terms.html" data-lang="en" style="display: none;">Terms & Conditions</a></li>
+                        <li><a href="pages/general/privacy.html" data-lang="ar">سياسة الخصوصية</a><a href="pages/general/privacy.html" data-lang="en" style="display: none;">Privacy Policy</a></li>
+                        <li><a href="pages/general/contact.html" data-lang="ar">اتصل بنا</a><a href="pages/general/contact.html" data-lang="en" style="display: none;">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 data-lang="ar">اتصل بنا</h3>
+                    <h3 data-lang="en" style="display: none;">Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> info@alsahnah.com</li>
+                        <li><i class="fas fa-phone"></i> +966 55 151 9723</li>
+                        <li><i class="fas fa-map-marker-alt"></i data-lang="ar"> المملكة العربية السعودية</i><i class="fas fa-map-marker-alt" data-lang="en" style="display: none;"> Saudi Arabia</i></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p data-lang="ar">جميع الحقوق محفوظة &copy; 2023 الشحنة السريعة | تصميم وتطوير قايد المصعبي</p>
+                <p data-lang="en" style="display: none;">All rights reserved &copy; 2023 Fast Shipment | Designed and developed by Gaid Al-Masabi</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config/supabase-config.js"></script>
+    <script src="assets/js/auth-manager.js"></script>
+    <script src="assets/js/language-switcher.js"></script>
+    <script src="assets/js/main.js"></script>
+    
+    <script>
+        // Check if user is logged in and update header
+        document.addEventListener('DOMContentLoaded', async function() {
+            await checkUserAuthenticationAndUpdateUI();
+        });
+
+        async function checkUserAuthenticationAndUpdateUI() {
+            try {
+                // First check Supabase session
+                if (window.supabaseClient) {
+                    const { data: { session }, error } = await window.supabaseClient.auth.getSession();
+                    
+                    if (session?.user && !error) {
+                        // User is authenticated, get profile
+                        const { data: profile } = await window.supabaseClient
+                            .from('users')
+                            .select('user_type, name, carrier_type, shipper_type')
+                            .eq('auth_user_id', session.user.id)
+                            .single();
+                        
+                        if (profile) {
+                            // Store in session for faster access
+                            sessionStorage.setItem('user_email', session.user.email);
+                            sessionStorage.setItem('user_id', session.user.id);
+                            sessionStorage.setItem('user_type', profile.user_type);
+                            sessionStorage.setItem('user_name', profile.name || session.user.email.split('@')[0]);
+                            
+                            updateHeaderForLoggedInUser(profile.user_type, profile.name || session.user.email.split('@')[0]);
+                            return;
+                        }
+                    }
+                }
+                
+                // Fallback to session storage
+                const userEmail = sessionStorage.getItem('user_email');
+                const userType = sessionStorage.getItem('user_type');
+                const userName = sessionStorage.getItem('user_name');
+                
+                if (userEmail && userType) {
+                    updateHeaderForLoggedInUser(userType, userName || userEmail.split('@')[0]);
+                } else {
+                    // User is not authenticated - show login/register buttons
+                    showAuthButtons();
+                }
+            } catch (error) {
+                console.error('Auth check error:', error);
+                showAuthButtons();
+            }
+        }
+
+        function showAuthButtons() {
+            const authButtons = document.querySelector('.auth-buttons');
+            if (authButtons) {
+                authButtons.innerHTML = `
+                    <a href="pages/auth/login.html" class="btn btn-outline" data-lang="ar">تسجيل الدخول</a>
+                    <a href="pages/auth/login.html" class="btn btn-outline" data-lang="en" style="display: none;">Login</a>
+                    <a href="pages/auth/register.html" class="btn btn-primary" data-lang="ar">إنشاء حساب</a>
+                    <a href="pages/auth/register.html" class="btn btn-primary" data-lang="en" style="display: none;">Register</a>
+                `;
+            }
+        }
+        
+        function updateHeaderForLoggedInUser(userType, userName) {
+            const authButtons = document.querySelector('.auth-buttons');
+            if (!authButtons) return;
+            
+            // Define dashboard links based on user type
+            const dashboardLinks = userType === 'carrier' ? {
+                main: 'pages/carrier/index.html',
+                addTrip: 'pages/carrier/add-trip.html',
+                myTrips: 'pages/carrier/my-trips.html',
+                matches: 'pages/carrier/matches.html',
+                messages: 'pages/messaging/index.html',
+                profile: 'pages/carrier/profile.html'
+            } : {
+                main: 'pages/shipper/index.html',
+                addShipment: 'pages/shipper/add-shipment.html',
+                myShipments: 'pages/shipper/my-shipments.html',
+                matches: 'pages/shipper/matches.html',
+                messages: 'pages/messaging/index.html',
+                profile: 'pages/shipper/profile.html'
+            };
+            
+            // Create user avatar with initials
+            const userInitials = userName.split(' ').map(name => name.charAt(0)).join('').substring(0, 2).toUpperCase();
+            const avatarStyle = 'width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; margin-left: 8px;';
+            
+            authButtons.innerHTML = `
+                <div class="user-menu-container">
+                    <button class="btn btn-primary user-menu-btn" id="userMenuBtn">
+                        <div style="${avatarStyle}">${userInitials}</div>
+                        <span>${userName}</span>
+                        <i class="fas fa-chevron-down" style="margin-right: 8px; font-size: 12px; transition: transform 0.2s ease;"></i>
+                    </button>
+                    
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 18px; border: 3px solid white;">${userInitials}</div>
+                            <div>
+                                <div class="dropdown-name">${userName}</div>
+                                <div class="dropdown-role">${userType === 'carrier' ? 'موصل شحنات' : 'صاحب شحنات'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <a href="${dashboardLinks.main}" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                        
+                        ${userType === 'carrier' ? `
+                            <a href="${dashboardLinks.addTrip}" class="dropdown-item">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>إضافة رحلة</span>
+                            </a>
+                            <a href="${dashboardLinks.myTrips}" class="dropdown-item">
+                                <i class="fas fa-route"></i>
+                                <span>رحلاتي</span>
+                            </a>
+                        ` : `
+                            <a href="${dashboardLinks.addShipment}" class="dropdown-item">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>إضافة شحنة</span>
+                            </a>
+                            <a href="${dashboardLinks.myShipments}" class="dropdown-item">
+                                <i class="fas fa-boxes"></i>
+                                <span>شحناتي</span>
+                            </a>
+                        `}
+                        
+                        <a href="${dashboardLinks.matches}" class="dropdown-item">
+                            <i class="fas fa-handshake"></i>
+                            <span>المطابقات</span>
+                        </a>
+                        
+                        <a href="${dashboardLinks.messages}" class="dropdown-item">
+                            <i class="fas fa-comments"></i>
+                            <span>الرسائل</span>
+                            <span class="dropdown-badge">3</span>
+                        </a>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <a href="${dashboardLinks.profile}" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>الملف الشخصي</span>
+                        </a>
+                        
+                        <a href="pages/carrier/settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                        
+                        <div class="dropdown-divider"></div>
+                        
+                        <button onclick="handleLogout()" class="dropdown-item logout-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>تسجيل الخروج</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add dropdown functionality
+            const menuBtn = document.getElementById('userMenuBtn');
+            const dropdown = document.getElementById('userDropdown');
+            const chevron = menuBtn.querySelector('.fa-chevron-down');
+            
+            menuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = dropdown.classList.contains('show');
+                
+                if (isOpen) {
+                    dropdown.classList.remove('show');
+                    chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    dropdown.classList.add('show');
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && !menuBtn.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Close dropdown when pressing Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+        
+        async function handleLogout() {
+            try {
+                // Show loading state
+                const logoutBtn = document.querySelector('.logout-item');
+                if (logoutBtn) {
+                    logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>جاري تسجيل الخروج...</span>';
+                    logoutBtn.style.pointerEvents = 'none';
+                }
+                
+                // Sign out from Supabase
+                if (window.supabaseClient) {
+                    const { error } = await window.supabaseClient.auth.signOut();
+                    if (error) {
+                        console.error('Logout error:', error);
+                    }
+                }
+                
+                // Clear all stored data
+                sessionStorage.clear();
+                localStorage.removeItem('fastship_user');
+                
+                // Show success message
+                showAlert('success', 'تم تسجيل الخروج بنجاح', 'Logged out successfully');
+                
+                // Reload page after short delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Logout error:', error);
+                showAlert('error', 'حدث خطأ أثناء تسجيل الخروج', 'Error during logout');
+                
+                // Force reload anyway
+                setTimeout(() => {
+                    sessionStorage.clear();
+                    window.location.reload();
+                }, 1000);
+            }
+        }
+
+        function showAlert(type, messageAr, messageEn) {
+            const existingAlert = document.querySelector('.alert-message');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const currentLang = document.documentElement.lang || 'ar';
+            const message = currentLang === 'ar' ? messageAr : messageEn;
+
+            const alert = document.createElement('div');
+            alert.className = `alert-message alert-${type}`;
+            alert.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                left: 20px;
+                max-width: 500px;
+                margin: 0 auto;
+                padding: 15px 20px;
+                border-radius: 12px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                animation: slideDown 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            `;
+
+            const colors = {
+                success: '#2DCE89',
+                error: '#F5365C',
+                warning: '#FB6340',
+                info: '#5E72E4'
+            };
+
+            alert.style.background = colors[type] || colors.info;
+
+            const messageSpan = document.createElement('span');
+            messageSpan.innerHTML = message;
+
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = '×';
+            closeButton.style.cssText = `
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            closeButton.onclick = () => alert.remove();
+
+            alert.appendChild(messageSpan);
+            alert.appendChild(closeButton);
+
+            document.body.appendChild(alert);
+
+            setTimeout(() => {
+                if (alert.parentElement) {
+                    alert.remove();
+                }
+            }, 4000);
+        }
+    </script>
+    
+    <style>
+        /* User Menu Styles */
+        .user-menu-container {
+            position: relative;
+        }
+        
+        .user-menu-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(94, 114, 228, 0.3);
+        }
+        
+        .user-menu-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(94, 114, 228, 0.4);
+        }
+        
+        .user-menu-btn img {
+            border: 2px solid white;
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 0;
+            min-width: 280px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .dropdown-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        
+        .dropdown-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .dropdown-role {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .dropdown-divider {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 8px 0;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        .dropdown-item:hover {
+            background: #f8f9fa;
+            color: var(--primary);
+        }
+        
+        .dropdown-item i {
+            width: 20px;
+            text-align: center;
+            color: var(--primary);
+        }
+        
+        .dropdown-item.logout-item {
+            color: var(--secondary);
+        }
+        
+        .dropdown-item.logout-item:hover {
+            background: rgba(245, 54, 92, 0.1);
+            color: var(--secondary);
+        }
+        
+        .dropdown-item.logout-item i {
+            color: var(--secondary);
+        }
+        
+        .dropdown-badge {
+            margin-right: auto;
+            background: var(--secondary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        /* Animation for dropdown */
+        @keyframes dropdownSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes dropdownSlideOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-15px) scale(0.95);
+            }
+        }
+        
+        .user-dropdown.show {
+            animation: dropdownSlideIn 0.2s ease-out forwards;
+        }
+        
+        /* Hover effects */
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8eeff 100%);
+            transform: translateX(5px);
+        }
+        
+        .dropdown-item.logout-item:hover {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            transform: translateX(5px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-dropdown {
+                right: 0;
+                left: auto;
+                min-width: 260px;
+            }
+            
+            .user-menu-btn span {
+                display: none;
+            }
+            
+            .user-menu-btn {
+                padding: 8px 12px;
+            }
+        }
+        
+        /* Loading animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Alert animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</body>
+</html>
