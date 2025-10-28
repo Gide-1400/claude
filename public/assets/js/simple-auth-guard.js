@@ -31,7 +31,8 @@ class SimpleAuthGuard {
 
     async checkAuth() {
         try {
-            console.log('SimpleAuthGuard: Checking authentication...');
+            console.log('=== SimpleAuthGuard: Starting authentication check ===');
+            console.log('Current path:', window.location.pathname);
             
             // Check if this is an authenticated navigation from dropdown
             const authNav = sessionStorage.getItem('authenticated_navigation');
@@ -39,8 +40,10 @@ class SimpleAuthGuard {
             
             if (authNav === 'true' && navTimestamp) {
                 const timeSinceNav = Date.now() - parseInt(navTimestamp);
+                console.log('Navigation time since click:', timeSinceNav, 'ms');
+                
                 if (timeSinceNav < 5000) { // 5 seconds window  
-                    console.log('SimpleAuthGuard: Authenticated navigation detected, allowing access');
+                    console.log('✅ SimpleAuthGuard: Authenticated navigation detected, allowing access');
                     // Clear the navigation markers
                     sessionStorage.removeItem('authenticated_navigation');
                     sessionStorage.removeItem('nav_timestamp');
@@ -52,10 +55,14 @@ class SimpleAuthGuard {
             const userAuthenticated = sessionStorage.getItem('user_authenticated');
             const authTimestamp = sessionStorage.getItem('auth_timestamp');
             
+            console.log('Checking persistent auth:', { userAuthenticated, authTimestamp });
+            
             if (userAuthenticated === 'true' && authTimestamp) {
                 const timeSinceAuth = Date.now() - parseInt(authTimestamp);
+                console.log('Time since authentication:', timeSinceAuth, 'ms (', Math.round(timeSinceAuth / 1000 / 60), 'minutes)');
+                
                 if (timeSinceAuth < 24 * 60 * 60 * 1000) { // 24 hours validity
-                    console.log('SimpleAuthGuard: Persistent authentication marker found, allowing access');
+                    console.log('✅ SimpleAuthGuard: Persistent authentication marker found, allowing access');
                     return; // Allow access
                 }
             }
@@ -68,8 +75,10 @@ class SimpleAuthGuard {
                 name: sessionStorage.getItem('user_name')
             };
             
+            console.log('Session data check:', storedData);
+            
             if (storedData.email && storedData.id && storedData.type) {
-                console.log('SimpleAuthGuard: Valid session data found, allowing access');
+                console.log('✅ SimpleAuthGuard: Valid session data found, allowing access');
                 return; // Allow access based on session data
             }
             

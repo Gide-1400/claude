@@ -462,11 +462,21 @@
                             .single();
                         
                         if (profile) {
-                            // Store in session for faster access
+                            // Store ALL necessary data in session
                             sessionStorage.setItem('user_email', session.user.email);
                             sessionStorage.setItem('user_id', session.user.id);
                             sessionStorage.setItem('user_type', profile.user_type);
                             sessionStorage.setItem('user_name', profile.name || session.user.email.split('@')[0]);
+                            sessionStorage.setItem('carrier_type', profile.carrier_type || '');
+                            sessionStorage.setItem('shipper_type', profile.shipper_type || '');
+                            sessionStorage.setItem('user_authenticated', 'true');
+                            sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                            
+                            console.log('User authenticated via Supabase:', {
+                                email: session.user.email,
+                                type: profile.user_type,
+                                name: profile.name
+                            });
                             
                             updateHeaderForLoggedInUser(profile.user_type, profile.name || session.user.email.split('@')[0]);
                             return;
@@ -480,9 +490,22 @@
                 const userName = sessionStorage.getItem('user_name');
                 
                 if (userEmail && userType) {
+                    console.log('User authenticated via session storage:', {
+                        email: userEmail,
+                        type: userType,
+                        name: userName
+                    });
+                    
+                    // Ensure persistent markers are set
+                    sessionStorage.setItem('user_authenticated', 'true');
+                    if (!sessionStorage.getItem('auth_timestamp')) {
+                        sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                    }
+                    
                     updateHeaderForLoggedInUser(userType, userName || userEmail.split('@')[0]);
                 } else {
                     // User is not authenticated - show login/register buttons
+                    console.log('No authentication found, showing login buttons');
                     showAuthButtons();
                 }
             } catch (error) {
@@ -624,6 +647,18 @@
                         // Mark that user is navigating from authenticated dropdown
                         sessionStorage.setItem('authenticated_navigation', 'true');
                         sessionStorage.setItem('nav_timestamp', Date.now().toString());
+                        
+                        // Ensure all authentication markers are set
+                        sessionStorage.setItem('user_authenticated', 'true');
+                        sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                        
+                        // Log for debugging
+                        console.log('Navigating from authenticated dropdown to:', href);
+                        console.log('Session data:', {
+                            email: sessionStorage.getItem('user_email'),
+                            type: sessionStorage.getItem('user_type'),
+                            authenticated: sessionStorage.getItem('user_authenticated')
+                        });
                         
                         // Navigate to the page
                         window.location.href = href;

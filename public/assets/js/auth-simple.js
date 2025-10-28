@@ -170,11 +170,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 
-                // Store user info in session
+                // Store user info in session with comprehensive data
                 sessionStorage.setItem('user_email', email);
                 sessionStorage.setItem('user_id', data.user.id);
                 sessionStorage.setItem('user_name', email.split('@')[0]);
                 sessionStorage.setItem('justLoggedIn', 'true'); // Mark as just logged in
+                sessionStorage.setItem('user_authenticated', 'true'); // Persistent marker
+                sessionStorage.setItem('auth_timestamp', Date.now().toString()); // Timestamp
                 
                 // Get user profile and store
                 window.supabaseClient
@@ -189,10 +191,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (profile && !profileError) {
                             userType = profile.user_type || 'shipper';
                             userName = profile.name || userName;
+                            
+                            // Store ALL profile data
                             sessionStorage.setItem('user_type', userType);
                             sessionStorage.setItem('user_name', userName);
                             sessionStorage.setItem('carrier_type', profile.carrier_type || '');
                             sessionStorage.setItem('shipper_type', profile.shipper_type || '');
+                            sessionStorage.setItem('user_authenticated', 'true');
+                            sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                            
+                            console.log('User profile loaded:', { userType, userName });
                         } else {
                             // Create profile if doesn't exist
                             const newProfile = {
@@ -210,6 +218,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                     sessionStorage.setItem('user_type', 'shipper');
                                     sessionStorage.setItem('user_name', userName);
                                     sessionStorage.setItem('shipper_type', 'individual');
+                                    sessionStorage.setItem('user_authenticated', 'true');
+                                    sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                                    
+                                    console.log('New user profile created');
                                 });
                         }
                         
@@ -223,6 +235,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     })
                     .catch((err) => {
                         console.error('Profile error:', err);
+                        
+                        // Set default values even on error
+                        sessionStorage.setItem('user_type', 'shipper');
+                        sessionStorage.setItem('user_name', email.split('@')[0]);
+                        sessionStorage.setItem('shipper_type', 'individual');
+                        sessionStorage.setItem('user_authenticated', 'true');
+                        sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                        
                         // Default redirect on error - go to home page
                         showAlert('success', 'تم تسجيل الدخول بنجاح!', 'Login successful!');
                         setTimeout(() => {
