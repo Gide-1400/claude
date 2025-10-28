@@ -22,13 +22,56 @@ class SimpleAuthGuard {
                                currentPath.includes('/pages/messaging/');
         
         if (isDashboardPage) {
-            await this.checkAuth();
+            // Wait a moment for all auth systems to initialize
+            setTimeout(async () => {
+                await this.checkAuth();
+            }, 100);
         }
     }
 
     async checkAuth() {
         try {
             console.log('SimpleAuthGuard: Checking authentication...');
+            
+            // Check if this is an authenticated navigation from dropdown
+            const authNav = sessionStorage.getItem('authenticated_navigation');
+            const navTimestamp = sessionStorage.getItem('nav_timestamp');
+            
+            if (authNav === 'true' && navTimestamp) {
+                const timeSinceNav = Date.now() - parseInt(navTimestamp);
+                if (timeSinceNav < 5000) { // 5 seconds window  
+                    console.log('SimpleAuthGuard: Authenticated navigation detected, allowing access');
+                    // Clear the navigation markers
+                    sessionStorage.removeItem('authenticated_navigation');
+                    sessionStorage.removeItem('nav_timestamp');
+                    return; // Allow access
+                }
+            }
+            
+            // Check for persistent authentication marker
+            const userAuthenticated = sessionStorage.getItem('user_authenticated');
+            const authTimestamp = sessionStorage.getItem('auth_timestamp');
+            
+            if (userAuthenticated === 'true' && authTimestamp) {
+                const timeSinceAuth = Date.now() - parseInt(authTimestamp);
+                if (timeSinceAuth < 24 * 60 * 60 * 1000) { // 24 hours validity
+                    console.log('SimpleAuthGuard: Persistent authentication marker found, allowing access');
+                    return; // Allow access
+                }
+            }
+            
+            // Check if user has valid session data (more lenient check)
+            const storedData = {
+                email: sessionStorage.getItem('user_email'),
+                id: sessionStorage.getItem('user_id'),
+                type: sessionStorage.getItem('user_type'),
+                name: sessionStorage.getItem('user_name')
+            };
+            
+            if (storedData.email && storedData.id && storedData.type) {
+                console.log('SimpleAuthGuard: Valid session data found, allowing access');
+                return; // Allow access based on session data
+            }
             
             // Check backup auth first (faster)
             if (window.backupAuth && window.backupAuth.isLoggedIn()) {

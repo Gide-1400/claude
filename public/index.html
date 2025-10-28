@@ -507,6 +507,14 @@
             const authButtons = document.querySelector('.auth-buttons');
             if (!authButtons) return;
             
+            // Store user data to prevent logout issues during navigation
+            const userEmail = sessionStorage.getItem('user_email');
+            const userId = sessionStorage.getItem('user_id');
+            
+            // Set a persistent authentication marker
+            sessionStorage.setItem('user_authenticated', 'true');
+            sessionStorage.setItem('auth_timestamp', Date.now().toString());
+            
             // Define dashboard links based on user type - use correct paths
             const dashboardLinks = userType === 'carrier' ? {
                 main: './pages/carrier/index.html',
@@ -613,14 +621,11 @@
                         e.preventDefault();
                         const href = this.getAttribute('href');
                         
-                        // Check if user is still logged in before navigation
-                        const userEmail = sessionStorage.getItem('user_email');
-                        if (!userEmail && href.includes('/carrier/') || href.includes('/shipper/')) {
-                            showAlert('warning', 'يرجى تسجيل الدخول أولاً', 'Please login first');
-                            window.location.href = './pages/auth/login.html';
-                            return;
-                        }
+                        // Mark that user is navigating from authenticated dropdown
+                        sessionStorage.setItem('authenticated_navigation', 'true');
+                        sessionStorage.setItem('nav_timestamp', Date.now().toString());
                         
+                        // Navigate to the page
                         window.location.href = href;
                     });
                 });
@@ -681,6 +686,12 @@
                 // Clear all stored data
                 sessionStorage.clear();
                 localStorage.removeItem('fastship_user');
+                
+                // Specifically clear authentication markers
+                sessionStorage.removeItem('user_authenticated');
+                sessionStorage.removeItem('auth_timestamp');
+                sessionStorage.removeItem('authenticated_navigation');
+                sessionStorage.removeItem('nav_timestamp');
                 
                 // Show success message
                 showAlert('success', 'تم تسجيل الخروج بنجاح', 'Logged out successfully');
