@@ -503,6 +503,11 @@ async function logout() {
     }
 }
 
+// Initialize accessibility features
+if (typeof window.AccessibilityUtils !== 'undefined') {
+    window.AccessibilityUtils.enhance();
+}
+
 // Expose functions globally if needed
 window.handleLogin = handleLogin;
 window.handleRegister = handleRegister;

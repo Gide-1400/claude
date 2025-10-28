@@ -209,4 +209,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Initialize accessibility features after page load
+    if (typeof window.AccessibilityUtils !== 'undefined') {
+        window.AccessibilityUtils.enhance();
+    }
 });
