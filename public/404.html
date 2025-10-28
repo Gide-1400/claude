@@ -8,6 +8,52 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/general.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .error-section {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 0;
+        }
+        .error-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .error-icon {
+            font-size: 5rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+        }
+        .error-content h1 {
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .error-content h2 {
+            font-size: 2rem;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        .error-content p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        @media (max-width: 768px) {
+            .error-content h1 { font-size: 4rem; }
+            .error-content h2 { font-size: 1.5rem; }
+            .error-actions { flex-direction: column; align-items: center; }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->

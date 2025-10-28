@@ -29,6 +29,15 @@ class AuthGuard {
 
     async checkAuthentication() {
         try {
+            // Check session storage first (faster)
+            const storedUser = sessionStorage.getItem('user_email');
+            const storedUserType = sessionStorage.getItem('user_type');
+            
+            if (!storedUser || !storedUserType) {
+                this.redirectToLogin();
+                return;
+            }
+
             // Wait for Supabase to be ready
             if (!window.supabaseClient) {
                 await this.waitForSupabase();
@@ -38,6 +47,8 @@ class AuthGuard {
             const { data: { session }, error } = await window.supabaseClient.auth.getSession();
             
             if (error || !session?.user) {
+                // Clear invalid session data
+                sessionStorage.clear();
                 this.redirectToLogin();
                 return;
             }

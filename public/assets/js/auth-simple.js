@@ -185,23 +185,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         // Show success message
-                        showAlert('success', 'تم تسجيل الدخول بنجاح! جاري التوجيه...', 'Login successful! Redirecting...');
+                        showAlert('success', 'تم تسجيل الدخول بنجاح!', 'Login successful!');
                         
-                        // Redirect based on user type
+                        // Redirect to home page instead of dashboard
                         setTimeout(() => {
-                            if (userType === 'carrier') {
-                                window.location.href = '../carrier/index.html';
-                            } else {
-                                window.location.href = '../shipper/index.html';
-                            }
+                            window.location.href = '../../index.html';
                         }, 1000);
                     })
                     .catch((err) => {
                         console.error('Profile error:', err);
-                        // Default redirect on error
+                        // Default redirect on error - go to home page
                         showAlert('success', 'تم تسجيل الدخول بنجاح!', 'Login successful!');
                         setTimeout(() => {
-                            window.location.href = '../shipper/index.html';
+                            window.location.href = '../../index.html';
                         }, 1000);
                     });
                 

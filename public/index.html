@@ -33,6 +33,7 @@
     
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="assets/css/ui-fixes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -442,21 +443,21 @@
             const authButtons = document.querySelector('.auth-buttons');
             if (!authButtons) return;
             
-            // Define dashboard links based on user type
+            // Define dashboard links based on user type - use correct paths
             const dashboardLinks = userType === 'carrier' ? {
-                main: 'pages/carrier/index.html',
-                addTrip: 'pages/carrier/add-trip.html',
-                myTrips: 'pages/carrier/my-trips.html',
-                matches: 'pages/carrier/matches.html',
-                messages: 'pages/messaging/index.html',
-                profile: 'pages/carrier/profile.html'
+                main: './pages/carrier/index.html',
+                addTrip: './pages/carrier/add-trip.html',
+                myTrips: './pages/carrier/my-trips.html',
+                matches: './pages/carrier/matches.html',
+                messages: './pages/messaging/index.html',
+                profile: './pages/carrier/profile.html'
             } : {
-                main: 'pages/shipper/index.html',
-                addShipment: 'pages/shipper/add-shipment.html',
-                myShipments: 'pages/shipper/my-shipments.html',
-                matches: 'pages/shipper/matches.html',
-                messages: 'pages/messaging/index.html',
-                profile: 'pages/shipper/profile.html'
+                main: './pages/shipper/index.html',
+                addShipment: './pages/shipper/add-shipment.html',
+                myShipments: './pages/shipper/my-shipments.html',
+                matches: './pages/shipper/matches.html',
+                messages: './pages/messaging/index.html',
+                profile: './pages/shipper/profile.html'
             };
             
             // Create user avatar with initials
@@ -540,6 +541,27 @@
                 </div>
             `;
             
+            // Add click handlers for dropdown links
+            setTimeout(() => {
+                const dropdownLinks = document.querySelectorAll('.dropdown-item[href]');
+                dropdownLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        
+                        // Check if user is still logged in before navigation
+                        const userEmail = sessionStorage.getItem('user_email');
+                        if (!userEmail && href.includes('/carrier/') || href.includes('/shipper/')) {
+                            showAlert('warning', 'يرجى تسجيل الدخول أولاً', 'Please login first');
+                            window.location.href = './pages/auth/login.html';
+                            return;
+                        }
+                        
+                        window.location.href = href;
+                    });
+                });
+            }, 100);
+
             // Add dropdown functionality
             const menuBtn = document.getElementById('userMenuBtn');
             const dropdown = document.getElementById('userDropdown');
@@ -776,15 +798,16 @@
             align-items: center;
             gap: 12px;
             padding: 12px 20px;
-            color: var(--text);
+            color: #333 !important;
             text-decoration: none;
             transition: all 0.2s ease;
             cursor: pointer;
             border: none;
-            background: none;
+            background: transparent;
             width: 100%;
             text-align: right;
             font-size: 14px;
+            font-weight: 500;
         }
         
         .dropdown-item:hover {
@@ -795,7 +818,8 @@
         .dropdown-item i {
             width: 20px;
             text-align: center;
-            color: var(--primary);
+            color: #5E72E4 !important;
+            opacity: 1;
         }
         
         .dropdown-item.logout-item {
