@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشروط والأحكام - منصة الشحنة السريعة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: #5E72E4;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #5E72E4;
+        }
+        
+        .content-wrapper {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+        }
+        
+        .page-title {
+            font-size: 2.5rem;
+            color: #2D3748;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .last-updated {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 3rem;
+            font-size: 0.9rem;
+        }
+        
+        .toc {
+            background: #F7FAFC;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .toc h2 {
+            color: #2D3748;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .toc ul {
+            list-style: none;
+        }
+        
+        .toc li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .toc a {
+            color: #4A5568;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .toc a:hover {
+            color: #5E72E4;
+        }
+        
+        .toc a::before {
+            content: "◈";
+            color: #5E72E4;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        .section h2 {
+            color: #2D3748;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 3px solid #5E72E4;
+        }
+        
+        .section h3 {
+            color: #4A5568;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .section p {
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .section ul, .section ol {
+            margin-right: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight {
+            background: #FFF5F5;
+            border-right: 4px solid #FC8181;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        
+        .important {
+            background: #EBF8FF;
+            border-right: 4px solid #4299E1;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+        
+        .contact-info {
+            background: #F0FFF4;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .contact-info h3 {
+            color: #22543D;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .language-switch {
+            position: fixed;
+            top: 100px;
+            left: 2rem;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .language-switch button {
+            display: block;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+            background: #5E72E4;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .language-switch button:hover {
+            background: #4C63D2;
+        }
+        
+        .language-switch button:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .content-wrapper {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .language-switch {
+                position: static;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-shipping-fast"></i>
+                <span>الشحنة السريعة</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="../../index.html">الرئيسية</a>
+                <a href="privacy.html">سياسة الخصوصية</a>
+                <a href="about.html">من نحن</a>
+                <a href="contact.html">اتصل بنا</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Language Switch -->
+        <div class="language-switch">
+            <button onclick="switchLanguage('ar')">العربية</button>
+            <button onclick="switchLanguage('en')">English</button>
+        </div>
+        
+        <div class="content-wrapper">
+            <h1 class="page-title" data-lang="ar">الشروط والأحكام</h1>
+            <h1 class="page-title" data-lang="en" style="display: none;">Terms and Conditions</h1>
+            
+            <p class="last-updated" data-lang="ar">آخر تحديث: 28 أكتوبر 2024</p>
+            <p class="last-updated" data-lang="en" style="display: none;">Last Updated: October 28, 2024</p>
+            
+            <!-- Table of Contents -->
+            <div class="toc">
+                <h2 data-lang="ar">المحتويات</h2>
+                <h2 data-lang="en" style="display: none;">Table of Contents</h2>
+                <ul>
+                    <li><a href="#introduction">1. المقدمة والقبول</a></li>
+                    <li><a href="#definitions">2. التعريفات</a></li>
+                    <li><a href="#services">3. وصف الخدمات</a></li>
+                    <li><a href="#registration">4. التسجيل وإنشاء الحساب</a></li>
+                    <li><a href="#usage">5. استخدام المنصة</a></li>
+                    <li><a href="#responsibilities">6. مسؤوليات المستخدمين</a></li>
+                    <li><a href="#fees">7. الرسوم والمدفوعات</a></li>
+                    <li><a href="#liability">8. إخلاء المسؤولية</a></li>
+                    <li><a href="#intellectual">9. الملكية الفكرية</a></li>
+                    <li><a href="#privacy">10. الخصوصية وحماية البيانات</a></li>
+                    <li><a href="#disputes">11. حل النزاعات</a></li>
+                    <li><a href="#termination">12. إنهاء الخدمة</a></li>
+                    <li><a href="#modifications">13. التعديلات</a></li>
+                    <li><a href="#governing">14. القانون المطبق</a></li>
+                    <li><a href="#contact">15. معلومات الاتصال</a></li>
+                </ul>
+            </div>
+            
+            <!-- Content Sections -->
+            <section class="section" id="introduction">
+                <h2>1. المقدمة والقبول</h2>
+                <p>
+                    مرحباً بكم في منصة الشحنة السريعة ("المنصة" أو "نحن" أو "الشركة"). هذه الشروط والأحكام ("الشروط") تحكم استخدامك للمنصة وجميع الخدمات المرتبطة بها. باستخدامك للمنصة، فإنك توافق على الالتزام بهذه الشروط بشكل كامل وغير مشروط.
+                </p>
+                
+                <div class="important">
+                    <p><strong>هام:</strong> إذا كنت لا توافق على أي من هذه الشروط، يرجى عدم استخدام المنصة. استخدامك للمنصة يعتبر موافقة صريحة على جميع البنود المذكورة.</p>
+                </div>
+                
+                <p>
+                    منصة الشحنة السريعة هي منصة إلكترونية تعمل كوسيط لربط أصحاب الشحنات مع موصلي الشحنات. نحن لا نقدم خدمات النقل بشكل مباشر، بل نوفر منصة تقنية لتسهيل التواصل والتعاقد بين الأطراف.
+                </p>
+            </section>
+            
+            <section class="section" id="definitions">
+                <h2>2. التعريفات</h2>
+                <p>لأغراض هذه الشروط والأحكام، تُعرّف المصطلحات التالية كما يلي:</p>
+                <ul>
+                    <li><strong>"المنصة":</strong> موقع وتطبيق الشحنة السريعة وجميع الخدمات المرتبطة.</li>
+                    <li><strong>"المستخدم":</strong> أي شخص أو كيان يستخدم المنصة.</li>
+                    <li><strong>"صاحب الشحنة":</strong> المستخدم الذي يرغب في إرسال بضائع.</li>
+                    <li><strong>"موصل الشحنة":</strong> المستخدم الذي يقدم خدمات نقل البضائع.</li>
+                    <li><strong>"الشحنة":</strong> البضائع أو المواد المراد نقلها.</li>
+                    <li><strong>"الرحلة":</strong> خدمة النقل المقدمة من موصل الشحنة.</li>
+                    <li><strong>"المطابقة":</strong> عملية الربط بين صاحب الشحنة وموصل الشحنة.</li>
+                    <li><strong>"العمولة":</strong> الرسوم التي تحصلها المنصة مقابل خدماتها.</li>
+                </ul>
+            </section>
+            
+            <section class="section" id="services">
+                <h2>3. وصف الخدمات</h2>
+                <h3>3.1 طبيعة الخدمة</h3>
+                <p>
+                    المنصة تقدم خدمة الوساطة الإلكترونية بين أصحاب الشحنات وموصلي الشحنات. نحن نوفر:
+                </p>
+                <ul>
+                    <li>نظام مطابقة ذكي لربط الشحنات بالرحلات المناسبة</li>
+                    <li>أدوات تواصل آمنة بين الأطراف</li>
+                    <li>نظام تقييم وتوثيق للمستخدمين</li>
+                    <li>معالجة المدفوعات (عند توفر الخدمة)</li>
+                    <li>دعم فني وخدمة عملاء</li>
+                </ul>
+                
+                <h3>3.2 حدود المسؤولية</h3>
+                <div class="highlight">
+                    <p><strong>تنبيه مهم:</strong> المنصة ليست شركة نقل ولا تمتلك وسائل نقل. نحن لسنا طرفاً في العقود المبرمة بين أصحاب الشحنات وموصلي الشحنات، ولا نتحمل مسؤولية عن:</p>
+                    <ul>
+                        <li>جودة أو سلامة خدمات النقل المقدمة</li>
+                        <li>فقدان أو تلف الشحنات</li>
+                        <li>التأخير في التسليم</li>
+                        <li>النزاعات بين المستخدمين</li>
+                        <li>مخالفة القوانين واللوائح المحلية</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section class="section" id="registration">
+                <h2>4. التسجيل وإنشاء الحساب</h2>
+                <h3>4.1 الأهلية</h3>
+                <p>يجب على المستخدمين استيفاء الشروط التالية للتسجيل:</p>
+                <ul>
+                    <li>أن يكون عمر المستخدم 18 سنة على الأقل</li>
+                    <li>امتلاك الأهلية القانونية الكاملة للتعاقد</li>
+                    <li>تقديم معلومات صحيحة ودقيقة وكاملة</li>
+                    <li>الحفاظ على تحديث المعلومات الشخصية</li>
+                </ul>
+                
+                <h3>4.2 التوثيق</h3>
+                <p>قد نطلب من المستخدمين توثيق حساباتهم من خلال:</p>
+                <ul>
+                    <li>تأكيد البريد الإلكتروني ورقم الهاتف</li>
+                    <li>تقديم وثائق الهوية الرسمية</li>
+                    <li>للموصلين: رخصة القيادة ووثائق المركبة</li>
+                    <li>للشركات: السجل التجاري والتراخيص اللازمة</li>
+                </ul>
+                
+                <h3>4.3 أمن الحساب</h3>
+                <p>
+                    المستخدم مسؤول عن الحفاظ على سرية معلومات حسابه وكلمة المرور. يجب إبلاغنا فوراً عن أي استخدام غير مصرح به لحسابك.
+                </p>
+            </section>
+            
+            <section class="section" id="usage">
+                <h2>5. استخدام المنصة</h2>
+                <h3>5.1 الاستخدام المسموح</h3>
+                <p>يُسمح باستخدام المنصة فقط للأغراض المشروعة والمتوافقة مع هذه الشروط:</p>
+                <ul>
+                    <li>البحث عن خدمات نقل الشحنات</li>
+                    <li>عرض خدمات النقل المتاحة</li>
+                    <li>التواصل مع المستخدمين الآخرين لترتيب النقل</li>
+                    <li>تقييم ومراجعة الخدمات المقدمة</li>
+                </ul>
+                
+                <h3>5.2 الاستخدام المحظور</h3>
+                <p>يُحظر تماماً:</p>
+                <ul>
+                    <li>نقل مواد محظورة قانونياً (مخدرات، أسلحة، مواد خطرة غير مرخصة)</li>
+                    <li>استخدام المنصة لأنشطة احتيالية أو غير قانونية</li>
+                    <li>انتحال شخصية الآخرين أو تقديم معلومات كاذبة</li>
+                    <li>مضايقة أو تهديد المستخدمين الآخرين</li>
+                    <li>محاولة اختراق أو تعطيل المنصة</li>
+                    <li>جمع معلومات المستخدمين لأغراض تجارية غير مصرح بها</li>
+                    <li>نشر محتوى مخل أو مسيء</li>
+                    <li>التحايل على رسوم المنصة</li>
+                </ul>
+            </section>
+            
+            <section class="section" id="responsibilities">
+                <h2>6. مسؤوليات المستخدمين</h2>
+                <h3>6.1 مسؤوليات أصحاب الشحنات</h3>
+                <ul>
+                    <li>تقديم وصف دقيق وكامل للشحنة</li>
+                    <li>الإفصاح عن أي مواد خاصة أو خطرة (ضمن المسموح قانونياً)</li>
+                    <li>تغليف الشحنة بشكل مناسب</li>
+                    <li>الالتزام بالمواعيد المتفق عليها</li>
+                    <li>دفع الرسوم المتفق عليها</li>
+                </ul>
+                
+                <h3>6.2 مسؤوليات موصلي الشحنات</h3>
+                <ul>
+                    <li>امتلاك التراخيص والتصاريح اللازمة</li>
+                    <li>الحفاظ على تأمين ساري المفعول</li>
+                    <li>نقل الشحنات بعناية وأمان</li>
+                    <li>الالتزام بمواعيد التسليم</li>
+                    <li>التواصل الفعال مع أصحاب الشحنات</li>
+                </ul>
+                
+                <h3>6.3 الامتثال للقوانين</h3>
+                <p>
+                    جميع المستخدمين ملزمون بالامتثال للقوانين واللوائح المحلية والدولية المعمول بها، بما في ذلك قوانين النقل والجمارك والضرائب.
+                </p>
+            </section>
+            
+            <section class="section" id="fees">
+                <h2>7. الرسوم والمدفوعات</h2>
+                <h3>7.1 هيكل الرسوم</h3>
+                <p>قد تفرض المنصة الرسوم التالية:</p>
+                <ul>
+                    <li>عمولة على المعاملات المكتملة (نسبة مئوية من قيمة الصفقة)</li>
+                    <li>رسوم اشتراك شهرية أو سنوية (للحسابات المميزة)</li>
+                    <li>رسوم خدمات إضافية (التوثيق، الإعلان المميز، إلخ)</li>
+                </ul>
+                
+                <h3>7.2 طرق الدفع</h3>
+                <p>نقبل المدفوعات عبر:</p>
+                <ul>
+                    <li>البطاقات الائتمانية والخصم</li>
+                    <li>التحويلات البنكية</li>
+                    <li>المحافظ الإلكترونية المعتمدة</li>
+                </ul>
+                
+                <h3>7.3 سياسة الاسترداد</h3>
+                <p>
+                    الرسوم المدفوعة للمنصة غير قابلة للاسترداد إلا في حالات محددة وفقاً لتقديرنا المطلق. النزاعات بين المستخدمين لا تؤهل لاسترداد رسوم المنصة.
+                </p>
+            </section>
+            
+            <section class="section" id="liability">
+                <h2>8. إخلاء المسؤولية</h2>
+                <div class="highlight">
+                    <h3>8.1 إخلاء عام</h3>
+                    <p>
+                        <strong>المنصة مقدمة "كما هي" دون أي ضمانات صريحة أو ضمنية. نحن لا نضمن:</strong>
+                    </p>
+                    <ul>
+                        <li>دقة أو اكتمال المعلومات المقدمة من المستخدمين</li>
+                        <li>موثوقية أو جودة خدمات النقل</li>
+                        <li>نجاح المعاملات بين المستخدمين</li>
+                        <li>التوفر المستمر للمنصة دون انقطاع</li>
+                        <li>خلو المنصة من الأخطاء أو الفيروسات</li>
+                    </ul>
+                </div>
+                
+                <h3>8.2 حدود المسؤولية</h3>
+                <p>
+                    لن نكون مسؤولين تحت أي ظرف عن أي أضرار مباشرة أو غير مباشرة أو عرضية أو تبعية أو خاصة ناتجة عن:
+                </p>
+                <ul>
+                    <li>استخدام أو عدم القدرة على استخدام المنصة</li>
+                    <li>أفعال أو إغفالات المستخدمين الآخرين</li>
+                    <li>فقدان البيانات أو الأرباح</li>
+                    <li>انقطاع الأعمال</li>
+                </ul>
+                
+                <h3>8.3 التعويض</h3>
+                <p>
+                    يوافق المستخدم على تعويض المنصة وحمايتها من أي مطالبات أو خسائر أو أضرار ناتجة عن:
+                </p>
+                <ul>
+                    <li>انتهاك هذه الشروط والأحكام</li>
+                    <li>انتهاك حقوق الآخرين</li>
+                    <li>الاستخدام غير القانوني للمنصة</li>
+                    <li>النزاعات مع مستخدمين آخرين</li>
+                </ul>
+            </section>
+            
+            <section class="section" id="intellectual">
+                <h2>9. الملكية الفكرية</h2>
+                <h3>9.1 حقوق المنصة</h3>
+                <p>
+                    جميع الحقوق في المنصة، بما في ذلك العلامات التجارية والشعارات والتصميمات والبرمجيات والمحتوى، هي ملك حصري للشركة ومحمية بموجب قوانين الملكية الفكرية.
+                </p>
+                
+                <h3>9.2 ترخيص الاستخدام</h3>
+                <p>
+                    نمنح المستخدمين ترخيصاً محدوداً غير حصري وغير قابل للنقل لاستخدام المنصة وفقاً لهذه الشروط. يُحظر:
+                </p>
+                <ul>
+                    <li>نسخ أو تعديل أو توزيع محتوى المنصة</li>
+                    <li>إجراء هندسة عكسية للبرمجيات</li>
+                    <li>استخدام العلامات التجارية دون إذن</li>
+                    <li>إنشاء أعمال مشتقة</li>
+                </ul>
+                
+                <h3>9.3 محتوى المستخدمين</h3>
+                <p>
+                    بنشر محتوى على المنصة، يمنح المستخدم ترخيصاً عالمياً غير حصري لاستخدام وعرض وتعديل هذا المحتوى لأغراض تشغيل وتحسين المنصة.
+                </p>
+            </section>
+            
+            <section class="section" id="privacy">
+                <h2>10. الخصوصية وحماية البيانات</h2>
+                <p>
+                    نلتزم بحماية خصوصية المستخدمين وفقاً لسياسة الخصوصية المنشورة على المنصة. باستخدام المنصة، توافق على:
+                </p>
+                <ul>
+                    <li>جمع ومعالجة بياناتك الشخصية</li>
+                    <li>مشاركة بعض المعلومات مع مستخدمين آخرين لتسهيل المعاملات</li>
+                    <li>استخدام ملفات تعريف الارتباط (Cookies) لتحسين تجربة المستخدم</li>
+                    <li>الاتصال بك لأغراض الخدمة والتسويق (مع إمكانية إلغاء الاشتراك)</li>
+                </ul>
+            </section>
+            
+            <section class="section" id="disputes">
+                <h2>11. حل النزاعات</h2>
+                <h3>11.1 النزاعات بين المستخدمين</h3>
+                <p>
+                    المنصة غير ملزمة بالتدخل في النزاعات بين المستخدمين، لكننا قد نقدم خدمات وساطة طوعية. المستخدمون مسؤولون عن حل نزاعاتهم مباشرة أو عبر القنوات القانونية المناسبة.
+                </p>
+                
+                <h3>11.2 النزاعات مع المنصة</h3>
+                <p>
+                    أي نزاع مع المنصة يجب أن يُحل أولاً عبر التواصل المباشر. في حالة عدم التوصل لحل، يخضع النزاع للتحكيم وفقاً لقواعد مركز التحكيم التجاري المحلي.
+                </p>
+            </section>
+            
+            <section class="section" id="termination">
+                <h2>12. إنهاء الخدمة</h2>
+                <h3>12.1 الإنهاء من قبل المستخدم</h3>
+                <p>
+                    يمكن للمستخدم إلغاء حسابه في أي وقت عبر إعدادات الحساب أو بالتواصل معنا. الالتزامات المعلقة تبقى سارية حتى بعد الإلغاء.
+                </p>
+                
+                <h3>12.2 الإنهاء من قبل المنصة</h3>
+                <p>نحتفظ بالحق في تعليق أو إنهاء حساب أي مستخدم في حالة:</p>
+                <ul>
+                    <li>انتهاك هذه الشروط والأحكام</li>
+                    <li>السلوك الاحتيالي أو غير القانوني</li>
+                    <li>تقديم معلومات كاذبة</li>
+                    <li>الإضرار بسمعة المنصة</li>
+                    <li>عدم النشاط لفترة طويلة</li>
+                </ul>
+            </section>
+            
+            <section class="section" id="modifications">
+                <h2>13. التعديلات</h2>
+                <p>
+                    نحتفظ بالحق في تعديل هذه الشروط والأحكام في أي وقت. سيتم إشعار المستخدمين بالتغييرات الجوهرية عبر البريد الإلكتروني أو إشعار على المنصة. استمرار استخدام المنصة بعد التعديلات يعتبر قبولاً للشروط المحدثة.
+                </p>
+            </section>
+            
+            <section class="section" id="governing">
+                <h2>14. القانون المطبق</h2>
+                <p>
+                    تخضع هذه الشروط والأحكام وتفسر وفقاً لقوانين المملكة العربية السعودية. المحاكم المختصة في المملكة لها الولاية القضائية الحصرية على أي نزاع ناشئ عن أو متعلق بهذه الشروط.
+                </p>
+                
+                <div class="important">
+                    <p><strong>ملاحظة:</strong> في حالة التعارض بين النسخة العربية والإنجليزية من هذه الشروط، تسود النسخة العربية.</p>
+                </div>
+            </section>
+            
+            <section class="section" id="contact">
+                <h2>15. معلومات الاتصال</h2>
+                <div class="contact-info">
+                    <h3>للاستفسارات والشكاوى:</h3>
+                    <p><i class="fas fa-envelope"></i> البريد الإلكتروني: support@fastshipment.com</p>
+                    <p><i class="fas fa-phone"></i> الهاتف: +966 XX XXX XXXX</p>
+                    <p><i class="fas fa-map-marker-alt"></i> العنوان: المملكة العربية السعودية</p>
+                    <p><i class="fas fa-clock"></i> ساعات العمل: الأحد - الخميس، 9:00 صباحاً - 6:00 مساءً</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // Language switching functionality
+        function switchLanguage(lang) {
+            document.querySelectorAll('[data-lang]').forEach(element => {
+                if (element.getAttribute('data-lang') === lang) {
+                    element.style.display = '';
+                } else {
+                    element.style.display = 'none';
+                }
+            });
+            
+            // Update HTML dir attribute
+            document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', lang);
+            
+            // Store preference
+            localStorage.setItem('preferred-language', lang);
+        }
+        
+        // Load preferred language on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const preferredLang = localStorage.getItem('preferred-language') || 'ar';
+            switchLanguage(preferredLang);
+        });
+        
+        // Smooth scroll to sections
+        document.querySelectorAll('.toc a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
