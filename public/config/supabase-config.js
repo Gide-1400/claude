@@ -155,9 +155,13 @@ window.APP_CONFIG = {
 
 console.log(`🚚 ${window.APP_CONFIG.APP_NAME} v${window.APP_CONFIG.VERSION} - Initialized`);
 
-// Don't initialize AuthManager on login/register pages
-const isAuthPage = window.location.pathname.includes('/auth/');
-if (!isAuthPage && typeof AuthManager !== 'undefined') {
-    // Initialize auth manager globally (but not on auth pages)
+// Don't initialize AuthManager on login/register pages OR dashboard pages
+const currentPath = window.location.pathname;
+const isAuthPage = currentPath.includes('/auth/');
+const isDashboardPage = currentPath.includes('/pages/carrier/') || 
+                       currentPath.includes('/pages/shipper/');
+
+if (!isAuthPage && !isDashboardPage && typeof AuthManager !== 'undefined') {
+    // Initialize auth manager globally (but not on auth or dashboard pages)
     window.authManager = new AuthManager();
 }
