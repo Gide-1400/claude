@@ -52,12 +52,52 @@ class AuthGuard {
         try {
             console.log('AuthGuard: Starting authentication check...');
             
-            // Check session storage first (faster)
+            // ✅ PRIORITY 1: Check if user just logged in or has authentication marker
+            const isAuthenticated = sessionStorage.getItem('user_authenticated');
+            const justLoggedIn = sessionStorage.getItem('justLoggedIn');
             const storedUser = sessionStorage.getItem('user_email');
             const storedUserType = sessionStorage.getItem('user_type');
             
-            console.log('AuthGuard: Session storage check:', { storedUser, storedUserType });
+            console.log('AuthGuard: Session storage check:', { 
+                isAuthenticated, 
+                justLoggedIn,
+                storedUser, 
+                storedUserType 
+            });
             
+            // ✅ If user is marked as authenticated, ALLOW ACCESS immediately
+            if (isAuthenticated === 'true' || justLoggedIn === 'true') {
+                console.log('✅ AuthGuard: User is authenticated via session storage - ALLOWING ACCESS');
+                
+                // Clear justLoggedIn flag after first check
+                if (justLoggedIn === 'true') {
+                    sessionStorage.removeItem('justLoggedIn');
+                }
+                
+                return; // ✅ ALLOW ACCESS - Don't check Supabase
+            }
+            
+            // ✅ PRIORITY 2: Check localStorage backup
+            const localUser = localStorage.getItem('fastship_user');
+            if (localUser) {
+                try {
+                    const userData = JSON.parse(localUser);
+                    if (userData.authenticated === true) {
+                        console.log('✅ AuthGuard: User is authenticated via localStorage - ALLOWING ACCESS');
+                        
+                        // Restore session data
+                        sessionStorage.setItem('user_email', userData.email);
+                        sessionStorage.setItem('user_type', userData.type || 'carrier');
+                        sessionStorage.setItem('user_authenticated', 'true');
+                        
+                        return; // ✅ ALLOW ACCESS
+                    }
+                } catch (e) {
+                    console.warn('AuthGuard: Failed to parse localStorage user data:', e);
+                }
+            }
+            
+            // ✅ PRIORITY 3: Only NOW check Supabase (fallback)
             // Wait for Supabase to be ready
             if (!window.supabaseClient) {
                 console.log('AuthGuard: Waiting for Supabase...');
