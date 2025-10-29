@@ -6,14 +6,49 @@
 class CitySearchManager {
     constructor() {
         this.cities = [];
-        this.loadCities();
         this.initializeEventListeners();
         this.isLoading = false;
+        this.lastQuery = '';
+        this.searchTimeout = null;
     }
 
     /**
-     * Initialize sample cities data
-     * In production, this would be loaded from the database
+     * Search cities from Supabase database with optimized indexes
+     */
+    async searchFromDatabase(query) {
+        try {
+            if (!window.supabaseClient) {
+                console.error('Supabase client not initialized');
+                return [];
+            }
+
+            this.isLoading = true;
+            
+            const { data, error } = await window.supabaseClient
+                .from('cities')
+                .select('*')
+                .or(`name_ar.ilike.%${query}%,name_en.ilike.%${query}%,country_ar.ilike.%${query}%,country_en.ilike.%${query}%`)
+                .order('is_major_city', { ascending: false })
+                .order('is_capital', { ascending: false })
+                .limit(15);
+
+            this.isLoading = false;
+
+            if (error) {
+                console.error('Error searching cities:', error);
+                return [];
+            }
+
+            return data || [];
+        } catch (error) {
+            console.error('Error in searchFromDatabase:', error);
+            this.isLoading = false;
+            return [];
+        }
+    }
+
+    /**
+     * Fallback: Initialize sample cities data if database is unavailable
      */
     loadCities() {
         this.cities = [
@@ -124,32 +159,56 @@ class CitySearchManager {
     }
 
     /**
-     * Search cities based on query
+     * Search cities based on query with debouncing
      */
-    searchCities(query) {
+    async searchCities(query) {
         if (this.isLoading) return;
+        
+        // Clear previous timeout
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
 
-        const currentLang = window.currentLanguage || 'ar';
-        const searchResults = this.cities.filter(city => {
-            const nameMatch = currentLang === 'ar' 
-                ? city.name.includes(query) 
-                : city.name_en.toLowerCase().includes(query.toLowerCase());
+        // Debounce: wait 300ms before searching
+        this.searchTimeout = setTimeout(async () => {
+            const currentLang = window.currentLanguage || 'ar';
             
-            const countryMatch = currentLang === 'ar'
-                ? city.country_ar.includes(query)
-                : city.country.toLowerCase().includes(query.toLowerCase());
+            // Try database first
+            let searchResults = await this.searchFromDatabase(query);
+            
+            // Fallback to local data if database fails
+            if (searchResults.length === 0 && this.cities.length > 0) {
+                searchResults = this.cities.filter(city => {
+                    const nameMatch = currentLang === 'ar' 
+                        ? city.name.includes(query) || city.name_ar?.includes(query)
+                        : city.name_en.toLowerCase().includes(query.toLowerCase());
+                    
+                    const countryMatch = currentLang === 'ar'
+                        ? city.country_ar?.includes(query)
+                        : city.country_en?.toLowerCase().includes(query.toLowerCase());
 
-            return nameMatch || countryMatch;
-        }).slice(0, 8); // Limit to 8 results
+                    return nameMatch || countryMatch;
+                }).slice(0, 15);
+            }
 
-        this.displayResults(searchResults);
+            this.displayResults(searchResults);
+        }, 300); // 300ms debounce
     }
 
     /**
      * Show popular cities when focusing on empty input
      */
-    showPopularCities() {
-        const popularCities = this.cities.slice(0, 8); // First 8 cities (Middle East region)
+    async showPopularCities() {
+        // Try to load from database first
+        let popularCities = await this.searchFromDatabase('');
+        
+        // Fallback to local data
+        if (popularCities.length === 0 && this.cities.length > 0) {
+            popularCities = this.cities.slice(0, 10);
+        } else {
+            popularCities = popularCities.slice(0, 10);
+        }
+        
         this.displayResults(popularCities, true);
     }
 
@@ -173,11 +232,11 @@ class CitySearchManager {
         let html = `<div class="search-header">${headerText}</div>`;
         
         cities.forEach(city => {
-            const cityName = currentLang === 'ar' ? city.name : city.name_en;
-            const countryName = currentLang === 'ar' ? city.country_ar : city.country;
+            const cityName = currentLang === 'ar' ? (city.name_ar || city.name) : (city.name_en || city.name);
+            const countryName = currentLang === 'ar' ? (city.country_ar || city.country) : (city.country_en || city.country);
             
             html += `
-                <div class="city-result-item" onclick="citySearchManager.selectCity('${city.name}', '${city.name_en}', '${city.country}', '${city.country_ar}')">
+                <div class="city-result-item" onclick="citySearchManager.selectCity('${city.name_ar || city.name}', '${city.name_en || city.name_en}', '${city.country_en || city.country}', '${city.country_ar || city.country_ar}')">
                     <i class="fas fa-map-marker-alt"></i>
                     <div class="city-info">
                         <div class="city-name">${cityName}</div>
