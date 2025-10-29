@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "fast-ship-sa",
-  "_updated": "2025-10-29T02:50:00Z",
+  "_updated": "2025-10-29T03:30:00Z",
   "builds": [
     {
       "src": "**/*",
@@ -28,6 +28,19 @@
   ],
   "headers": [
     {
+      "source": "/assets/js/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {
@@ -41,6 +54,10 @@
         {
           "key": "X-XSS-Protection",
           "value": "1; mode=block"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
         }
       ]
     }
