@@ -10,10 +10,18 @@ class SimpleAuthGuard {
         // Skip auth pages
         const currentPath = window.location.pathname;
         const isAuthPage = currentPath.includes('/auth/');
-        const isMainPage = currentPath === '/' || currentPath.includes('/index.html');
+        const isMainPage = currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/public/') || currentPath.endsWith('/public');
         
         if (isAuthPage || isMainPage) {
+            console.log('✅ Auth Guard: Skipping check - on auth/main page');
             return;
+        }
+
+        // Check if page explicitly marked as dashboard (set by dashboard pages)
+        const onDashboardPage = sessionStorage.getItem('on_dashboard_page');
+        if (onDashboardPage === 'true') {
+            console.log('✅ Auth Guard: Dashboard marker found - ALLOWING access without check');
+            return; // Skip auth check completely
         }
 
         // Check if we're on a dashboard index page (main dashboard page)
@@ -21,13 +29,12 @@ class SimpleAuthGuard {
                                 currentPath.includes('/pages/shipper/index.html');
         
         // SKIP auth check completely if we're already on the dashboard index
-        // This prevents redirect loops when user navigates within dashboard
         if (isDashboardIndex) {
-            console.log('✅ SimpleAuthGuard: On dashboard index, SKIPPING auth check to prevent loops');
+            console.log('✅ Auth Guard: On dashboard index, SKIPPING auth check');
             return;
         }
 
-        // Only check for OTHER dashboard pages (not index)
+        // Only check for OTHER dashboard pages
         const isDashboardPage = currentPath.includes('/pages/carrier/') || 
                                currentPath.includes('/pages/shipper/') ||
                                currentPath.includes('/pages/messaging/');
@@ -236,16 +243,15 @@ class SimpleAuthGuard {
     }
 }
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    new SimpleAuthGuard();
-});
-
-// Also initialize if DOM is already loaded
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
+// Initialize ONCE only
+if (!window.authGuardInitialized) {
+    window.authGuardInitialized = true;
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            new SimpleAuthGuard();
+        });
+    } else {
         new SimpleAuthGuard();
-    });
-} else {
-    new SimpleAuthGuard();
+    }
 }
