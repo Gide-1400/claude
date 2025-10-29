@@ -10,27 +10,39 @@ class AuthGuard {
     }
 
     async init() {
-        // Don't run on auth pages or main index page
+        // Don't run on auth pages or main/dashboard index pages
         const currentPath = window.location.pathname;
+        
+        // Skip auth pages
         const isAuthPage = currentPath.includes('/auth/login') || 
                           currentPath.includes('/auth/register') ||
                           currentPath.includes('/auth/verification');
         
-        const isMainPage = currentPath === '/' || 
-                          currentPath.includes('/index.html') || 
-                          currentPath.endsWith('/');
+        // Skip all index.html pages (main page and dashboards)
+        const isIndexPage = currentPath === '/' || 
+                           currentPath.endsWith('/index.html') || 
+                           currentPath.endsWith('/') ||
+                           currentPath.includes('carrier/index') ||
+                           currentPath.includes('shipper/index');
         
-        if (isAuthPage || isMainPage) {
-            console.log('AuthGuard: Skipping - auth page or main page');
+        if (isAuthPage || isIndexPage) {
+            console.log('✅ AuthGuard: Skipping - auth/index page:', currentPath);
             return;
         }
 
-        // Check if this is a protected dashboard page
-        const isDashboardPage = currentPath.includes('/pages/carrier/') || 
-                               currentPath.includes('/pages/shipper/') ||
-                               currentPath.includes('/pages/messaging/');
+        // ✅ ONLY run on specific protected pages (not dashboards)
+        const protectedPages = [
+            '/my-trips', '/my-shipments', 
+            '/add-trip', '/add-shipment',
+            '/matches', '/profile',
+            '/messaging/', '/chat'
+        ];
         
-        if (isDashboardPage) {
+        const isProtectedPage = protectedPages.some(page => currentPath.includes(page));
+        
+        if (isProtectedPage) {
+            console.log('🔒 AuthGuard: Checking protected page:', currentPath);
+            
             // Prevent too frequent checks
             const now = Date.now();
             if (this.isChecking || (now - this.lastCheckTime < this.checkCooldown)) {
@@ -45,6 +57,8 @@ class AuthGuard {
             } finally {
                 this.isChecking = false;
             }
+        } else {
+            console.log('✅ AuthGuard: Not a protected page, skipping:', currentPath);
         }
     }
 
