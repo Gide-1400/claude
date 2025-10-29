@@ -18,7 +18,7 @@ class CitySearchManager {
     async searchFromDatabase(query) {
         try {
             if (!window.supabaseClient) {
-                console.error('Supabase client not initialized');
+                console.warn('⚠️ Supabase client not initialized, using fallback data');
                 return [];
             }
 
@@ -35,13 +35,19 @@ class CitySearchManager {
             this.isLoading = false;
 
             if (error) {
-                console.error('Error searching cities:', error);
+                console.error('❌ Error searching cities:', error);
                 return [];
+            }
+
+            if (data && data.length > 0) {
+                console.log(`✅ Found ${data.length} cities from database`);
+            } else {
+                console.log('⚠️ No cities found in database, using fallback');
             }
 
             return data || [];
         } catch (error) {
-            console.error('Error in searchFromDatabase:', error);
+            console.error('❌ Error in searchFromDatabase:', error);
             this.isLoading = false;
             return [];
         }
@@ -173,11 +179,14 @@ class CitySearchManager {
         this.searchTimeout = setTimeout(async () => {
             const currentLang = window.currentLanguage || 'ar';
             
+            console.log(`🔎 Searching for: "${query}"`);
+            
             // Try database first
             let searchResults = await this.searchFromDatabase(query);
             
-            // Fallback to local data if database fails
-            if (searchResults.length === 0 && this.cities.length > 0) {
+            // Fallback to local data if database fails or empty
+            if (searchResults.length === 0) {
+                console.log('📚 Using fallback local data');
                 searchResults = this.cities.filter(city => {
                     const nameMatch = currentLang === 'ar' 
                         ? city.name.includes(query) || city.name_ar?.includes(query)
@@ -189,6 +198,8 @@ class CitySearchManager {
 
                     return nameMatch || countryMatch;
                 }).slice(0, 15);
+                
+                console.log(`📋 Fallback found ${searchResults.length} results`);
             }
 
             this.displayResults(searchResults);
@@ -337,8 +348,19 @@ class CitySearchManager {
 let citySearchManager;
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Wait for Supabase to be ready
+    if (window.supabaseConfigReady) {
+        await window.supabaseConfigReady;
+    }
+    
+    console.log('🔍 City Search initialized');
+    console.log('✅ Supabase Client:', window.supabaseClient ? 'Connected' : 'Not connected');
+    
     citySearchManager = new CitySearchManager();
+    
+    // Load fallback cities for offline mode
+    citySearchManager.loadCities();
 });
 
 // Update on language change
