@@ -434,8 +434,19 @@
         </div>
     </footer>
 
+    <!-- Load Supabase first -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Then load config - WAIT for it to complete -->
+    <script>
+        // Create a promise that resolves when supabase config is loaded
+        window.supabaseConfigReady = new Promise(resolve => {
+            window.supabaseConfigLoaded = resolve;
+        });
+    </script>
     <script src="config/supabase-config.js"></script>
+    
+    <!-- Load other scripts after ensuring config is ready -->
     <script src="assets/js/performance.js"></script>
     <script src="assets/js/auth-manager.js"></script>
     <script src="assets/js/language-switcher.js"></script>

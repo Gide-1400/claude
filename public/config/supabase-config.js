@@ -148,3 +148,9 @@ if (!isAuthPage && typeof AuthManager !== 'undefined') {
     // Initialize auth manager globally (but not on auth pages)
     window.authManager = new AuthManager();
 }
+
+// Signal that config is ready
+if (typeof window.supabaseConfigLoaded === 'function') {
+    window.supabaseConfigLoaded();
+}
+console.log('✅ Supabase config loaded and ready');

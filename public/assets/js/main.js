@@ -1,11 +1,11 @@
 // Main JavaScript for Fast Shipment Platform
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Initialize the application
-    initApp();
+    await initApp();
 });
 
-function initApp() {
+async function initApp() {
     // Initialize mobile menu
     initMobileMenu();
     
@@ -18,11 +18,11 @@ function initApp() {
     // Initialize language switcher
     initLanguageSwitcher();
     
-    // Initialize global city search
-    initGlobalFeatures();
+    // Initialize Supabase client FIRST and WAIT for it
+    await initSupabase();
     
-    // Initialize Supabase client
-    initSupabase();
+    // Initialize global city search AFTER Supabase is ready
+    initGlobalFeatures();
 }
 
 // Mobile Menu Functionality
@@ -197,13 +197,21 @@ function initSmoothScrolling() {
 }
 
 // Initialize Supabase client
-function initSupabase() {
+async function initSupabase() {
+    // Wait for supabase config to be ready
+    if (window.supabaseConfigReady) {
+        console.log('⏳ Waiting for Supabase config...');
+        await window.supabaseConfigReady;
+    }
+    
     // Supabase is already initialized in supabase-config.js
     // Just check if it exists
-    if (typeof window.supabase === 'undefined') {
-        console.error('Supabase client is not initialized. Make sure supabase-config.js is loaded.');
+    if (typeof window.supabaseClient === 'undefined') {
+        console.error('❌ Supabase client is not initialized. Make sure supabase-config.js is loaded.');
+        return false;
     } else {
-        console.log('Supabase client already initialized');
+        console.log('✅ Supabase client ready and available');
+        return true;
     }
 }
 
