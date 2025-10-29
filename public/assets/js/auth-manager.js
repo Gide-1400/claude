@@ -422,29 +422,40 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Initialize auth manager globally (but NOT on auth pages)
+// Initialize auth manager only on public (non-dashboard) pages
 const currentPath = window.location.pathname;
 const isAuthPage = currentPath.includes('/auth/login') || 
                    currentPath.includes('/auth/register') ||
                    currentPath.includes('/auth/verification');
+const isProtectedSection = currentPath.includes('/pages/carrier/') ||
+                           currentPath.includes('/pages/shipper/') ||
+                           currentPath.includes('/pages/messaging/');
 
-if (!isAuthPage) {
+if (!isAuthPage && !isProtectedSection) {
     window.authManager = new AuthManager();
-    console.log('✅ AuthManager initialized');
+    console.log('✅ AuthManager initialized on public page');
 } else {
-    console.log('⏭️ AuthManager skipped on auth page');
-    // Create a dummy authManager for auth pages to prevent errors
-    window.authManager = {
-        getUserProfile: () => null,
-        handleLogout: async () => {
-            try {
-                await window.supabaseClient.auth.signOut();
-                window.location.href = '../../index.html';
-            } catch (e) {
-                console.error(e);
+    console.log('⏭️ AuthManager skipped on protected/auth page:', currentPath);
+    if (!window.authManager) {
+        const logoutTarget = currentPath.includes('/auth/')
+            ? '../../index.html'
+            : currentPath.includes('/pages/')
+                ? '../auth/login.html'
+                : 'pages/auth/login.html';
+
+        window.authManager = {
+            getUserProfile: () => null,
+            checkSession: () => null,
+            handleLogout: async () => {
+                try {
+                    await window.supabaseClient?.auth?.signOut?.();
+                } catch (e) {
+                    console.error('AuthManager fallback logout error:', e);
+                }
+                window.location.href = logoutTarget;
             }
-        }
-    };
+        };
+    }
 }
 
 // Expose for backward compatibility
