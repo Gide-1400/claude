@@ -303,15 +303,7 @@ b<!DOCTYPE html>
     <script src="../../config/supabase-config.js"></script>
     <script src="../../assets/js/backup-auth.js"></script>
     
-    <!-- Mark that we're on dashboard to prevent auth-guard redirect -->
-    <script>
-        // Set marker BEFORE auth-guard loads
-        sessionStorage.setItem('on_dashboard_page', 'true');
-        sessionStorage.setItem('user_authenticated', 'true');
-        sessionStorage.setItem('auth_timestamp', Date.now().toString());
-    </script>
-    
-    <script src="../../assets/js/simple-auth-guard.js"></script>
+    <!-- NO AUTH GUARD ON DASHBOARD - User already authenticated by reaching here -->
     
     <script>
         // Initialize Dashboard
