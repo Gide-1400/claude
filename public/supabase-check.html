@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فحص قاعدة بيانات Supabase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+            direction: rtl;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #5E72E4;
+            border-bottom: 3px solid #5E72E4;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2DCE89;
+            margin-top: 30px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-right: 4px solid #5E72E4;
+        }
+        .success {
+            color: #2DCE89;
+            font-weight: bold;
+        }
+        .error {
+            color: #F5365C;
+            font-weight: bold;
+        }
+        .warning {
+            color: #FB6340;
+            font-weight: bold;
+        }
+        button {
+            background: #5E72E4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #4c63d2;
+        }
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+        th {
+            background: #5E72E4;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 0 5px;
+        }
+        .status.online {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 فحص شامل لقاعدة بيانات Supabase</h1>
+        
+        <div class="info-box">
+            <strong>📊 معلومات المشروع:</strong><br>
+            URL: <code>https://chmistqmcmmmjqeanudu.supabase.co</code><br>
+            Project ID: <code>chmistqmcmmmjqeanudu</code>
+        </div>
+
+        <div class="section">
+            <h2>1️⃣ حالة الاتصال</h2>
+            <div id="connectionStatus">جاري الفحص...</div>
+        </div>
+
+        <div class="section">
+            <h2>2️⃣ المستخدمون في Auth</h2>
+            <button onclick="listAuthUsers()">عرض مستخدمي Auth</button>
+            <div id="authUsers"></div>
+        </div>
+
+        <div class="section">
+            <h2>3️⃣ جدول Users (البيانات الشخصية)</h2>
+            <button onclick="listUsersTable()">عرض جدول Users</button>
+            <div id="usersTable"></div>
+        </div>
+
+        <div class="section">
+            <h2>4️⃣ جدول Trips (رحلات الموصلين)</h2>
+            <button onclick="listTrips()">عرض الرحلات</button>
+            <div id="tripsTable"></div>
+        </div>
+
+        <div class="section">
+            <h2>5️⃣ جدول Shipments (شحنات الشاحنين)</h2>
+            <button onclick="listShipments()">عرض الشحنات</button>
+            <div id="shipmentsTable"></div>
+        </div>
+
+        <div class="section">
+            <h2>6️⃣ اختبار تسجيل دخول</h2>
+            <input type="email" id="testEmail" placeholder="البريد الإلكتروني" style="padding: 10px; width: 250px; margin: 5px;">
+            <input type="password" id="testPassword" placeholder="كلمة المرور" style="padding: 10px; width: 250px; margin: 5px;">
+            <button onclick="testLogin()">اختبار تسجيل الدخول</button>
+            <div id="loginTest"></div>
+        </div>
+
+        <div class="section">
+            <h2>7️⃣ إنشاء ملف تعريف جديد (إصلاح)</h2>
+            <button onclick="fixUserProfile()">إصلاح الملف الشخصي للمستخدم الحالي</button>
+            <div id="fixResult"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase
+        const SUPABASE_URL = 'https://chmistqmcmmmjqeanudu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobWlzdHFtY21tbWpxZWFudWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NDg1MTEsImV4cCI6MjA3NjIyNDUxMX0.Ho-3nEs3_w5Xmna2z0HQF6dDjh8MkiBzD10N_6vuEKs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check connection
+        async function checkConnection() {
+            try {
+                const { data, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    document.getElementById('connectionStatus').innerHTML = 
+                        `<span class="error">❌ خطأ في الاتصال:</span><pre>${JSON.stringify(error, null, 2)}</pre>`;
+                } else {
+                    const status = data.session ? 
+                        `<span class="success">✅ متصل ومسجل الدخول</span><br>المستخدم: ${data.session.user.email}` :
+                        `<span class="warning">⚠️ متصل ولكن غير مسجل الدخول</span>`;
+                    
+                    document.getElementById('connectionStatus').innerHTML = status;
+                }
+            } catch (err) {
+                document.getElementById('connectionStatus').innerHTML = 
+                    `<span class="error">❌ فشل الاتصال:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // List Auth Users
+        async function listAuthUsers() {
+            document.getElementById('authUsers').innerHTML = '<p>⏳ جاري التحميل...</p>';
+            
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (session) {
+                    document.getElementById('authUsers').innerHTML = `
+                        <div class="success">✅ مستخدم مسجل حالياً:</div>
+                        <table>
+                            <tr><th>البريد</th><td>${session.user.email}</td></tr>
+                            <tr><th>ID</th><td>${session.user.id}</td></tr>
+                            <tr><th>تاريخ الإنشاء</th><td>${new Date(session.user.created_at).toLocaleString('ar')}</td></tr>
+                            <tr><th>آخر دخول</th><td>${new Date(session.user.last_sign_in_at).toLocaleString('ar')}</td></tr>
+                        </table>
+                    `;
+                } else {
+                    document.getElementById('authUsers').innerHTML = 
+                        '<span class="warning">⚠️ لا يوجد مستخدم مسجل حالياً</span>';
+                }
+            } catch (err) {
+                document.getElementById('authUsers').innerHTML = 
+                    `<span class="error">❌ خطأ:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // List Users Table
+        async function listUsersTable() {
+            document.getElementById('usersTable').innerHTML = '<p>⏳ جاري التحميل...</p>';
+            
+            try {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(10);
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    let html = `<div class="success">✅ تم العثور على ${data.length} مستخدم</div><table>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>البريد</th>
+                            <th>النوع</th>
+                            <th>نوع الموصل</th>
+                            <th>نوع الشاحن</th>
+                            <th>Auth ID</th>
+                        </tr>`;
+                    
+                    data.forEach(user => {
+                        html += `<tr>
+                            <td>${user.name || '-'}</td>
+                            <td>${user.email}</td>
+                            <td>${user.user_type || '-'}</td>
+                            <td>${user.carrier_type || '-'}</td>
+                            <td>${user.shipper_type || '-'}</td>
+                            <td>${user.auth_user_id ? user.auth_user_id.substring(0, 8) + '...' : '-'}</td>
+                        </tr>`;
+                    });
+                    
+                    html += '</table>';
+                    document.getElementById('usersTable').innerHTML = html;
+                } else {
+                    document.getElementById('usersTable').innerHTML = 
+                        '<span class="warning">⚠️ لا توجد بيانات في جدول Users</span>';
+                }
+            } catch (err) {
+                document.getElementById('usersTable').innerHTML = 
+                    `<span class="error">❌ خطأ:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // List Trips
+        async function listTrips() {
+            document.getElementById('tripsTable').innerHTML = '<p>⏳ جاري التحميل...</p>';
+            
+            try {
+                const { data, error } = await supabase
+                    .from('trips')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    document.getElementById('tripsTable').innerHTML = 
+                        `<div class="success">✅ تم العثور على ${data.length} رحلة</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    document.getElementById('tripsTable').innerHTML = 
+                        '<span class="warning">⚠️ لا توجد رحلات</span>';
+                }
+            } catch (err) {
+                document.getElementById('tripsTable').innerHTML = 
+                    `<span class="error">❌ خطأ:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // List Shipments
+        async function listShipments() {
+            document.getElementById('shipmentsTable').innerHTML = '<p>⏳ جاري التحميل...</p>';
+            
+            try {
+                const { data, error } = await supabase
+                    .from('shipments')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(5);
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    document.getElementById('shipmentsTable').innerHTML = 
+                        `<div class="success">✅ تم العثور على ${data.length} شحنة</div>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                } else {
+                    document.getElementById('shipmentsTable').innerHTML = 
+                        '<span class="warning">⚠️ لا توجد شحنات</span>';
+                }
+            } catch (err) {
+                document.getElementById('shipmentsTable').innerHTML = 
+                    `<span class="error">❌ خطأ:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // Test Login
+        async function testLogin() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            
+            if (!email || !password) {
+                alert('يرجى إدخال البريد الإلكتروني وكلمة المرور');
+                return;
+            }
+            
+            document.getElementById('loginTest').innerHTML = '<p>⏳ جاري تسجيل الدخول...</p>';
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                // Check if user has profile
+                const { data: profile, error: profileError } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('auth_user_id', data.user.id)
+                    .single();
+                
+                let html = `<div class="success">✅ تم تسجيل الدخول بنجاح!</div>
+                    <table>
+                        <tr><th>البريد</th><td>${data.user.email}</td></tr>
+                        <tr><th>User ID</th><td>${data.user.id}</td></tr>
+                    </table>`;
+                
+                if (profileError || !profile) {
+                    html += `<div class="error">❌ الملف الشخصي غير موجود في جدول users!</div>
+                        <p>هذه هي المشكلة! المستخدم موجود في Auth لكن ليس له ملف شخصي في جدول users</p>`;
+                } else {
+                    html += `<div class="success">✅ الملف الشخصي موجود:</div>
+                        <pre>${JSON.stringify(profile, null, 2)}</pre>`;
+                }
+                
+                document.getElementById('loginTest').innerHTML = html;
+            } catch (err) {
+                document.getElementById('loginTest').innerHTML = 
+                    `<span class="error">❌ فشل تسجيل الدخول:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // Fix User Profile
+        async function fixUserProfile() {
+            document.getElementById('fixResult').innerHTML = '<p>⏳ جاري الإصلاح...</p>';
+            
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                
+                if (!session) {
+                    document.getElementById('fixResult').innerHTML = 
+                        '<span class="error">❌ يرجى تسجيل الدخول أولاً</span>';
+                    return;
+                }
+                
+                // Check if profile exists
+                const { data: existingProfile } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('auth_user_id', session.user.id)
+                    .single();
+                
+                if (existingProfile) {
+                    document.getElementById('fixResult').innerHTML = 
+                        `<div class="success">✅ الملف الشخصي موجود بالفعل!</div>
+                        <pre>${JSON.stringify(existingProfile, null, 2)}</pre>`;
+                    return;
+                }
+                
+                // Create new profile
+                const newProfile = {
+                    auth_user_id: session.user.id,
+                    email: session.user.email,
+                    name: session.user.email.split('@')[0],
+                    user_type: 'carrier',
+                    carrier_type: 'individual',
+                    created_at: new Date().toISOString()
+                };
+                
+                const { data, error } = await supabase
+                    .from('users')
+                    .insert([newProfile])
+                    .select();
+                
+                if (error) throw error;
+                
+                document.getElementById('fixResult').innerHTML = 
+                    `<div class="success">✅ تم إنشاء الملف الشخصي بنجاح!</div>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>`;
+                
+            } catch (err) {
+                document.getElementById('fixResult').innerHTML = 
+                    `<span class="error">❌ خطأ:</span><pre>${err.message}</pre>`;
+            }
+        }
+
+        // Run on page load
+        window.onload = function() {
+            checkConnection();
+        };
+    </script>
+</body>
+</html>
