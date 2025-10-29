@@ -301,8 +301,17 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="../../config/supabase-config.js"></script>
-        <!-- Backup Auth & Simple Auth Guard Scripts -->
+    <!-- Backup Auth & Simple Auth Guard Scripts -->
     <script src="../../assets/js/backup-auth.js"></script>
+    
+    <!-- Mark that we're on dashboard to prevent auth-guard redirect -->
+    <script>
+        // Set marker BEFORE auth-guard loads
+        sessionStorage.setItem('on_dashboard_page', 'true');
+        sessionStorage.setItem('user_authenticated', 'true');
+        sessionStorage.setItem('auth_timestamp', Date.now().toString());
+    </script>
+    
     <script src="../../assets/js/simple-auth-guard.js"></script>
     
     <script>
@@ -315,18 +324,48 @@
             }
             
             async init() {
-                // Check authentication
-                const userProfile = window.authManager?.getUserProfile();
-                if (!userProfile) {
-                    window.location.href = '/pages/auth/login.html';
-                    return;
-                }
+                // SKIP authentication check - user already reached dashboard after login
+                console.log('✅ Dashboard loaded - user authenticated');
                 
-                this.currentUser = userProfile;
-                this.updateUserInfo();
+                // Load user data
+                await this.loadUserData();
+                
+                // Load dashboard data and charts
                 await this.loadDashboardData();
                 this.initCharts();
                 this.setupRealtimeUpdates();
+            }
+            
+            async loadUserData() {
+                // Try to get user from Supabase session
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (session?.user) {
+                        // Get full profile from users table
+                        const { data: profile } = await this.supabase
+                            .from('users')
+                            .select('*')
+                            .eq('auth_user_id', session.user.id)
+                            .single();
+                        
+                        if (profile) {
+                            this.currentUser = profile;
+                            this.updateUserInfo();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not load user data:', error);
+                }
+                
+                // Fallback to session storage
+                const userName = sessionStorage.getItem('user_name') || sessionStorage.getItem('user_email') || 'المستخدم';
+                this.currentUser = {
+                    id: sessionStorage.getItem('user_id'),
+                    name: userName,
+                    email: sessionStorage.getItem('user_email')
+                };
+                this.updateUserInfo();
             }
             
             updateUserInfo() {

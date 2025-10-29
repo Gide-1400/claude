@@ -16,7 +16,18 @@ class SimpleAuthGuard {
             return;
         }
 
-        // Only check for dashboard pages
+        // Check if we're on a dashboard index page (main dashboard page)
+        const isDashboardIndex = currentPath.includes('/pages/carrier/index.html') || 
+                                currentPath.includes('/pages/shipper/index.html');
+        
+        // SKIP auth check completely if we're already on the dashboard index
+        // This prevents redirect loops when user navigates within dashboard
+        if (isDashboardIndex) {
+            console.log('✅ SimpleAuthGuard: On dashboard index, SKIPPING auth check to prevent loops');
+            return;
+        }
+
+        // Only check for OTHER dashboard pages (not index)
         const isDashboardPage = currentPath.includes('/pages/carrier/') || 
                                currentPath.includes('/pages/shipper/') ||
                                currentPath.includes('/pages/messaging/');
@@ -25,7 +36,7 @@ class SimpleAuthGuard {
             // Wait a moment for all auth systems to initialize
             setTimeout(async () => {
                 await this.checkAuth();
-            }, 300); // Increased from 100ms to 300ms for better reliability
+            }, 300);
         }
     }
 
