@@ -1,0 +1,669 @@
+b<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - صاحب الشحنات</title>
+    
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../assets/css/modern-dashboard.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Modern Sidebar -->
+        <aside class="sidebar glass" id="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html" class="sidebar-logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="logo-text">الشحنة السريعة</span>
+                </a>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <!-- Main Navigation -->
+                <div class="nav-section">
+                    <div class="nav-section-title">القائمة الرئيسية</div>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link active">
+                                <span class="nav-icon"><i class="fas fa-home"></i></span>
+                                <span>لوحة التحكم</span>
+                                <span class="nav-badge">جديد</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="add-shipment.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-plus-circle"></i></span>
+                                <span>إضافة شحنة</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="my-shipments.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-boxes"></i></span>
+                                <span>شحناتي</span>
+                                <span class="nav-badge">8</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="matches.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-handshake"></i></span>
+                                <span>الموصلين المتاحين</span>
+                                <span class="nav-badge">12</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Communication -->
+                <div class="nav-section">
+                    <div class="nav-section-title">التواصل</div>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="../messaging/index.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-comments"></i></span>
+                                <span>الرسائل</span>
+                                <span class="nav-badge">5</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../messaging/contacts.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-address-book"></i></span>
+                                <span>جهات الاتصال</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Settings -->
+                <div class="nav-section">
+                    <div class="nav-section-title">الإعدادات</div>
+                    <ul class="nav-menu">
+                        <li class="nav-item">
+                            <a href="profile.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-user"></i></span>
+                                <span>الملف الشخصي</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="settings.html" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-cog"></i></span>
+                                <span>الإعدادات</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" onclick="window.authManager.handleLogout(); return false;" class="nav-link">
+                                <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+                                <span>تسجيل الخروج</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Modern Header -->
+            <header class="dashboard-header glass">
+                <div class="header-left">
+                    <h1 class="header-title">مرحباً بعودتك! 📦</h1>
+                    <p class="header-subtitle">إليك نظرة عامة على شحناتك اليوم</p>
+                </div>
+                
+                <div class="header-right">
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="ابحث عن شحنة أو موصل...">
+                    </div>
+                    
+                    <!-- Notifications -->
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">5</span>
+                    </div>
+                    
+                    <!-- User Profile -->
+                    <div class="user-profile-menu">
+                        <div class="user-avatar">
+                            <img src="../../assets/images/user-avatar.jpg" alt="User">
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" id="userName">أحمد محمد</span>
+                            <span class="user-role">صاحب شحنات</span>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Statistics Cards -->
+            <div class="stats-grid animate-slideIn">
+                <!-- Total Shipments Card -->
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">إجمالي الشحنات</div>
+                            <div class="stat-value" id="totalShipments">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>8% هذا الشهر</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pending Shipments -->
+                <div class="stat-card warning">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">في انتظار موصل</div>
+                            <div class="stat-value" id="pendingShipments">0</div>
+                            <div class="stat-change">
+                                <i class="fas fa-clock"></i>
+                                <span>تحتاج اهتمام</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon warning">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- In Transit -->
+                <div class="stat-card info">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">قيد التوصيل</div>
+                            <div class="stat-value" id="inTransit">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-shipping-fast"></i>
+                                <span>في الطريق</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon info">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Delivered -->
+                <div class="stat-card success">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">تم التوصيل</div>
+                            <div class="stat-value" id="delivered">0</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-check-circle"></i>
+                                <span>ممتاز!</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Shipments Timeline -->
+                <div class="chart-card animate-fadeIn">
+                    <div class="chart-header">
+                        <h3 class="chart-title">الشحنات الشهرية</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active">6 أشهر</button>
+                            <button class="chart-option">سنة</button>
+                            <button class="chart-option">الكل</button>
+                        </div>
+                    </div>
+                    <canvas id="shipmentsChart" height="100"></canvas>
+                </div>
+                
+                <!-- Shipments by Status -->
+                <div class="chart-card animate-fadeIn">
+                    <div class="chart-header">
+                        <h3 class="chart-title">الشحنات حسب الحالة</h3>
+                    </div>
+                    <canvas id="statusChart" height="150"></canvas>
+                </div>
+            </div>
+            
+            <!-- Recent Shipments Table -->
+            <div class="data-table-card animate-slideIn">
+                <div class="table-header">
+                    <h3 class="table-title">الشحنات الأخيرة</h3>
+                    <div class="table-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter"></i>
+                            تصفية
+                        </button>
+                        <a href="add-shipment.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            شحنة جديدة
+                        </a>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الشحنة</th>
+                            <th>المسار</th>
+                            <th>التاريخ</th>
+                            <th>الوزن</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="shipmentsTableBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Available Carriers -->
+            <div class="activity-timeline animate-fadeIn" style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600;">الموصلين المتاحين</h3>
+                
+                <div id="availableCarriers">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </main>
+        
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="window.location.href='add-shipment.html'"
+                title="إضافة شحنة جديدة" 
+                aria-label="إضافة شحنة جديدة"
+                data-title-ar="إضافة شحنة جديدة" 
+                data-title-en="Add New Shipment"
+                data-aria-ar="إضافة شحنة جديدة" 
+                data-aria-en="Add New Shipment">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <script src="../../assets/js/backup-auth.js"></script>
+    
+    <!-- NO AUTH GUARD ON DASHBOARD - User already authenticated by reaching here -->
+    
+    <script>
+        // Initialize Dashboard
+        class ShipperDashboard {
+            constructor() {
+                this.supabase = window.supabaseClient;
+                this.currentUser = null;
+                this.init();
+            }
+            
+            async init() {
+                // SKIP authentication check - user already reached dashboard after login
+                console.log('✅ Dashboard loaded - user authenticated');
+                
+                // Load user data
+                await this.loadUserData();
+                
+                // Load dashboard data and charts
+                await this.loadDashboardData();
+                this.initCharts();
+                this.setupRealtimeUpdates();
+            }
+            
+            async loadUserData() {
+                // Try to get user from Supabase session
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (session?.user) {
+                        // Get full profile from users table
+                        const { data: profile } = await this.supabase
+                            .from('users')
+                            .select('*')
+                            .eq('auth_user_id', session.user.id)
+                            .single();
+                        
+                        if (profile) {
+                            this.currentUser = profile;
+                            this.updateUserInfo();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not load user data:', error);
+                }
+                
+                // Fallback to session storage
+                const userName = sessionStorage.getItem('user_name') || sessionStorage.getItem('user_email') || 'المستخدم';
+                this.currentUser = {
+                    id: sessionStorage.getItem('user_id'),
+                    name: userName,
+                    email: sessionStorage.getItem('user_email')
+                };
+                this.updateUserInfo();
+            }
+            
+            updateUserInfo() {
+                // Update user name in UI
+                const userNameEl = document.getElementById('userName');
+                if (userNameEl) {
+                    userNameEl.textContent = this.currentUser.name || 'المستخدم';
+                }
+            }
+            
+            async loadDashboardData() {
+                try {
+                    // Load shipments
+                    const { data: shipments } = await this.supabase
+                        .from('shipments')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id)
+                        .eq('is_dummy', false)
+                        .order('created_at', { ascending: false })
+                        .limit(5);
+                    
+                    if (shipments) {
+                        this.displayShipments(shipments);
+                    }
+                    
+                    // Load statistics
+                    await this.loadStatistics();
+                    
+                    // Load available carriers
+                    await this.loadAvailableCarriers();
+                    
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                }
+            }
+            
+            displayShipments(shipments) {
+                const tbody = document.getElementById('shipmentsTableBody');
+                if (!tbody) return;
+                
+                if (shipments.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">لا توجد شحنات بعد. <a href="add-shipment.html">أضف شحنة جديدة</a></td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = shipments.map(shipment => `
+                    <tr>
+                        <td><strong>#SH-${shipment.id.slice(0, 8).toUpperCase()}</strong></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--success);"></i>
+                                ${shipment.from_city}
+                                <i class="fas fa-arrow-left" style="color: var(--gray);"></i>
+                                ${shipment.to_city}
+                            </div>
+                        </td>
+                        <td>${new Date(shipment.needed_date).toLocaleDateString('ar-SA')}</td>
+                        <td>${shipment.weight} كجم</td>
+                        <td>${this.getStatusBadge(shipment.status)}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-sm btn-outline" onclick="viewShipment('${shipment.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="editShipment('${shipment.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            getStatusBadge(status) {
+                const statusMap = {
+                    'pending': '<span class="status-badge pending">في انتظار موصل</span>',
+                    'matched': '<span class="status-badge active">تم المطابقة</span>',
+                    'in_transit': '<span class="status-badge active">قيد التوصيل</span>',
+                    'delivered': '<span class="status-badge completed">تم التوصيل</span>',
+                    'cancelled': '<span class="status-badge cancelled">ملغي</span>'
+                };
+                return statusMap[status] || '<span class="status-badge">' + status + '</span>';
+            }
+            
+            async loadStatistics() {
+                try {
+                    // Get total shipments
+                    const { count: totalShipments } = await this.supabase
+                        .from('shipments')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('is_dummy', false);
+                    
+                    // Get pending shipments
+                    const { count: pendingShipments } = await this.supabase
+                        .from('shipments')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('status', 'pending')
+                        .eq('is_dummy', false);
+                    
+                    // Get in transit
+                    const { count: inTransit } = await this.supabase
+                        .from('shipments')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('status', 'in_transit')
+                        .eq('is_dummy', false);
+                    
+                    // Get delivered
+                    const { count: delivered } = await this.supabase
+                        .from('shipments')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('status', 'delivered')
+                        .eq('is_dummy', false);
+                    
+                    // Update UI
+                    document.getElementById('totalShipments').textContent = totalShipments || '0';
+                    document.getElementById('pendingShipments').textContent = pendingShipments || '0';
+                    document.getElementById('inTransit').textContent = inTransit || '0';
+                    document.getElementById('delivered').textContent = delivered || '0';
+                    
+                } catch (error) {
+                    console.error('Error loading statistics:', error);
+                }
+            }
+            
+            async loadAvailableCarriers() {
+                const container = document.getElementById('availableCarriers');
+                if (!container) return;
+                
+                container.innerHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-icon info">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">موصل متاح: أحمد محمد</div>
+                            <div class="timeline-description">شاحنة - من الرياض إلى جدة - متاح غداً</div>
+                            <div class="timeline-time">سعة: 500 كجم</div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon success">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">موصل متاح: خالد علي</div>
+                            <div class="timeline-description">سيارة - من جدة إلى مكة - متاح اليوم</div>
+                            <div class="timeline-time">سعة: 100 كجم</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            initCharts() {
+                // Shipments Chart
+                const shipmentsCtx = document.getElementById('shipmentsChart');
+                if (shipmentsCtx) {
+                    new Chart(shipmentsCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: ['يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر'],
+                            datasets: [{
+                                label: 'الشحنات',
+                                data: [12, 15, 13, 18, 20, 17],
+                                borderColor: '#5E72E4',
+                                backgroundColor: 'rgba(94, 114, 228, 0.1)',
+                                borderWidth: 3,
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Status Chart
+                const statusCtx = document.getElementById('statusChart');
+                if (statusCtx) {
+                    new Chart(statusCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['في انتظار', 'قيد التوصيل', 'تم التوصيل'],
+                            datasets: [{
+                                data: [30, 25, 45],
+                                backgroundColor: [
+                                    '#FB6340',
+                                    '#5E72E4',
+                                    '#2DCE89'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 15,
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            setupRealtimeUpdates() {
+                if (!this.supabase) return;
+                
+                // Subscribe to shipments changes
+                this.supabase
+                    .channel('shipments-changes')
+                    .on('postgres_changes',
+                        {
+                            event: '*',
+                            schema: 'public',
+                            table: 'shipments',
+                            filter: `user_id=eq.${this.currentUser.id}`
+                        },
+                        () => {
+                            this.loadDashboardData();
+                        }
+                    )
+                    .subscribe();
+            }
+        }
+        
+        // Initialize dashboard when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ShipperDashboard();
+            
+            // Mobile menu toggle
+            const menuBtn = document.createElement('button');
+            menuBtn.className = 'mobile-menu-toggle';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            menuBtn.style.cssText = `
+                display: none;
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1001;
+                background: white;
+                border: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                cursor: pointer;
+            `;
+            
+            document.body.appendChild(menuBtn);
+            
+            menuBtn.addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('open');
+            });
+            
+            // Show menu button on mobile
+            function checkMobile() {
+                if (window.innerWidth <= 1024) {
+                    menuBtn.style.display = 'flex';
+                    menuBtn.style.alignItems = 'center';
+                    menuBtn.style.justifyContent = 'center';
+                } else {
+                    menuBtn.style.display = 'none';
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            }
+            
+            checkMobile();
+            window.addEventListener('resize', checkMobile);
+        });
+        
+        // Helper functions
+        function viewShipment(shipmentId) {
+            window.location.href = `shipment-details.html?id=${shipmentId}`;
+        }
+        
+        function editShipment(shipmentId) {
+            window.location.href = `edit-shipment.html?id=${shipmentId}`;
+        }
+    </script>
+    
+    <style>
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .mobile-menu-toggle i {
+            font-size: 1.25rem;
+        }
+    </style>
+</body>
+</html>

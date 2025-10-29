@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 إصلاح مشكلة التوثيق</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            direction: rtl;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #5E72E4;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+        }
+        .step {
+            margin: 20px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-right: 5px solid #5E72E4;
+        }
+        .step h3 {
+            color: #2DCE89;
+            margin: 0 0 15px 0;
+            font-size: 20px;
+        }
+        .success {
+            background: #d4edda;
+            border-color: #2DCE89;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .error {
+            background: #f8d7da;
+            border-color: #F5365C;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .warning {
+            background: #fff3cd;
+            border-color: #FB6340;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .info {
+            background: #d1ecf1;
+            border-color: #5E72E4;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-size: 13px;
+        }
+        .progress {
+            width: 100%;
+            height: 30px;
+            background: #e9ecef;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #2DCE89 0%, #11998e 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #5E72E4;
+        }
+        .account-type {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .account-type label {
+            flex: 1;
+            padding: 20px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .account-type input[type="radio"] {
+            display: none;
+        }
+        .account-type input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 إصلاح شامل لمشكلة التوثيق</h1>
+        
+        <div class="info">
+            <strong>📋 هذه الأداة ستقوم بـ:</strong><br>
+            1️⃣ فحص حساب المستخدم في Auth<br>
+            2️⃣ التحقق من وجود الملف الشخصي في قاعدة البيانات<br>
+            3️⃣ إنشاء الملف الشخصي إذا كان مفقوداً<br>
+            4️⃣ إعداد جميع البيانات اللازمة بشكل صحيح<br>
+            5️⃣ التوجيه المباشر إلى لوحة التحكم
+        </div>
+
+        <div class="step">
+            <h3>🔐 الخطوة 1: تسجيل الدخول</h3>
+            <input type="email" id="email" placeholder="البريد الإلكتروني">
+            <input type="password" id="password" placeholder="كلمة المرور">
+            
+            <div class="account-type">
+                <input type="radio" name="accountType" id="carrier" value="carrier" checked>
+                <label for="carrier">
+                    <div class="icon">🚗</div>
+                    <strong>موصل شحنات</strong><br>
+                    <small>لديك رحلة وتريد نقل شحنات</small>
+                </label>
+                
+                <input type="radio" name="accountType" id="shipper" value="shipper">
+                <label for="shipper">
+                    <div class="icon">📦</div>
+                    <strong>صاحب شحنة</strong><br>
+                    <small>لديك شحنة تريد نقلها</small>
+                </label>
+            </div>
+            
+            <button onclick="startFix()" id="fixBtn">🚀 ابدأ الإصلاح</button>
+        </div>
+
+        <div class="step" id="progressSection" style="display: none;">
+            <h3>📊 التقدم</h3>
+            <div class="progress">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div id="progressText"></div>
+        </div>
+
+        <div class="step" id="resultsSection" style="display: none;">
+            <h3>✅ النتائج</h3>
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://chmistqmcmmmjqeanudu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobWlzdHFtY21tbWpxZWFudWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NDg1MTEsImV4cCI6MjA3NjIyNDUxMX0.Ho-3nEs3_w5Xmna2z0HQF6dDjh8MkiBzD10N_6vuEKs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        function updateProgress(percent, text) {
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressBar').textContent = percent + '%';
+            document.getElementById('progressText').innerHTML = text;
+        }
+
+        function showResult(type, message) {
+            const className = type; // success, error, warning
+            document.getElementById('results').innerHTML += 
+                `<div class="${className}">${message}</div>`;
+        }
+
+        async function startFix() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const userType = document.querySelector('input[name="accountType"]:checked').value;
+            
+            if (!email || !password) {
+                alert('❌ يرجى إدخال البريد الإلكتروني وكلمة المرور');
+                return;
+            }
+
+            // Show progress section
+            document.getElementById('progressSection').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('results').innerHTML = '';
+            document.getElementById('fixBtn').disabled = true;
+
+            try {
+                // Step 1: Login
+                updateProgress(20, '🔐 جاري تسجيل الدخول...');
+                const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (loginError) throw new Error('❌ فشل تسجيل الدخول: ' + loginError.message);
+                
+                showResult('success', '✅ تم تسجيل الدخول بنجاح!');
+                console.log('Login successful:', loginData.user.email);
+
+                // Step 2: Check for existing profile
+                updateProgress(40, '🔍 جاري التحقق من الملف الشخصي...');
+                const { data: existingProfile, error: profileCheckError } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('auth_user_id', loginData.user.id)
+                    .single();
+
+                if (existingProfile) {
+                    showResult('success', '✅ الملف الشخصي موجود بالفعل!');
+                    console.log('Existing profile:', existingProfile);
+                    
+                    // Update if needed
+                    if (existingProfile.user_type !== userType) {
+                        updateProgress(60, '🔄 جاري تحديث نوع الحساب...');
+                        const { error: updateError } = await supabase
+                            .from('users')
+                            .update({ user_type: userType })
+                            .eq('id', existingProfile.id);
+                        
+                        if (!updateError) {
+                            showResult('success', `✅ تم تحديث نوع الحساب إلى: ${userType === 'carrier' ? 'موصل' : 'شاحن'}`);
+                        }
+                    }
+                } else {
+                    // Step 3: Create new profile
+                    updateProgress(60, '✨ جاري إنشاء الملف الشخصي...');
+                    showResult('warning', '⚠️ الملف الشخصي غير موجود. جاري الإنشاء...');
+                    
+                    const newProfile = {
+                        auth_user_id: loginData.user.id,
+                        email: email,
+                        name: email.split('@')[0],
+                        user_type: userType,
+                        carrier_type: userType === 'carrier' ? 'individual' : null,
+                        shipper_type: userType === 'shipper' ? 'individual' : null,
+                        created_at: new Date().toISOString()
+                    };
+
+                    const { data: newProfileData, error: createError } = await supabase
+                        .from('users')
+                        .insert([newProfile])
+                        .select()
+                        .single();
+
+                    if (createError) {
+                        throw new Error('❌ فشل إنشاء الملف الشخصي: ' + createError.message);
+                    }
+
+                    showResult('success', '✅ تم إنشاء الملف الشخصي بنجاح!');
+                    console.log('New profile created:', newProfileData);
+                }
+
+                // Step 4: Setup session storage
+                updateProgress(80, '💾 جاري إعداد بيانات الجلسة...');
+                const profile = existingProfile || { 
+                    user_type: userType, 
+                    name: email.split('@')[0],
+                    carrier_type: userType === 'carrier' ? 'individual' : null,
+                    shipper_type: userType === 'shipper' ? 'individual' : null
+                };
+
+                sessionStorage.clear();
+                sessionStorage.setItem('user_email', email);
+                sessionStorage.setItem('user_id', loginData.user.id);
+                sessionStorage.setItem('user_type', userType);
+                sessionStorage.setItem('user_name', profile.name || email.split('@')[0]);
+                sessionStorage.setItem('user_authenticated', 'true');
+                sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                sessionStorage.setItem('justLoggedIn', 'true');
+                
+                if (userType === 'carrier') {
+                    sessionStorage.setItem('carrier_type', profile.carrier_type || 'individual');
+                } else {
+                    sessionStorage.setItem('shipper_type', profile.shipper_type || 'individual');
+                }
+
+                // Also set in localStorage
+                localStorage.setItem('fastship_user', JSON.stringify({
+                    email: email,
+                    id: loginData.user.id,
+                    type: userType,
+                    name: profile.name || email.split('@')[0],
+                    authenticated: true,
+                    timestamp: Date.now()
+                }));
+
+                showResult('success', '✅ تم إعداد جميع البيانات بنجاح!');
+
+                // Step 5: Redirect
+                updateProgress(100, '🎉 اكتمل الإصلاح! جاري التوجيه إلى لوحة التحكم...');
+                
+                const dashboardUrl = userType === 'carrier' 
+                    ? './pages/carrier/index.html' 
+                    : './pages/shipper/index.html';
+
+                showResult('success', `
+                    <div style="font-size: 18px; padding: 20px; text-align: center;">
+                        <strong>🎉 تم الإصلاح بنجاح!</strong><br><br>
+                        <div style="font-size: 16px; margin: 15px 0;">
+                            📧 البريد: ${email}<br>
+                            👤 النوع: ${userType === 'carrier' ? 'موصل شحنات' : 'صاحب شحنة'}<br>
+                            ✅ الحالة: جاهز للاستخدام
+                        </div>
+                        <div style="margin-top: 20px;">
+                            جاري التوجيه إلى لوحة التحكم خلال 3 ثوانٍ...<br>
+                            <a href="${dashboardUrl}" style="color: #5E72E4; font-weight: bold;">أو اضغط هنا للذهاب الآن</a>
+                        </div>
+                    </div>
+                `);
+
+                setTimeout(() => {
+                    window.location.href = dashboardUrl;
+                }, 3000);
+
+            } catch (err) {
+                updateProgress(0, '');
+                showResult('error', `❌ حدث خطأ: ${err.message}`);
+                console.error('Fix error:', err);
+                document.getElementById('fixBtn').disabled = false;
+            }
+        }
+
+        // Quick test accounts
+        window.onload = function() {
+            // Pre-fill if coming from URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('email')) {
+                document.getElementById('email').value = urlParams.get('email');
+            }
+        };
+    </script>
+</body>
+</html>
