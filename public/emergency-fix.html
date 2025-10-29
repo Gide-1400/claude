@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚨 إصلاح طارئ للمصادقة</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .log {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        .log-entry {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-right: 4px solid;
+        }
+        .log-success { background: #d4edda; border-color: #28a745; color: #155724; }
+        .log-error { background: #f8d7da; border-color: #dc3545; color: #721c24; }
+        .log-warning { background: #fff3cd; border-color: #ffc107; color: #856404; }
+        .log-info { background: #d1ecf1; border-color: #17a2b8; color: #0c5460; }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .account-type {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .type-option {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .type-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+        .type-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .type-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .alert-warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 إصلاح طارئ</h1>
+        <p class="subtitle">إصلاح مشكلة تسجيل الدخول ودخول لوحة التحكم</p>
+
+        <div class="alert alert-warning">
+            ⚠️ هذه الأداة ستقوم بـ:<br>
+            1️⃣ تسجيل دخولك في Supabase<br>
+            2️⃣ التحقق من وجود ملفك الشخصي<br>
+            3️⃣ إنشاء الملف إذا كان مفقوداً<br>
+            4️⃣ إعداد جميع بيانات الجلسة<br>
+            5️⃣ توجيهك مباشرة للوحة التحكم
+        </div>
+
+        <form id="fixForm">
+            <div class="input-group">
+                <label>📧 البريد الإلكتروني:</label>
+                <input type="email" id="email" placeholder="example@email.com" value="bader@gmail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>🔒 كلمة المرور:</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <label>👤 نوع الحساب:</label>
+            <div class="account-type">
+                <div class="type-option" data-type="carrier" onclick="selectType('carrier')">
+                    <div class="type-icon">🚗</div>
+                    <div>ناقل</div>
+                </div>
+                <div class="type-option selected" data-type="shipper" onclick="selectType('shipper')">
+                    <div class="type-icon">📦</div>
+                    <div>شاحن</div>
+                </div>
+            </div>
+
+            <button type="submit" id="fixBtn">🚀 ابدأ الإصلاح الآن</button>
+        </form>
+
+        <div class="progress-bar" style="display: none;">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <div class="log" id="log" style="display: none;"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://chmistqmcmmmjqeanudu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNobWlzdHFtY21tbWpxZWFudWR1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NDg1MTEsImV4cCI6MjA3NjIyNDUxMX0.Ho-3nEs3_w5Xmna2z0HQF6dDjh8MkiBzD10N_6vuEKs';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let selectedType = 'shipper';
+
+        function selectType(type) {
+            selectedType = type;
+            document.querySelectorAll('.type-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+        }
+
+        function log(type, message) {
+            const logDiv = document.getElementById('log');
+            logDiv.style.display = 'block';
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.innerHTML = `<strong>${new Date().toLocaleTimeString('ar')}</strong> - ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function updateProgress(percent, text) {
+            document.querySelector('.progress-bar').style.display = 'block';
+            const fill = document.getElementById('progressFill');
+            fill.style.width = percent + '%';
+            fill.textContent = text || (percent + '%');
+        }
+
+        async function emergencyFix(email, password, userType) {
+            const btn = document.getElementById('fixBtn');
+            btn.disabled = true;
+            btn.textContent = '⏳ جاري المعالجة...';
+
+            try {
+                // Step 1: Login
+                updateProgress(10, '10% - تسجيل الدخول...');
+                log('info', '🔑 محاولة تسجيل الدخول...');
+                
+                const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (authError) {
+                    throw new Error(`فشل تسجيل الدخول: ${authError.message}`);
+                }
+
+                log('success', '✅ تم تسجيل الدخول بنجاح!');
+                updateProgress(30, '30% - تم التسجيل');
+
+                const userId = authData.user.id;
+                const userEmail = authData.user.email;
+
+                // Step 2: Check profile
+                updateProgress(40, '40% - فحص الملف الشخصي...');
+                log('info', '🔍 البحث عن الملف الشخصي...');
+
+                const { data: existingUser, error: fetchError } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('auth_user_id', userId)
+                    .single();
+
+                let userData;
+
+                if (!existingUser || fetchError) {
+                    // Step 3: Create profile
+                    updateProgress(50, '50% - إنشاء الملف...');
+                    log('warning', '⚠️ الملف الشخصي غير موجود، جاري الإنشاء...');
+
+                    const profileData = {
+                        auth_user_id: userId,
+                        email: userEmail,
+                        user_type: userType,
+                        full_name: userEmail.split('@')[0],
+                        phone: '',
+                        created_at: new Date().toISOString()
+                    };
+
+                    if (userType === 'carrier') {
+                        profileData.carrier_type = 'individual';
+                    } else {
+                        profileData.shipper_type = 'individual';
+                    }
+
+                    const { data: newUser, error: createError } = await supabase
+                        .from('users')
+                        .insert([profileData])
+                        .select()
+                        .single();
+
+                    if (createError) {
+                        throw new Error(`فشل إنشاء الملف: ${createError.message}`);
+                    }
+
+                    userData = newUser;
+                    log('success', '✅ تم إنشاء الملف الشخصي بنجاح!');
+                } else {
+                    userData = existingUser;
+                    log('success', '✅ تم العثور على الملف الشخصي!');
+                }
+
+                updateProgress(70, '70% - إعداد البيانات...');
+
+                // Step 4: Setup all storage
+                log('info', '💾 إعداد بيانات الجلسة...');
+
+                const fullUserData = {
+                    id: userData.id,
+                    auth_user_id: userId,
+                    email: userEmail,
+                    user_type: userType,
+                    full_name: userData.full_name || userEmail.split('@')[0],
+                    phone: userData.phone || '',
+                    carrier_type: userData.carrier_type || null,
+                    shipper_type: userData.shipper_type || null
+                };
+
+                // SessionStorage
+                sessionStorage.setItem('user', JSON.stringify(fullUserData));
+                sessionStorage.setItem('user_type', userType);
+                sessionStorage.setItem('user_id', userData.id);
+                sessionStorage.setItem('auth_user_id', userId);
+                sessionStorage.setItem('user_email', userEmail);
+                sessionStorage.setItem('user_authenticated', 'true');
+                sessionStorage.setItem('auth_timestamp', Date.now().toString());
+                sessionStorage.setItem('authenticated_navigation', 'true');
+                sessionStorage.setItem('nav_timestamp', Date.now().toString());
+
+                // LocalStorage backup
+                localStorage.setItem('fastship_user', JSON.stringify(fullUserData));
+                localStorage.setItem('fastship_auth_timestamp', Date.now().toString());
+                localStorage.setItem('user_authenticated', 'true');
+                localStorage.setItem('auth_timestamp', Date.now().toString());
+
+                log('success', '✅ تم إعداد جميع بيانات الجلسة!');
+                updateProgress(90, '90% - جاهز للتوجيه...');
+
+                // Step 5: Redirect
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const dashboardUrl = userType === 'carrier' 
+                    ? 'pages/carrier/index.html'
+                    : 'pages/shipper/index.html';
+
+                log('success', `🚀 توجيهك الآن إلى لوحة التحكم...`);
+                updateProgress(100, '100% - تم!');
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                window.location.href = dashboardUrl;
+
+            } catch (error) {
+                log('error', `❌ خطأ: ${error.message}`);
+                btn.disabled = false;
+                btn.textContent = '🔄 حاول مرة أخرى';
+                updateProgress(0, 'فشل');
+                
+                // Show detailed error
+                log('error', `📋 التفاصيل الكاملة:`);
+                log('error', error.stack || error.toString());
+            }
+        }
+
+        document.getElementById('fixForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            await emergencyFix(email, password, selectedType);
+        });
+
+        // Auto-fill for testing
+        window.addEventListener('load', () => {
+            log('info', '✅ الأداة جاهزة للاستخدام');
+            log('info', '📝 املأ البيانات واضغط "ابدأ الإصلاح الآن"');
+        });
+    </script>
+</body>
+</html>
