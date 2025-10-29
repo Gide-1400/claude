@@ -198,20 +198,36 @@ function initSmoothScrolling() {
 
 // Initialize Supabase client
 async function initSupabase() {
-    // Wait for supabase config to be ready
-    if (window.supabaseConfigReady) {
-        console.log('⏳ Waiting for Supabase config...');
-        await window.supabaseConfigReady;
-    }
-    
-    // Supabase is already initialized in supabase-config.js
-    // Just check if it exists
-    if (typeof window.supabaseClient === 'undefined') {
-        console.error('❌ Supabase client is not initialized. Make sure supabase-config.js is loaded.');
-        return false;
-    } else {
+    try {
+        // Wait for supabase config to be ready
+        if (window.supabaseConfigReady) {
+            console.log('⏳ Waiting for Supabase config...');
+            await window.supabaseConfigReady;
+            console.log('✅ Supabase config ready!');
+        }
+        
+        // Give it a moment to initialize
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Supabase is already initialized in supabase-config.js
+        // Just check if it exists
+        if (typeof window.supabaseClient === 'undefined') {
+            console.warn('⚠️ Supabase client not found after config load. Will retry...');
+            
+            // Retry after a short delay
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            if (typeof window.supabaseClient === 'undefined') {
+                console.error('❌ Supabase client is still not initialized after retry.');
+                return false;
+            }
+        }
+        
         console.log('✅ Supabase client ready and available');
         return true;
+    } catch (error) {
+        console.error('❌ Error initializing Supabase:', error);
+        return false;
     }
 }
 

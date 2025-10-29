@@ -35,7 +35,15 @@ try {
         }
     });
 
-    // Verify connection
+    console.log('✅ Supabase client created');
+    
+    // Signal that config is ready IMMEDIATELY after client creation
+    if (typeof window.supabaseConfigLoaded === 'function') {
+        window.supabaseConfigLoaded();
+        console.log('✅ Supabase config signal sent');
+    }
+
+    // Verify connection (async - don't wait for it)
     window.supabaseClient.auth.getSession().then(({ data, error }) => {
         if (error) {
             console.error('Supabase connection error:', error);
@@ -50,6 +58,11 @@ try {
 } catch (error) {
     console.error('Failed to initialize Supabase client:', error);
     alert('فشل الاتصال بقاعدة البيانات. يرجى التحقق من إعدادات Supabase');
+    
+    // Signal ready even on error to not block other scripts
+    if (typeof window.supabaseConfigLoaded === 'function') {
+        window.supabaseConfigLoaded();
+    }
 }
 
 // Export for use in other files
@@ -148,9 +161,3 @@ if (!isAuthPage && typeof AuthManager !== 'undefined') {
     // Initialize auth manager globally (but not on auth pages)
     window.authManager = new AuthManager();
 }
-
-// Signal that config is ready
-if (typeof window.supabaseConfigLoaded === 'function') {
-    window.supabaseConfigLoaded();
-}
-console.log('✅ Supabase config loaded and ready');
