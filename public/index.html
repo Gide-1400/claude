@@ -1,599 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال المساحة الفارغة وتسهيل نقل الشحنات حول العالم">
-    <title>الشحنة السريعة - منصة الشحن الذكية</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'white': '#f1f5f9',
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Custom Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/professional-fix.css">
-    
-    <style>
-        body {
-            font-family: 'Tajawal', 'Inter', sans-serif;
-            background: #cbd5e1 !important;
-        }
-        
-        /* تخفيف كل الخلفيات البيضاء */
-        .bg-white, .bg-white\/95, [class*="bg-white"] {
-            background-color: #cbd5e1 !important;
-        }
-        
-        /* Navigation خلفية مريحة */
-        nav {
-            background-color: rgba(203, 213, 225, 0.98) !important;
-            backdrop-filter: blur(12px) !important;
-        }
-        
-        /* Hero Cards خلفية مريحة */
-        .bg-white\/10, .bg-white\/20 {
-            background-color: rgba(203, 213, 225, 0.2) !important;
-        }
-        
-        .hero-bg {
-            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('resources/hero-logistics.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        
-        .gradient-text {
-            background: linear-gradient(45deg, #ed8936, #1a365d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        
-        .floating-element {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        .counter {
-            font-weight: bold;
-        }
-        
-        /* جميع الأقسام */
-        section:not(.hero-bg) {
-            background-color: #cbd5e1 !important;
-        }
-        
-        /* كل الكروت */
-        .card, [class*="card"] {
-            background-color: #b0bec5 !important;
-        }
-    </style>
-</head>
-<body class="rtl">
-    <!-- Navigation -->
-    <nav class="backdrop-blur-sm shadow-lg fixed w-full top-0 z-50" style="background-color: rgba(176, 190, 197, 0.98) !important;">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Logo -->
-                <div class="flex items-center">
-                    <a href="#hero" class="flex items-center">
-                        <span class="text-lg font-bold" style="color: #1a365d;">⚡ FastShip</span>
-                    </a>
-                </div>
-                
-                <!-- Navigation Links -->
-                <div class="flex items-center space-x-1 space-x-reverse">
-                    <a href="#hero" class="nav-link text-white bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">الرئيسية</a>
-                    <a href="#features" class="nav-link text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">المميزات</a>
-                    <a href="pages/general/about.html" class="text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">من نحن</a>
-                    <a href="#user-types" class="nav-link text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">الخدمات</a>
-                    <a href="pages/general/faq.html" class="text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">الأسئلة</a>
-                    <a href="pages/general/support.html" class="text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">الدعم</a>
-                    <a href="pages/general/investors.html" class="text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">للمستثمرين</a>
-                    <a href="pages/general/contact.html" class="text-gray-800 hover:text-white hover:bg-blue-600 px-3 py-1.5 rounded-md text-xs font-medium transition-colors">تواصل</a>
-                </div>
-                
-                <!-- Account Button with Dropdown -->
-                <div class="flex items-center relative">
-                    <button onclick="toggleAccountMenu()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium flex items-center gap-2">
-                        <i class="fas fa-user"></i>
-                        <span>حسابي</span>
-                        <i class="fas fa-chevron-down text-xs"></i>
-                    </button>
-                    
-                    <!-- Dropdown Menu -->
-                    <div id="accountMenu" class="hidden absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden z-50">
-                        <a href="pages/auth/login.html" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-sign-in-alt ml-2"></i>
-                            تسجيل الدخول
-                        </a>
-                        <a href="pages/auth/register.html" class="block px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors border-t border-gray-100">
-                            <i class="fas fa-user-plus ml-2"></i>
-                            إنشاء حساب جديد
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-    <script>
-        function toggleAccountMenu() {
-            const menu = document.getElementById('accountMenu');
-            menu.classList.toggle('hidden');
-        }
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const menu = document.getElementById('accountMenu');
-            const button = event.target.closest('button');
-            if (!button || button.onclick !== toggleAccountMenu) {
-                menu.classList.add('hidden');
-            }
-        });
-
-        // Smooth scroll for navigation links
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add smooth scroll behavior
-            document.querySelectorAll('.nav-link[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (targetElement) {
-                        // Calculate offset for fixed navbar
-                        const navbarHeight = 64; // 16 * 4 (h-16)
-                        const targetPosition = targetElement.offsetTop - navbarHeight;
-                        
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-
-    <!-- Hero Section -->
-    <section class="hero-bg min-h-screen flex items-center pt-16" id="hero">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="grid grid-cols-1 gap-12 items-center">
-                <!-- Hero Content -->
-                <div class="text-white text-center">
-                    <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                        أرسل شحنتك مع أقرب ناقل
-                    </h1>
-                    <p class="text-xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto">
-                        منصة إلكترونية تربط بين أصحاب الشحنات والمسافرين لاستغلال الحمولة الفارغة وتسهيل نقل الشحنات حول العالم بطريقة آمنة وفعالة.
-                    </p>
-                    
-                    <!-- Action Cards - Smaller and Higher -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
-                        <!-- Send Shipment Card -->
-                        <div class="backdrop-blur-sm rounded-2xl p-6 border transition-all duration-300 cursor-pointer transform hover:scale-105" style="background-color: rgba(226, 232, 240, 0.2) !important; border-color: rgba(203, 213, 225, 0.3) !important;" onclick="window.location.href='pages/auth/register.html?type=shipper'">
-                            <div class="flex items-center justify-center gap-4 mb-4">
-                                <div class="text-4xl">📦</div>
-                                <h3 class="text-xl lg:text-2xl font-bold text-white">أرسل شحنتك</h3>
-                            </div>
-                            <p class="text-gray-200 text-base mb-4">أرسل شحنتك بسهولة وأمان مع أفضل المسافرين</p>
-                            <div class="rounded-xl p-4" style="background-color: rgba(226, 232, 240, 0.3) !important;">
-                                <h4 class="text-white font-semibold mb-3 text-center text-base">كيفية الإرسال:</h4>
-                                <ul class="text-gray-200 space-y-2 text-right text-sm">
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• اختر نوع الشحنة والوزن</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• حدد مواقع الإرسال والاستلام</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• اختر المسافر المناسب</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• تتبع شحنتك لحظة بلحظة</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mt-4 text-center">
-                                <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg text-base font-semibold transition-colors">
-                                    ابدأ الآن
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Deliver Shipments Card -->
-                        <div class="backdrop-blur-sm rounded-2xl p-6 border transition-all duration-300 cursor-pointer transform hover:scale-105" style="background-color: rgba(226, 232, 240, 0.2) !important; border-color: rgba(203, 213, 225, 0.3) !important;" onclick="window.location.href='pages/auth/register.html?type=carrier'">
-                            <div class="flex items-center justify-center gap-4 mb-4">
-                                <div class="text-4xl">🚗</div>
-                                <h3 class="text-xl lg:text-2xl font-bold text-white">توصيل شحنات</h3>
-                            </div>
-                            <p class="text-gray-200 text-base mb-4">كن مسافراً واكسب دخل إضافي من رحلاتك</p>
-                            <div class="rounded-xl p-4" style="background-color: rgba(226, 232, 240, 0.3) !important;">
-                                <h4 class="text-white font-semibold mb-3 text-center text-base">كيفية التوصيل:</h4>
-                                <ul class="text-gray-200 space-y-2 text-right text-sm">
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• سجل كمسافر معتمد</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• استعرض طلبات الشحن المتاحة</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• اختر الطلبات المناسبة لرحلتك</span>
-                                    </li>
-                                    <li class="flex items-center justify-end">
-                                        <span class="mr-2">• كسب دخل إضافي من المساحة الفارغة</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="mt-4 text-center">
-                                <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg text-base font-semibold transition-colors">
-                                    ابدأ الآن
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Trust Indicators -->
-                    <div class="grid grid-cols-3 gap-8 text-center mt-16">
-                        <div>
-                            <div class="text-4xl font-bold counter" data-target="15000">15,000</div>
-                            <div class="text-lg text-gray-300">شحنة تم توصيلها</div>
-                        </div>
-                        <div>
-                            <div class="text-4xl font-bold counter" data-target="2500">2,500</div>
-                            <div class="text-lg text-gray-300">مسافر نشط</div>
-                        </div>
-                        <div>
-                            <div class="text-4xl font-bold counter" data-target="98">98%</div>
-                            <div class="text-lg text-gray-300">نسبة الرضا</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section class="how-it-works" id="how-it-works" style="background: #b0bec5 !important;">
-        <div class="container">
-            <h2 class="section-title" data-ar="كيف يعمل النظام" data-en="How It Works">كيف يعمل النظام</h2>
-            <p class="section-subtitle" data-ar="أربع خطوات بسيطة لبدء الشحن أو التوصيل" data-en="Four simple steps to start shipping or delivering">
-                أربع خطوات بسيطة لبدء الشحن أو التوصيل
-            </p>
-            
-            <div class="steps-grid">
-                <div class="step-card" style="background: #cbd5e1 !important;">
-                    <div class="step-number">1</div>
-                    <i class="fas fa-user-plus step-icon"></i>
-                    <h3 class="step-title" data-ar="سجّل حسابك" data-en="Create Account">سجّل حسابك</h3>
-                    <p class="step-description" data-ar="إنشاء حساب مجاني كموصّل أو صاحب شحنة في دقائق" data-en="Create a free account as a carrier or shipper in minutes">
-                        إنشاء حساب مجاني كموصّل أو صاحب شحنة في دقائق
-                    </p>
-                </div>
-                
-                <div class="step-card" style="background: #cbd5e1 !important;">
-                    <div class="step-number">2</div>
-                    <i class="fas fa-clipboard-list step-icon"></i>
-                    <h3 class="step-title" data-ar="أضف رحلتك أو شحنتك" data-en="Add Trip or Shipment">أضف رحلتك أو شحنتك</h3>
-                    <p class="step-description" data-ar="الموصلون يضيفون رحلاتهم المتاحة، وأصحاب الشحنات يضيفون احتياجاتهم" data-en="Carriers add their available trips, shippers add their needs">
-                        الموصلون يضيفون رحلاتهم المتاحة، وأصحاب الشحنات يضيفون احتياجاتهم
-                    </p>
-                </div>
-                
-                <div class="step-card" style="background: #cbd5e1 !important;">
-                    <div class="step-number">3</div>
-                    <i class="fas fa-sync-alt step-icon"></i>
-                    <h3 class="step-title" data-ar="المطابقة التلقائية" data-en="Auto Matching">المطابقة التلقائية</h3>
-                    <p class="step-description" data-ar="نظامنا الذكي يطابق الرحلات مع الشحنات تلقائياً حسب المسار والوقت" data-en="Our smart system automatically matches trips with shipments by route and time">
-                        نظامنا الذكي يطابق الرحلات مع الشحنات تلقائياً حسب المسار والوقت
-                    </p>
-                </div>
-                
-                <div class="step-card" style="background: #cbd5e1 !important;">
-                    <div class="step-number">4</div>
-                    <i class="fas fa-handshake step-icon"></i>
-                    <h3 class="step-title" data-ar="تواصل وأنجز الصفقة" data-en="Connect & Complete">تواصل وأنجز الصفقة</h3>
-                    <p class="step-description" data-ar="تواصل مباشرة مع الطرف الآخر واتفقوا على التفاصيل والسعر" data-en="Communicate directly with the other party and agree on details and price">
-                        تواصل مباشرة مع الطرف الآخر واتفقوا على التفاصيل والسعر
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- User Types Section -->
-    <section class="user-types" id="user-types" style="background: #cbd5e1 !important;">
-        <div class="container">
-            <h2 class="section-title" data-ar="اختر نوع حسابك" data-en="Choose Your Account Type">اختر نوع حسابك</h2>
-            <p class="section-subtitle" data-ar="نوفر حلول شحن مخصصة لكل نوع من المستخدمين" data-en="We provide customized shipping solutions for every type of user">
-                نوفر حلول شحن مخصصة لكل نوع من المستخدمين
-            </p>
-            
-            <div class="types-tabs">
-                <button class="type-tab active" data-tab="carriers">
-                    <i class="fas fa-truck"></i>
-                    <span data-ar="الموصّلون" data-en="Carriers">الموصّلون</span>
-                </button>
-                <button class="type-tab" data-tab="shippers">
-                    <i class="fas fa-box"></i>
-                    <span data-ar="أصحاب الشحنات" data-en="Shippers">أصحاب الشحنات</span>
-                </button>
-            </div>
-            
-            <!-- Carriers Panel -->
-            <div class="types-panel active" id="carriers">
-                <div class="types-grid">
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-walking type-icon"></i>
-                        <h3 class="type-name" data-ar="مسافر فردي" data-en="Individual Traveler">مسافر فردي</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-weight-hanging"></i>
-                            <span data-ar="10-20 كجم" data-en="10-20 kg">10-20 كجم</span>
-                        </div>
-                        <p class="type-description" data-ar="مثالي للمسافرين الذين يريدون الاستفادة من المساحة الفائضة في حقائبهم" data-en="Perfect for travelers who want to utilize extra space in their luggage">
-                            مثالي للمسافرين الذين يريدون الاستفادة من المساحة الفائضة في حقائبهم
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-car type-icon"></i>
-                        <h3 class="type-name" data-ar="صاحب سيارة" data-en="Car Owner">صاحب سيارة</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-weight-hanging"></i>
-                            <span data-ar="50-1,500 كجم" data-en="50-1,500 kg">50-1,500 كجم</span>
-                        </div>
-                        <p class="type-description" data-ar="للأشخاص الذين يملكون سيارات ويريدون شحن البضائع المتوسطة" data-en="For people with cars who want to ship medium-sized goods">
-                            للأشخاص الذين يملكون سيارات ويريدون شحن البضائع المتوسطة
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-truck type-icon"></i>
-                        <h3 class="type-name" data-ar="صاحب شاحنة" data-en="Truck Owner">صاحب شاحنة</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-weight-hanging"></i>
-                            <span data-ar="1-50 طن" data-en="1-50 Tons">1-50 طن</span>
-                        </div>
-                        <p class="type-description" data-ar="مناسب لأصحاب الشاحنات الصغيرة والمتوسطة للشحنات الكبيرة" data-en="Suitable for small and medium truck owners for large shipments">
-                            مناسب لأصحاب الشاحنات الصغيرة والمتوسطة للشحنات الكبيرة
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-warehouse type-icon"></i>
-                        <h3 class="type-name" data-ar="صاحب أسطول" data-en="Fleet Owner">صاحب أسطول</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-weight-hanging"></i>
-                            <span data-ar="50-1,000+ طن" data-en="50-1,000+ Tons">50-1,000+ طن</span>
-                        </div>
-                        <p class="type-description" data-ar="لشركات الشحن الكبيرة التي تملك أساطيل من الشاحنات" data-en="For large shipping companies with fleets of trucks">
-                            لشركات الشحن الكبيرة التي تملك أساطيل من الشاحنات
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Shippers Panel -->
-            <div class="types-panel" id="shippers">
-                <div class="types-grid">
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-user type-icon"></i>
-                        <h3 class="type-name" data-ar="فرد" data-en="Individual">فرد</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-shipping-fast"></i>
-                            <span data-ar="1 شحنة/يوم" data-en="1 shipment/day">1 شحنة/يوم</span>
-                        </div>
-                        <p class="type-description" data-ar="للأفراد الذين يحتاجون شحن أغراضهم الشخصية بين المدن" data-en="For individuals who need to ship their personal items between cities">
-                            للأفراد الذين يحتاجون شحن أغراضهم الشخصية بين المدن
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-store type-icon"></i>
-                        <h3 class="type-name" data-ar="مشروع صغير" data-en="Small Business">مشروع صغير</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-shipping-fast"></i>
-                            <span data-ar="5-10 شحنة/يوم" data-en="5-10 shipments/day">5-10 شحنة/يوم</span>
-                        </div>
-                        <p class="type-description" data-ar="للمشاريع الصغيرة والمتاجر الإلكترونية الناشئة" data-en="For small businesses and emerging e-commerce stores">
-                            للمشاريع الصغيرة والمتاجر الإلكترونية الناشئة
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-building type-icon"></i>
-                        <h3 class="type-name" data-ar="مشروع متوسط" data-en="Medium Business">مشروع متوسط</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-shipping-fast"></i>
-                            <span data-ar="10-100 شحنة/يوم" data-en="10-100 shipments/day">10-100 شحنة/يوم</span>
-                        </div>
-                        <p class="type-description" data-ar="للشركات المتوسطة ذات حجم الشحن المتزايد" data-en="For medium-sized companies with growing shipping volume">
-                            للشركات المتوسطة ذات حجم الشحن المتزايد
-                        </p>
-                    </div>
-                    
-                    <div class="type-card" style="background: #cbd5e1 !important;">
-                        <i class="fas fa-industry type-icon"></i>
-                        <h3 class="type-name" data-ar="مشروع كبير" data-en="Large Enterprise">مشروع كبير</h3>
-                        <div class="type-capacity">
-                            <i class="fas fa-shipping-fast"></i>
-                            <span data-ar="100+ شحنة/يوم" data-en="100+ shipments/day">100+ شحنة/يوم</span>
-                        </div>
-                        <p class="type-description" data-ar="للشركات الكبرى والمؤسسات ذات احتياجات الشحن العالية" data-en="For large corporations and institutions with high shipping needs">
-                            للشركات الكبرى والمؤسسات ذات احتياجات الشحن العالية
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features" style="background: #b0bec5 !important;">
-        <div class="container">
-            <h2 class="section-title" data-ar="لماذا FastShip؟" data-en="Why FastShip?">لماذا FastShip؟</h2>
-            <p class="section-subtitle" data-ar="نقدم أفضل حلول الشحن بتقنيات حديثة وموثوقية عالية" data-en="We provide the best shipping solutions with modern technology and high reliability">
-                نقدم أفضل حلول الشحن بتقنيات حديثة وموثوقية عالية
-            </p>
-            
-            <div class="features-grid">
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-globe-americas"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="تغطية عالمية" data-en="Global Coverage">تغطية عالمية</h3>
-                    <p class="feature-description" data-ar="شحن إلى أكثر من 150 دولة حول العالم بأسعار تنافسية" data-en="Ship to over 150 countries worldwide at competitive prices">
-                        شحن إلى أكثر من 150 دولة حول العالم بأسعار تنافسية
-                    </p>
-                </div>
-                
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="أمان مضمون" data-en="Guaranteed Security">أمان مضمون</h3>
-                    <p class="feature-description" data-ar="نظام تأمين شامل وحماية كاملة لجميع الشحنات" data-en="Comprehensive insurance system and full protection for all shipments">
-                        نظام تأمين شامل وحماية كاملة لجميع الشحنات
-                    </p>
-                </div>
-                
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-dollar-sign"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="أسعار مناسبة" data-en="Affordable Prices">أسعار مناسبة</h3>
-                    <p class="feature-description" data-ar="وفّر حتى 70% مقارنة بشركات الشحن التقليدية" data-en="Save up to 70% compared to traditional shipping companies">
-                        وفّر حتى 70% مقارنة بشركات الشحن التقليدية
-                    </p>
-                </div>
-                
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="سرعة التوصيل" data-en="Fast Delivery">سرعة التوصيل</h3>
-                    <p class="feature-description" data-ar="توصيل سريع ومضمون مع إمكانية تتبع الشحنة لحظياً" data-en="Fast and guaranteed delivery with real-time tracking">
-                        توصيل سريع ومضمون مع إمكانية تتبع الشحنة لحظياً
-                    </p>
-                </div>
-                
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="دردشة مباشرة" data-en="Live Chat">دردشة مباشرة</h3>
-                    <p class="feature-description" data-ar="تواصل فوري بين الموصل وصاحب الشحنة لتسهيل التنسيق" data-en="Instant communication between carrier and shipper for easy coordination">
-                        تواصل فوري بين الموصل وصاحب الشحنة لتسهيل التنسيق
-                    </p>
-                </div>
-                
-                <div class="feature-card" style="background: #cbd5e1 !important;">
-                    <div class="feature-icon">
-                        <i class="fas fa-thumbs-up"></i>
-                    </div>
-                    <h3 class="feature-title" data-ar="سهولة الاستخدام" data-en="Easy to Use">سهولة الاستخدام</h3>
-                    <p class="feature-description" data-ar="واجهة بسيطة وسهلة - ابدأ الشحن في 3 خطوات فقط" data-en="Simple and easy interface - start shipping in just 3 steps">
-                        واجهة بسيطة وسهلة - ابدأ الشحن في 3 خطوات فقط
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title" data-ar="جاهز للبدء؟" data-en="Ready to Get Started?">جاهز للبدء؟</h2>
-                <p class="cta-description" data-ar="انضم إلى الآلاف من المستخدمين حول العالم واستمتع بتجربة شحن استثنائية" data-en="Join thousands of users worldwide and enjoy an exceptional shipping experience">
-                    انضم إلى الآلاف من المستخدمين حول العالم واستمتع بتجربة شحن استثنائية
-                </p>
-                <a href="pages/auth/register.html" class="btn btn-white btn-lg">
-                    <i class="fas fa-rocket"></i>
-                    <span data-ar="ابدأ مجاناً الآن" data-en="Start Free Now">ابدأ مجاناً الآن</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3 data-ar="عن FastShip" data-en="About FastShip">عن FastShip</h3>
-                    <p data-ar="منصة عالمية مبتكرة تربط الموصّلين بأصحاب الشحنات بطريقة آمنة وفعّالة" data-en="An innovative global platform connecting carriers with shippers in a safe and efficient way">
-                        منصة عالمية مبتكرة تربط الموصّلين بأصحاب الشحنات بطريقة آمنة وفعّالة
-                    </p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a href="pages/general/about.html"><i class="fas fa-chevron-left"></i><span data-ar="من نحن" data-en="About Us">من نحن</span></a></li>
-                        <li><a href="pages/general/terms.html"><i class="fas fa-chevron-left"></i><span data-ar="الشروط والأحكام" data-en="Terms & Conditions">الشروط والأحكام</span></a></li>
-                        <li><a href="pages/general/privacy.html"><i class="fas fa-chevron-left"></i><span data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</span></a></li>
-                        <li><a href="pages/general/support.html"><i class="fas fa-chevron-left"></i><span data-ar="الدعم الفني" data-en="Support">الدعم الفني</span></a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-ar="للمستثمرين" data-en="For Investors">للمستثمرين</h3>
-                    <ul class="footer-links">
-                        <li><a href="pages/general/investors.html"><i class="fas fa-chevron-left"></i><span data-ar="فرص الاستثمار" data-en="Investment Opportunities">فرص الاستثمار</span></a></li>
-                        <li><a href="pages/general/investors.html#partnership"><i class="fas fa-chevron-left"></i><span data-ar="الشراكات" data-en="Partnerships">الشراكات</span></a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3 data-ar="اتصل بنا" data-en="Contact Us">اتصل بنا</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-envelope"></i> gide1979@gmail.com</li>
-                        <li><i class="fas fa-phone"></i> +966 55 151 9723</li>
-                        <li><i class="fas fa-map-marker-alt"></i> <span data-ar="المملكة العربية السعودية" data-en="Saudi Arabia">المملكة العربية السعودية</span></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 FastShip Global. <span data-ar="جميع الحقوق محفوظة" data-en="All rights reserved">جميع الحقوق محفوظة</span></p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script src="assets/js/lang.js"></script>
-    <script src="assets/js/main.js"></script>
-</body>
-</html>
