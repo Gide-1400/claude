@@ -197,12 +197,39 @@ async function handleLogin(e) {
         // Fetch profile to find user_type
         let profile = await fetchUserProfile(user.id);
 
-        // If profile doesn't exist, show error - user must register first
+        // If profile doesn't exist, try to create it from auth metadata
         if (!profile) {
-            console.error('No profile found for user:', user.email);
-            showAlert('error', 'لم يتم العثور على ملفك الشخصي. يرجى التسجيل مرة أخرى.', 'Your profile was not found. Please register again.');
-            await window.supabaseClient.auth.signOut();
-            return;
+            console.warn('No profile found for user:', user.email);
+            console.log('Attempting to create profile from user metadata...');
+            
+            // Try to get user_type from metadata or default to 'shipper'
+            const userType = user.user_metadata?.user_type || 'shipper';
+            const userName = user.user_metadata?.full_name || user.email.split('@')[0];
+            
+            // Create profile
+            const { data: newProfile, error: createError } = await window.supabaseClient
+                .from('users')
+                .insert([{
+                    id: user.id,
+                    auth_user_id: user.id,
+                    email: user.email,
+                    user_type: userType,
+                    name: userName,
+                    phone: user.user_metadata?.phone || '',
+                    created_at: new Date().toISOString()
+                }])
+                .select()
+                .single();
+            
+            if (createError) {
+                console.error('Failed to create profile:', createError);
+                showAlert('error', 'لم يتم العثور على ملفك الشخصي. يرجى التسجيل مرة أخرى.', 'Your profile was not found. Please register again.');
+                await window.supabaseClient.auth.signOut();
+                return;
+            }
+            
+            profile = newProfile;
+            console.log('✅ Profile created successfully from metadata');
         }
 
         // Store safe user info immediately
