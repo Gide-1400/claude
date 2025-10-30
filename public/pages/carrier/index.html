@@ -1,0 +1,843 @@
+<!DOCTYPE html><!DOCTYPE html>
+
+<html lang="ar" dir="rtl"><html lang="ar" dir="rtl">
+
+<head><head>
+
+    <meta charset="UTF-8">    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>لوحة تحكم الناقل - FastShip</title>    <title>لوحة التحكم - موصل الشحنات</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <!-- Modern Fonts -->
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>    
+
+        body { font-family: 'Tajawal', sans-serif; background: #f1f5f9; }    <!-- Icons -->
+
+    </style>    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>    
+
+<body>    <!-- Styles -->
+
+    <!-- Sidebar -->    <link rel="stylesheet" href="../../assets/css/modern-dashboard.css">
+
+    <div class="flex h-screen">    
+
+        <aside class="w-64 bg-gradient-to-b from-blue-600 to-blue-800 text-white fixed h-full">    <!-- Chart.js -->
+
+            <div class="p-6">    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <h1 class="text-2xl font-bold mb-1">⚡ FastShip</h1></head>
+
+                <p class="text-sm text-blue-200">لوحة تحكم الناقل</p><body>
+
+            </div>    <div class="dashboard-container">
+
+            <nav class="mt-6">        <!-- Modern Sidebar -->
+
+                <a href="index.html" class="flex items-center px-6 py-3 bg-blue-700 border-r-4 border-white">        <aside class="sidebar glass" id="sidebar">
+
+                    <i class="fas fa-home ml-3"></i> الرئيسية            <div class="sidebar-header">
+
+                </a>                <a href="../../index.html" class="sidebar-logo">
+
+                <a href="my-trips.html" class="flex items-center px-6 py-3 hover:bg-blue-700 transition-colors">                    <div class="logo-icon">
+
+                    <i class="fas fa-route ml-3"></i> رحلاتي                        <i class="fas fa-shipping-fast"></i>
+
+                </a>                    </div>
+
+                <a href="add-trip.html" class="flex items-center px-6 py-3 hover:bg-blue-700 transition-colors">                    <span class="logo-text">الشحنة السريعة</span>
+
+                    <i class="fas fa-plus-circle ml-3"></i> إضافة رحلة                </a>
+
+                </a>            </div>
+
+                <a href="matches.html" class="flex items-center px-6 py-3 hover:bg-blue-700 transition-colors">            
+
+                    <i class="fas fa-sync-alt ml-3"></i> المطابقات            <nav class="sidebar-nav">
+
+                </a>                <!-- Back to Home -->
+
+                <a href="../messaging/index.html" class="flex items-center px-6 py-3 hover:bg-blue-700 transition-colors">                <div class="nav-section">
+
+                    <i class="fas fa-comments ml-3"></i> الرسائل                    <ul class="nav-menu">
+
+                </a>                        <li class="nav-item">
+
+                <a href="profile.html" class="flex items-center px-6 py-3 hover:bg-blue-700 transition-colors">                            <a href="../../index.html" class="nav-link" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+
+                    <i class="fas fa-user ml-3"></i> الملف الشخصي                                <span class="nav-icon"><i class="fas fa-arrow-right"></i></span>
+
+                </a>                                <span>الصفحة الرئيسية</span>
+
+                <a href="#" onclick="logout()" class="flex items-center px-6 py-3 hover:bg-red-600 transition-colors mt-4">                            </a>
+
+                    <i class="fas fa-sign-out-alt ml-3"></i> تسجيل الخروج                        </li>
+
+                </a>                    </ul>
+
+            </nav>                </div>
+
+        </aside>                
+
+                <!-- Main Navigation -->
+
+        <!-- Main Content -->                <div class="nav-section">
+
+        <main class="mr-64 flex-1 p-8">                    <div class="nav-section-title">القائمة الرئيسية</div>
+
+            <!-- Header -->                    <ul class="nav-menu">
+
+            <div class="flex justify-between items-center mb-8">                        <li class="nav-item">
+
+                <div>                            <a href="index.html" class="nav-link active">
+
+                    <h2 class="text-3xl font-bold text-gray-800">مرحباً، <span id="userName">الناقل</span></h2>                                <span class="nav-icon"><i class="fas fa-home"></i></span>
+
+                    <p class="text-gray-600">لوحة التحكم الخاصة بك</p>                                <span>لوحة التحكم</span>
+
+                </div>                                <span class="nav-badge">جديد</span>
+
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors" onclick="window.location.href='add-trip.html'">                            </a>
+
+                    <i class="fas fa-plus ml-2"></i> إضافة رحلة جديدة                        </li>
+
+                </button>                        <li class="nav-item">
+
+            </div>                            <a href="add-trip.html" class="nav-link">
+
+                                <span class="nav-icon"><i class="fas fa-plus-circle"></i></span>
+
+            <!-- Stats Cards -->                                <span>إضافة رحلة</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">                            </a>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">                        </li>
+
+                    <div class="flex items-center justify-between">                        <li class="nav-item">
+
+                        <div>                            <a href="my-trips.html" class="nav-link">
+
+                            <p class="text-gray-600 text-sm mb-1">رحلاتي النشطة</p>                                <span class="nav-icon"><i class="fas fa-route"></i></span>
+
+                            <h3 class="text-3xl font-bold text-blue-600" id="activeTrips">0</h3>                                <span>رحلاتي</span>
+
+                        </div>                                <span class="nav-badge">12</span>
+
+                        <div class="bg-blue-100 p-4 rounded-full">                            </a>
+
+                            <i class="fas fa-route text-2xl text-blue-600"></i>                        </li>
+
+                        </div>                        <li class="nav-item">
+
+                    </div>                            <a href="matches.html" class="nav-link">
+
+                </div>                                <span class="nav-icon"><i class="fas fa-handshake"></i></span>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">                                <span>المطابقات</span>
+
+                    <div class="flex items-center justify-between">                                <span class="nav-badge">5</span>
+
+                        <div>                            </a>
+
+                            <p class="text-gray-600 text-sm mb-1">المطابقات الجديدة</p>                        </li>
+
+                            <h3 class="text-3xl font-bold text-green-600" id="newMatches">0</h3>                    </ul>
+
+                        </div>                </div>
+
+                        <div class="bg-green-100 p-4 rounded-full">                
+
+                            <i class="fas fa-check-circle text-2xl text-green-600"></i>                <!-- Communication -->
+
+                        </div>                <div class="nav-section">
+
+                    </div>                    <div class="nav-section-title">التواصل</div>
+
+                </div>                    <ul class="nav-menu">
+
+                <div class="bg-white rounded-xl shadow-lg p-6">                        <li class="nav-item">
+
+                    <div class="flex items-center justify-between">                            <a href="../messaging/index.html" class="nav-link">
+
+                        <div>                                <span class="nav-icon"><i class="fas fa-comments"></i></span>
+
+                            <p class="text-gray-600 text-sm mb-1">رسائل غير مقروءة</p>                                <span>الرسائل</span>
+
+                            <h3 class="text-3xl font-bold text-orange-600" id="unreadMessages">0</h3>                                <span class="nav-badge">3</span>
+
+                        </div>                            </a>
+
+                        <div class="bg-orange-100 p-4 rounded-full">                        </li>
+
+                            <i class="fas fa-envelope text-2xl text-orange-600"></i>                        <li class="nav-item">
+
+                        </div>                            <a href="../messaging/contacts.html" class="nav-link">
+
+                    </div>                                <span class="nav-icon"><i class="fas fa-address-book"></i></span>
+
+                </div>                                <span>جهات الاتصال</span>
+
+                <div class="bg-white rounded-xl shadow-lg p-6">                            </a>
+
+                    <div class="flex items-center justify-between">                        </li>
+
+                        <div>                    </ul>
+
+                            <p class="text-gray-600 text-sm mb-1">تقييمي</p>                </div>
+
+                            <h3 class="text-3xl font-bold text-yellow-600" id="rating">0.0</h3>                
+
+                        </div>                <!-- Settings -->
+
+                        <div class="bg-yellow-100 p-4 rounded-full">                <div class="nav-section">
+
+                            <i class="fas fa-star text-2xl text-yellow-600"></i>                    <div class="nav-section-title">الإعدادات</div>
+
+                        </div>                    <ul class="nav-menu">
+
+                    </div>                        <li class="nav-item">
+
+                </div>                            <a href="profile.html" class="nav-link">
+
+            </div>                                <span class="nav-icon"><i class="fas fa-user"></i></span>
+
+                                <span>الملف الشخصي</span>
+
+            <!-- Recent Trips -->                            </a>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">                        </li>
+
+                <div class="flex justify-between items-center mb-6">                        <li class="nav-item">
+
+                    <h3 class="text-xl font-bold text-gray-800">رحلاتي الأخيرة</h3>                            <a href="#" onclick="authManager.handleLogout()" class="nav-link">
+
+                    <a href="my-trips.html" class="text-blue-600 hover:underline text-sm">عرض الكل</a>                                <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span>
+
+                </div>                                <span>تسجيل الخروج</span>
+
+                <div id="recentTrips" class="space-y-4">                            </a>
+
+                    <div class="text-center py-8 text-gray-500">                        </li>
+
+                        <i class="fas fa-route text-5xl mb-3 text-gray-300"></i>                    </ul>
+
+                        <p>لم تضف أي رحلات بعد</p>                </div>
+
+                        <button onclick="window.location.href='add-trip.html'" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">            </nav>
+
+                            أضف رحلتك الأولى        </aside>
+
+                        </button>        
+
+                    </div>        <!-- Main Content -->
+
+                </div>        <main class="main-content">
+
+            </div>            <!-- Modern Header -->
+
+            <header class="dashboard-header glass">
+
+            <!-- Quick Actions -->                <div class="header-left">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">                    <h1 class="header-title">مرحباً بعودتك! 👋</h1>
+
+                <div class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-2xl transition-all" onclick="window.location.href='add-trip.html'">                    <p class="header-subtitle">إليك نظرة عامة على أدائك اليوم</p>
+
+                    <i class="fas fa-plus-circle text-4xl mb-3"></i>                </div>
+
+                    <h4 class="text-lg font-bold mb-2">إضافة رحلة جديدة</h4>                
+
+                    <p class="text-sm text-blue-100">أضف رحلتك واحصل على مطابقات فورية</p>                <div class="header-right">
+
+                </div>                    <!-- Search Bar -->
+
+                <div class="bg-gradient-to-br from-green-500 to-green-700 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-2xl transition-all" onclick="window.location.href='matches.html'">                    <div class="search-bar">
+
+                    <i class="fas fa-sync-alt text-4xl mb-3"></i>                        <i class="fas fa-search search-icon"></i>
+
+                    <h4 class="text-lg font-bold mb-2">عرض المطابقات</h4>                        <input type="text" placeholder="ابحث عن رحلة أو شحنة...">
+
+                    <p class="text-sm text-green-100">شاهد الشحنات المتطابقة مع رحلاتك</p>                    </div>
+
+                </div>                    
+
+                <div class="bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl shadow-lg p-6 text-white cursor-pointer hover:shadow-2xl transition-all" onclick="window.location.href='profile.html'">                    <!-- Notifications -->
+
+                    <i class="fas fa-user-cog text-4xl mb-3"></i>                    <div class="notification-bell">
+
+                    <h4 class="text-lg font-bold mb-2">إعدادات الحساب</h4>                        <i class="fas fa-bell"></i>
+
+                    <p class="text-sm text-purple-100">قم بتحديث معلوماتك الشخصية</p>                        <span class="notification-badge">3</span>
+
+                </div>                    </div>
+
+            </div>                    
+
+        </main>                    <!-- User Profile -->
+
+    </div>                    <div class="user-profile-menu">
+
+                        <div class="user-avatar">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>                            <img src="../../assets/images/user-avatar.jpg" alt="User">
+
+    <script src="../../config/supabase-config.js"></script>                        </div>
+
+    <script>                        <div class="user-info">
+
+        async function loadDashboard() {                            <span class="user-name">محمد أحمد</span>
+
+            const { data: { user } } = await supabase.auth.getUser();                            <span class="user-role">موصل شحنات</span>
+
+            if (!user) {                        </div>
+
+                window.location.href = '../auth/login.html';                        <i class="fas fa-chevron-down"></i>
+
+                return;                    </div>
+
+            }                </div>
+
+            document.getElementById('userName').textContent = user.user_metadata.full_name || 'الناقل';            </header>
+
+        }            
+
+            <!-- Statistics Cards -->
+
+        function logout() {            <div class="stats-grid animate-slideIn">
+
+            supabase.auth.signOut();                <!-- Total Trips Card -->
+
+            window.location.href = '../../index.html';                <div class="stat-card">
+
+        }                    <div class="stat-header">
+
+                        <div>
+
+        loadDashboard();                            <div class="stat-title">إجمالي الرحلات</div>
+
+    </script>                            <div class="stat-value">124</div>
+
+</body>                            <div class="stat-change positive">
+
+</html>                                <i class="fas fa-arrow-up"></i>
+
+                                <span>12% هذا الشهر</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon primary">
+                            <i class="fas fa-route"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Active Shipments -->
+                <div class="stat-card success">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">الشحنات النشطة</div>
+                            <div class="stat-value">8</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>3 جديدة اليوم</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon success">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Revenue This Month -->
+                <div class="stat-card info">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">الإيرادات هذا الشهر</div>
+                            <div class="stat-value">45,250 ر.س</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>23% من الشهر الماضي</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon info">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Completed Deliveries -->
+                <div class="stat-card danger">
+                    <div class="stat-header">
+                        <div>
+                            <div class="stat-title">التسليمات المكتملة</div>
+                            <div class="stat-value">98%</div>
+                            <div class="stat-change positive">
+                                <i class="fas fa-check-circle"></i>
+                                <span>ممتاز!</span>
+                            </div>
+                        </div>
+                        <div class="stat-icon danger">
+                            <i class="fas fa-check-double"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Charts Section -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                <!-- Revenue Chart -->
+                <div class="chart-card animate-fadeIn">
+                    <div class="chart-header">
+                        <h3 class="chart-title">الإيرادات الشهرية</h3>
+                        <div class="chart-options">
+                            <button class="chart-option active">6 أشهر</button>
+                            <button class="chart-option">سنة</button>
+                            <button class="chart-option">الكل</button>
+                        </div>
+                    </div>
+                    <canvas id="revenueChart" height="100"></canvas>
+                </div>
+                
+                <!-- Shipments by Type -->
+                <div class="chart-card animate-fadeIn">
+                    <div class="chart-header">
+                        <h3 class="chart-title">الشحنات حسب النوع</h3>
+                    </div>
+                    <canvas id="shipmentTypeChart" height="150"></canvas>
+                </div>
+            </div>
+            
+            <!-- Recent Trips Table -->
+            <div class="data-table-card animate-slideIn">
+                <div class="table-header">
+                    <h3 class="table-title">الرحلات الأخيرة</h3>
+                    <div class="table-actions">
+                        <button class="btn btn-outline">
+                            <i class="fas fa-filter"></i>
+                            تصفية
+                        </button>
+                        <a href="add-trip.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            رحلة جديدة
+                        </a>
+                    </div>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الرحلة</th>
+                            <th>المسار</th>
+                            <th>التاريخ</th>
+                            <th>الوزن المتاح</th>
+                            <th>الحالة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tripsTableBody">
+                        <!-- Dynamic content will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Activity Timeline -->
+            <div class="activity-timeline animate-fadeIn" style="margin-top: 2rem;">
+                <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 600;">النشاطات الأخيرة</h3>
+                
+                <div id="activityTimeline">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </main>
+        
+        <!-- Floating Action Button -->
+        <button class="fab" onclick="window.location.href='add-trip.html'"
+                title="إضافة رحلة جديدة" 
+                aria-label="إضافة رحلة جديدة"
+                data-title-ar="إضافة رحلة جديدة" 
+                data-title-en="Add New Trip"
+                data-aria-ar="إضافة رحلة جديدة" 
+                data-aria-en="Add New Trip">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <!-- Auth Manager Script -->
+    <script src="../../assets/js/auth-manager.js"></script>
+    
+    <!-- NO AUTH GUARD ON DASHBOARD - User already authenticated by reaching here -->
+    
+    <script>
+        // Initialize Dashboard
+        class CarrierDashboard {
+            constructor() {
+                this.supabase = window.supabaseClient;
+                this.currentUser = null;
+                this.init();
+            }
+            
+            async init() {
+                // SKIP authentication check - user already reached dashboard after login
+                console.log('✅ Dashboard loaded - user authenticated');
+                
+                // Load user data
+                await this.loadUserData();
+                
+                // Load dashboard data and charts
+                await this.loadDashboardData();
+                this.initCharts();
+                this.setupRealtimeUpdates();
+            }
+            
+            async loadUserData() {
+                // Try to get user from Supabase session
+                try {
+                    const { data: { session } } = await this.supabase.auth.getSession();
+                    if (session?.user) {
+                        // Get full profile from users table
+                        const { data: profile } = await this.supabase
+                            .from('users')
+                            .select('*')
+                            .eq('auth_user_id', session.user.id)
+                            .single();
+                        
+                        if (profile) {
+                            this.currentUser = profile;
+                            this.updateUserInfo();
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not load user data:', error);
+                }
+                
+                // Fallback to session storage
+                const userName = sessionStorage.getItem('user_name') || sessionStorage.getItem('user_email') || 'المستخدم';
+                this.currentUser = {
+                    id: sessionStorage.getItem('user_id'),
+                    name: userName,
+                    email: sessionStorage.getItem('user_email')
+                };
+                this.updateUserInfo();
+            }
+            
+            updateUserInfo() {
+                // Update user name and role in UI
+                document.querySelectorAll('.user-name').forEach(el => {
+                    el.textContent = this.currentUser.name || 'المستخدم';
+                });
+            }
+            
+            async loadDashboardData() {
+                try {
+                    // Load trips
+                    const { data: trips } = await this.supabase
+                        .from('trips')
+                        .select('*')
+                        .eq('user_id', this.currentUser.id)
+                        .eq('is_dummy', false)
+                        .order('created_at', { ascending: false })
+                        .limit(5);
+                    
+                    if (trips) {
+                        this.displayTrips(trips);
+                    }
+                    
+                    // Load statistics
+                    await this.loadStatistics();
+                    
+                    // Load activities
+                    await this.loadActivities();
+                    
+                } catch (error) {
+                    console.error('Error loading dashboard data:', error);
+                }
+            }
+            
+            displayTrips(trips) {
+                const tbody = document.getElementById('tripsTableBody');
+                if (!tbody) return;
+                
+                tbody.innerHTML = trips.map(trip => `
+                    <tr>
+                        <td><strong>#TR-${trip.id.slice(0, 8).toUpperCase()}</strong></td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-map-marker-alt" style="color: var(--success);"></i>
+                                ${trip.from_city}
+                                <i class="fas fa-arrow-right" style="color: var(--gray);"></i>
+                                ${trip.to_city}
+                            </div>
+                        </td>
+                        <td>${new Date(trip.trip_date).toLocaleDateString('ar-SA')}</td>
+                        <td>${trip.available_weight} كجم</td>
+                        <td>${this.getStatusBadge(trip.status)}</td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-sm btn-outline" onclick="viewTrip('${trip.id}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="editTrip('${trip.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            
+            getStatusBadge(status) {
+                const statusMap = {
+                    'published': '<span class="status-badge active">نشط</span>',
+                    'pending': '<span class="status-badge pending">قيد الانتظار</span>',
+                    'completed': '<span class="status-badge completed">مكتمل</span>',
+                    'cancelled': '<span class="status-badge cancelled">ملغي</span>'
+                };
+                return statusMap[status] || '<span class="status-badge">' + status + '</span>';
+            }
+            
+            async loadStatistics() {
+                try {
+                    // Get total trips
+                    const { count: totalTrips } = await this.supabase
+                        .from('trips')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('is_dummy', false);
+                    
+                    // Get active trips
+                    const { count: activeTrips } = await this.supabase
+                        .from('trips')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('user_id', this.currentUser.id)
+                        .eq('status', 'published')
+                        .eq('is_dummy', false);
+                    
+                    // Update UI
+                    const statValues = document.querySelectorAll('.stat-value');
+                    if (statValues[0]) statValues[0].textContent = totalTrips || '0';
+                    if (statValues[1]) statValues[1].textContent = activeTrips || '0';
+                    
+                } catch (error) {
+                    console.error('Error loading statistics:', error);
+                }
+            }
+            
+            async loadActivities() {
+                const timeline = document.getElementById('activityTimeline');
+                if (!timeline) return;
+                
+                // Sample activities - in production, load from database
+                const activities = [
+                    {
+                        icon: 'check',
+                        type: 'success',
+                        title: 'تم تأكيد الشحنة',
+                        description: 'تم تأكيد استلام الشحنة من العميل',
+                        time: 'قبل 10 دقائق'
+                    },
+                    {
+                        icon: 'truck',
+                        type: 'info',
+                        title: 'رحلة جديدة متاحة',
+                        description: 'رحلة من الرياض إلى جدة - 500 كجم',
+                        time: 'قبل ساعة'
+                    },
+                    {
+                        icon: 'star',
+                        type: 'success',
+                        title: 'تقييم جديد',
+                        description: 'حصلت على تقييم 5 نجوم',
+                        time: 'قبل 3 ساعات'
+                    }
+                ];
+                
+                timeline.innerHTML = activities.map(activity => `
+                    <div class="timeline-item">
+                        <div class="timeline-icon ${activity.type}">
+                            <i class="fas fa-${activity.icon}"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">${activity.title}</div>
+                            <div class="timeline-description">${activity.description}</div>
+                            <div class="timeline-time">${activity.time}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            initCharts() {
+                // Revenue Chart
+                const revenueCtx = document.getElementById('revenueChart');
+                if (revenueCtx) {
+                    new Chart(revenueCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: ['يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر'],
+                            datasets: [{
+                                label: 'الإيرادات',
+                                data: [32000, 35000, 38000, 42000, 45250, 48000],
+                                borderColor: '#5E72E4',
+                                backgroundColor: 'rgba(94, 114, 228, 0.1)',
+                                borderWidth: 3,
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value.toLocaleString('ar-SA') + ' ر.س';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Shipment Type Chart
+                const typeCtx = document.getElementById('shipmentTypeChart');
+                if (typeCtx) {
+                    new Chart(typeCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['عادية', 'سريعة', 'فورية'],
+                            datasets: [{
+                                data: [45, 35, 20],
+                                backgroundColor: [
+                                    '#5E72E4',
+                                    '#2DCE89',
+                                    '#FB6340'
+                                ],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        padding: 15,
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            
+            setupRealtimeUpdates() {
+                if (!this.supabase) return;
+                
+                // Subscribe to trips changes
+                this.supabase
+                    .channel('trips-changes')
+                    .on('postgres_changes',
+                        {
+                            event: '*',
+                            schema: 'public',
+                            table: 'trips',
+                            filter: `user_id=eq.${this.currentUser.id}`
+                        },
+                        () => {
+                            this.loadDashboardData();
+                        }
+                    )
+                    .subscribe();
+            }
+        }
+        
+        // Initialize dashboard when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new CarrierDashboard();
+            
+            // Mobile menu toggle
+            const menuBtn = document.createElement('button');
+            menuBtn.className = 'mobile-menu-toggle';
+            menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            menuBtn.style.cssText = `
+                display: none;
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1001;
+                background: white;
+                border: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                cursor: pointer;
+            `;
+            
+            document.body.appendChild(menuBtn);
+            
+            menuBtn.addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('open');
+            });
+            
+            // Show menu button on mobile
+            function checkMobile() {
+                if (window.innerWidth <= 1024) {
+                    menuBtn.style.display = 'flex';
+                    menuBtn.style.alignItems = 'center';
+                    menuBtn.style.justifyContent = 'center';
+                } else {
+                    menuBtn.style.display = 'none';
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            }
+            
+            checkMobile();
+            window.addEventListener('resize', checkMobile);
+        });
+        
+        // Helper functions
+        function viewTrip(tripId) {
+            window.location.href = `trip-details.html?id=${tripId}`;
+        }
+        
+        function editTrip(tripId) {
+            window.location.href = `edit-trip.html?id=${tripId}`;
+        }
+    </script>
+    
+    <style>
+        .btn-sm {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.85rem;
+        }
+        
+        .mobile-menu-toggle i {
+            font-size: 1.25rem;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب جديد - FastShip</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font/awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+    
+    <div class="w-full max-w-md">
+        <!-- Logo and Back -->
+        <div class="text-center mb-6">
+            <a href="../../index.html" class="inline-flex items-center text-white hover:text-gray-200 transition-colors mb-4">
+                <i class="fas fa-arrow-right ml-2"></i>
+                العودة للصفحة الرئيسية
+            </a>
+            <h1 class="text-4xl font-bold text-white mb-2">⚡ FastShip</h1>
+            <p class="text-white text-opacity-90">انضم إلينا وابدأ رحلتك</p>
+        </div>
+        
+        <!-- Register Card -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">إنشاء حساب جديد</h2>
+            <p class="text-gray-600 text-center mb-6">املأ البيانات التالية للتسجيل</p>
+            
+            <!-- Account Type Selection -->
+            <div class="mb-6">
+                <label class="block text-gray-700 font-semibold mb-3">نوع الحساب</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button type="button" onclick="selectAccountType('shipper')" id="btn-shipper" class="account-type-btn border-2 border-gray-300 rounded-lg p-4 text-center transition-all hover:border-blue-500">
+                        <i class="fas fa-box text-3xl text-blue-600 mb-2"></i>
+                        <p class="font-semibold text-gray-700">صاحب شحنة</p>
+                        <p class="text-xs text-gray-500">أريد إرسال شحنة</p>
+                    </button>
+                    <button type="button" onclick="selectAccountType('carrier')" id="btn-carrier" class="account-type-btn border-2 border-gray-300 rounded-lg p-4 text-center transition-all hover:border-green-500">
+                        <i class="fas fa-truck text-3xl text-green-600 mb-2"></i>
+                        <p class="font-semibold text-gray-700">ناقل</p>
+                        <p class="text-xs text-gray-500">أريد توصيل شحنات</p>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Registration Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <input type="hidden" id="accountType" name="accountType" value="">
+                
+                <!-- Full Name -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        <i class="fas fa-user ml-2 text-gray-500"></i>
+                        الاسم الكامل
+                    </label>
+                    <input type="text" id="fullName" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                           placeholder="أدخل اسمك الكامل">
+                </div>
+                
+                <!-- Email -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        <i class="fas fa-envelope ml-2 text-gray-500"></i>
+                        البريد الإلكتروني
+                    </label>
+                    <input type="email" id="email" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                           placeholder="example@email.com">
+                </div>
+                
+                <!-- Phone -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        <i class="fas fa-phone ml-2 text-gray-500"></i>
+                        رقم الجوال
+                    </label>
+                    <input type="tel" id="phone" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                           placeholder="+966 5X XXX XXXX">
+                </div>
+                
+                <!-- Password -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        <i class="fas fa-lock ml-2 text-gray-500"></i>
+                        كلمة المرور
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="password" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                               placeholder="كلمة مرور قوية (8 أحرف على الأقل)">
+                        <button type="button" onclick="togglePassword('password')" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-eye" id="password-icon"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Confirm Password -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">
+                        <i class="fas fa-lock ml-2 text-gray-500"></i>
+                        تأكيد كلمة المرور
+                    </label>
+                    <input type="password" id="confirmPassword" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                           placeholder="أعد إدخال كلمة المرور">
+                </div>
+                
+                <!-- Terms Agreement -->
+                <div class="mb-6">
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" id="agreeTerms" required class="mt-1 ml-2">
+                        <span class="text-sm text-gray-600">
+                            أوافق على <a href="../general/terms.html" class="text-blue-600 hover:underline">الشروط والأحكام</a> 
+                            و <a href="../general/privacy.html" class="text-blue-600 hover:underline">سياسة الخصوصية</a>
+                        </span>
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" id="submitBtn"
+                        class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg">
+                    <i class="fas fa-user-plus ml-2"></i>
+                    إنشاء الحساب
+                </button>
+            </form>
+            
+            <!-- Already have account -->
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    لديك حساب بالفعل؟ 
+                    <a href="login.html" class="text-blue-600 font-semibold hover:underline">تسجيل الدخول</a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Error/Success Messages -->
+        <div id="messageBox" class="hidden mt-4 p-4 rounded-lg"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <script>
+        let selectedAccountType = '';
+        
+        // Select Account Type
+        function selectAccountType(type) {
+            selectedAccountType = type;
+            document.getElementById('accountType').value = type;
+            
+            // Reset all buttons
+            document.querySelectorAll('.account-type-btn').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'border-green-500', 'bg-blue-50', 'bg-green-50');
+                btn.classList.add('border-gray-300');
+            });
+            
+            // Highlight selected
+            const btn = document.getElementById(`btn-${type}`);
+            if (type === 'shipper') {
+                btn.classList.add('border-blue-500', 'bg-blue-50');
+            } else {
+                btn.classList.add('border-green-500', 'bg-green-50');
+            }
+        }
+        
+        // Toggle Password Visibility
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon = document.getElementById(fieldId + '-icon');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        
+        // Show Message
+        function showMessage(message, type) {
+            const box = document.getElementById('messageBox');
+            box.className = `mt-4 p-4 rounded-lg ${type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`;
+            box.textContent = message;
+            box.classList.remove('hidden');
+            setTimeout(() => box.classList.add('hidden'), 5000);
+        }
+        
+        // Handle Registration
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            // Validate account type
+            if (!selectedAccountType) {
+                showMessage('الرجاء اختيار نوع الحساب', 'error');
+                return;
+            }
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showMessage('كلمات المرور غير متطابقة', 'error');
+                return;
+            }
+            
+            // Validate password strength
+            if (password.length < 8) {
+                showMessage('كلمة المرور يجب أن تكون 8 أحرف على الأقل', 'error');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i> جاري التسجيل...';
+            
+            try {
+                // Sign up with Supabase
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            full_name: fullName,
+                            phone: phone,
+                            account_type: selectedAccountType
+                        }
+                    }
+                });
+                
+                if (error) throw error;
+                
+                showMessage('تم إنشاء الحساب بنجاح! جاري تحويلك...', 'success');
+                
+                // Redirect based on account type
+                setTimeout(() => {
+                    if (selectedAccountType === 'carrier') {
+                        window.location.href = '../carrier/index.html';
+                    } else {
+                        window.location.href = '../shipper/index.html';
+                    }
+                }, 2000);
+                
+            } catch (error) {
+                showMessage(error.message || 'حدث خطأ أثناء التسجيل', 'error');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-user-plus ml-2"></i> إنشاء الحساب';
+            }
+        }
+        
+        // Check URL for account type
+        const urlParams = new URLSearchParams(window.location.search);
+        const typeParam = urlParams.get('type');
+        if (typeParam) {
+            selectAccountType(typeParam);
+        }
+    </script>
+</body>
+</html>

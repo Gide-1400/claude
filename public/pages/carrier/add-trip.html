@@ -1,0 +1,432 @@
+<!DOCTYPE html><!DOCTYPE html>
+
+<html lang="ar" dir="rtl"><html lang="ar" dir="rtl">
+
+<head><head>
+
+    <meta charset="UTF-8">    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>إضافة رحلة - FastShip</title>    <title data-lang="ar">إضافة رحلة جديدة - الشحنة السريعة</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>    <title data-lang="en" style="display: none;">Add New Trip - Fast Shipment</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    <link rel="stylesheet" href="../../assets/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+
+    <style>body{font-family:'Tajawal',sans-serif}</style>    <link rel="stylesheet" href="../../assets/css/forms.css">
+
+</head>    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<body class="bg-gray-50"></head>
+
+    <div class="max-w-4xl mx-auto p-6"><body class="dashboard-page">
+
+        <div class="mb-6">    <!-- Dashboard Header -->
+
+            <a href="index.html" class="text-blue-600 hover:underline"><i class="fas fa-arrow-right ml-2"></i>العودة للوحة التحكم</a>    <header class="dashboard-header">
+
+            <h1 class="text-3xl font-bold text-gray-800 mt-4">إضافة رحلة جديدة</h1>        <div class="container">
+
+            <p class="text-gray-600">أضف تفاصيل رحلتك وابدأ في استقبال طلبات الشحن</p>            <div class="header-content">
+
+        </div>                <div class="logo">
+
+                    <i class="fas fa-shipping-fast"></i>
+
+        <form id="tripForm" class="bg-white rounded-xl shadow-lg p-8 space-y-6">                    <span data-lang="ar">الشحنة السريعة</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                    <span data-lang="en" style="display: none;">Fast Shipment</span>
+
+                <div>                </div>
+
+                    <label class="block text-gray-700 font-semibold mb-2">مدينة المغادرة</label>                
+
+                    <input type="text" id="fromCity" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="الرياض">                <nav class="dashboard-nav">
+
+                </div>                    <ul>
+
+                <div>                        <li><a href="../../index.html" style="background: #667eea; color: white; padding: 8px 16px; border-radius: 8px;" data-lang="ar"><i class="fas fa-home"></i> الرئيسية</a><a href="../../index.html" style="background: #667eea; color: white; padding: 8px 16px; border-radius: 8px;" data-lang="en" style="display: none;"><i class="fas fa-home"></i> Home</a></li>
+
+                    <label class="block text-gray-700 font-semibold mb-2">مدينة الوصول</label>                        <li><a href="index.html" data-lang="ar">لوحة التحكم</a><a href="index.html" data-lang="en" style="display: none;">Dashboard</a></li>
+
+                    <input type="text" id="toCity" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="جدة">                        <li><a href="add-trip.html" class="active" data-lang="ar">إضافة رحلة</a><a href="add-trip.html" class="active" data-lang="en" style="display: none;">Add Trip</a></li>
+
+                </div>                        <li><a href="my-trips.html" data-lang="ar">رحلاتي</a><a href="my-trips.html" data-lang="en" style="display: none;">My Trips</a></li>
+
+            </div>                        <li><a href="matches.html" data-lang="ar">المطابقات</a><a href="matches.html" data-lang="en" style="display: none;">Matches</a></li>
+
+                        <li><a href="../messaging/index.html" data-lang="ar">الرسائل</a><a href="../messaging/index.html" data-lang="en" style="display: none;">Messages</a></li>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                    </ul>
+
+                <div>                </nav>
+
+                    <label class="block text-gray-700 font-semibold mb-2">تاريخ المغادرة</label>                
+
+                    <input type="date" id="departureDate" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">                <div class="header-actions">
+
+                </div>                    <div class="language-selector">
+
+                <div>                        <select id="languageSelect">
+
+                    <label class="block text-gray-700 font-semibold mb-2">تاريخ الوصول</label>                            <option value="ar">العربية</option>
+
+                    <input type="date" id="arrivalDate" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">                            <option value="en">English</option>
+
+                </div>                        </select>
+
+            </div>                    </div>
+
+                    
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                    <div class="user-menu">
+
+                <div>                        <div class="user-avatar">
+
+                    <label class="block text-gray-700 font-semibold mb-2">نوع المركبة</label>                            <img src="../../assets/images/user-avatar.jpg" alt="User Avatar">
+
+                    <select id="vehicleType" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500">                        </div>
+
+                        <option value="">اختر نوع المركبة</option>                        <div class="user-info">
+
+                        <option value="car">سيارة</option>                            <span class="user-name" data-lang="ar">محمد أحمد</span>
+
+                        <option value="van">فان</option>                            <span class="user-name" data-lang="en" style="display: none;">Mohammed Ahmed</span>
+
+                        <option value="truck">شاحنة</option>                            <span class="user-role" data-lang="ar">موصل شحنات</span>
+
+                        <option value="plane">طائرة</option>                            <span class="user-role" data-lang="en" style="display: none;">Shipment Carrier</span>
+
+                    </select>                        </div>
+
+                </div>                        <div class="dropdown-menu">
+
+                <div>                            <a href="profile.html" data-lang="ar">الملف الشخصي</a>
+
+                    <label class="block text-gray-700 font-semibold mb-2">الحمولة المتاحة (كجم)</label>                            <a href="profile.html" data-lang="en" style="display: none;">Profile</a>
+
+                    <input type="number" id="capacity" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="50">                            <a href="../auth/login.html" onclick="logout()" data-lang="ar">تسجيل الخروج</a>
+
+                </div>                            <a href="../auth/login.html" onclick="logout()" data-lang="en" style="display: none;">Logout</a>
+
+            </div>                        </div>
+
+                    </div>
+
+            <div>                </div>
+
+                <label class="block text-gray-700 font-semibold mb-2">السعر المتوقع (ريال/كجم)</label>                
+
+                <input type="number" id="pricePerKg" step="0.1" required class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="5.00">                <button class="mobile-menu-btn" 
+
+            </div>                        title="فتح القائمة" 
+
+                        aria-label="فتح القائمة"
+
+            <div>                        data-title-ar="فتح القائمة" 
+
+                <label class="block text-gray-700 font-semibold mb-2">ملاحظات إضافية</label>                        data-title-en="Open Menu"
+
+                <textarea id="notes" rows="4" class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="أي معلومات إضافية عن الرحلة..."></textarea>                        data-aria-ar="فتح القائمة" 
+
+            </div>                        data-aria-en="Open Menu">
+
+                    <i class="fas fa-bars"></i>
+
+            <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition-colors">                </button>
+
+                <i class="fas fa-plus-circle ml-2"></i>إضافة الرحلة            </div>
+
+            </button>        </div>
+
+        </form>    </header>
+
+    </div>
+
+    <!-- Mobile Menu -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>    <div class="mobile-menu">
+
+    <script src="../../config/supabase-config.js"></script>        <button class="close-menu" 
+
+    <script>                title="إغلاق القائمة" 
+
+        document.getElementById('tripForm').addEventListener('submit', async (e) => {                aria-label="إغلاق القائمة"
+
+            e.preventDefault();                data-title-ar="إغلاق القائمة" 
+
+            const btn = e.target.querySelector('button[type="submit"]');                data-title-en="Close Menu"
+
+            btn.disabled = true;                data-aria-ar="إغلاق القائمة" 
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin ml-2"></i>جاري الإضافة...';                data-aria-en="Close Menu">
+
+            <i class="fas fa-times"></i>
+
+            try {        </button>
+
+                const { data: { user } } = await supabase.auth.getUser();        <ul>
+
+                if (!user) throw new Error('يجب تسجيل الدخول');            <li><a href="index.html" data-lang="ar">الرئيسية</a><a href="index.html" data-lang="en" style="display: none;">Dashboard</a></li>
+
+            <li><a href="add-trip.html" class="active" data-lang="ar">إضافة رحلة</a><a href="add-trip.html" class="active" data-lang="en" style="display: none;">Add Trip</a></li>
+
+                const tripData = {            <li><a href="my-trips.html" data-lang="ar">رحلاتي</a><a href="my-trips.html" data-lang="en" style="display: none;">My Trips</a></li>
+
+                    carrier_id: user.id,            <li><a href="matches.html" data-lang="ar">المطابقات</a><a href="matches.html" data-lang="en" style="display: none;">Matches</a></li>
+
+                    from_city: document.getElementById('fromCity').value,            <li><a href="../messaging/index.html" data-lang="ar">الرسائل</a><a href="../messaging/index.html" data-lang="en" style="display: none;">Messages</a></li>
+
+                    to_city: document.getElementById('toCity').value,            <li><a href="profile.html" data-lang="ar">الملف الشخصي</a><a href="profile.html" data-lang="en" style="display: none;">Profile</a></li>
+
+                    departure_date: document.getElementById('departureDate').value,            <li><a href="../auth/login.html" onclick="logout()" data-lang="ar">تسجيل الخروج</a><a href="../auth/login.html" onclick="logout()" data-lang="en" style="display: none;">Logout</a></li>
+
+                    arrival_date: document.getElementById('arrivalDate').value,        </ul>
+
+                    vehicle_type: document.getElementById('vehicleType').value,    </div>
+
+                    available_capacity: parseFloat(document.getElementById('capacity').value),
+
+                    price_per_kg: parseFloat(document.getElementById('pricePerKg').value),    <!-- Dashboard Content -->
+
+                    notes: document.getElementById('notes').value,    <main class="dashboard-main">
+
+                    status: 'active'        <div class="container">
+
+                };            <!-- Page Header -->
+
+            <div class="page-header-internal">
+
+                const { error } = await supabase.from('trips').insert([tripData]);                <h1 data-lang="ar">إضافة رحلة جديدة</h1>
+
+                if (error) throw error;                <h1 data-lang="en" style="display: none;">Add New Trip</h1>
+
+                <p data-lang="ar">أضف تفاصيل رحلتك لتظهر لأصحاب الشحنات المناسبين</p>
+
+                alert('تم إضافة الرحلة بنجاح!');                <p data-lang="en" style="display: none;">Add your trip details to show to suitable shippers</p>
+
+                window.location.href = 'my-trips.html';            </div>
+
+            } catch (error) {
+
+                alert('حدث خطأ: ' + error.message);            <!-- Trip Form -->
+
+                btn.disabled = false;            <div class="form-container">
+
+                btn.innerHTML = '<i class="fas fa-plus-circle ml-2"></i>إضافة الرحلة';                <form class="trip-form" id="tripForm">
+
+            }                    <!-- Basic Information -->
+
+        });                    <div class="form-section">
+
+    </script>                        <h2 data-lang="ar">المعلومات الأساسية</h2>
+
+</body>                        <h2 data-lang="en" style="display: none;">Basic Information</h2>
+
+</html>                        
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="carrierType" data-lang="ar">نوع الموصل *</label>
+                                <label for="carrierType" data-lang="en" style="display: none;">Carrier Type *</label>
+                                <select id="carrierType" name="carrierType" required>
+                                    <option value="" data-lang="ar">اختر نوع الموصل</option>
+                                    <option value="" data-lang="en" style="display: none;">Select Carrier Type</option>
+                                    <option value="individual" data-lang="ar">مسافر مستقل (تصل إلى 20 كجم)</option>
+                                    <option value="individual" data-lang="en" style="display: none;">Individual Traveler (up to 20kg)</option>
+                                    <option value="car_owner" data-lang="ar">صاحب سيارة (تصل إلى 1500 كجم)</option>
+                                    <option value="car_owner" data-lang="en" style="display: none;">Car Owner (up to 1500kg)</option>
+                                    <option value="truck_owner" data-lang="ar">صاحب شاحنة (تصل إلى 50 طن)</option>
+                                    <option value="truck_owner" data-lang="en" style="display: none;">Truck Owner (up to 50 tons)</option>
+                                    <option value="fleet_owner" data-lang="ar">صاحب أسطول (تصل إلى 1000 طن)</option>
+                                    <option value="fleet_owner" data-lang="en" style="display: none;">Fleet Owner (up to 1000 tons)</option>
+                                </select>
+                                <i class="fas fa-chevron-down input-icon"></i>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="availableWeight" data-lang="ar">الوزن المتاح *</label>
+                                <label for="availableWeight" data-lang="en" style="display: none;">Available Weight *</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="availableWeight" name="availableWeight" min="1" max="1000000" required>
+                                    <span class="input-unit" id="weightUnit" data-lang="ar">كجم</span>
+                                    <span class="input-unit" id="weightUnitEn" style="display: none;" data-lang="en">kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Route Information -->
+                    <div class="form-section">
+                        <h2 data-lang="ar">معلومات المسار</h2>
+                        <h2 data-lang="en" style="display: none;">Route Information</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fromCountry" data-lang="ar">الدولة المبدئية *</label>
+                                <label for="fromCountry" data-lang="en" style="display: none;">From Country *</label>
+                                <select id="fromCountry" name="fromCountry" required>
+                                    <option value="" data-lang="ar">اختر الدولة</option>
+                                    <option value="" data-lang="en" style="display: none;">Select Country</option>
+                                    <option value="SA" data-lang="ar">المملكة العربية السعودية</option>
+                                    <option value="SA" data-lang="en" style="display: none;">Saudi Arabia</option>
+                                    <option value="AE" data-lang="ar">الإمارات العربية المتحدة</option>
+                                    <option value="AE" data-lang="en" style="display: none;">United Arab Emirates</option>
+                                    <option value="KW" data-lang="ar">الكويت</option>
+                                    <option value="KW" data-lang="en" style="display: none;">Kuwait</option>
+                                    <option value="QA" data-lang="ar">قطر</option>
+                                    <option value="QA" data-lang="en" style="display: none;">Qatar</option>
+                                    <option value="BH" data-lang="ar">البحرين</option>
+                                    <option value="BH" data-lang="en" style="display: none;">Bahrain</option>
+                                    <option value="OM" data-lang="ar">عمان</option>
+                                    <option value="OM" data-lang="en" style="display: none;">Oman</option>
+                                </select>
+                                <i class="fas fa-chevron-down input-icon"></i>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fromCity" data-lang="ar">المدينة المبدئية *</label>
+                                <label for="fromCity" data-lang="en" style="display: none;">From City *</label>
+                                <input type="text" id="fromCity" name="fromCity" required placeholder="أدخل اسم المدينة">
+                                <input type="text" id="fromCityEn" name="fromCity" style="display: none;" required placeholder="Enter city name" data-lang="en">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="toCountry" data-lang="ar">الدولة الوجهة *</label>
+                                <label for="toCountry" data-lang="en" style="display: none;">To Country *</label>
+                                <select id="toCountry" name="toCountry" required>
+                                    <option value="" data-lang="ar">اختر الدولة</option>
+                                    <option value="" data-lang="en" style="display: none;">Select Country</option>
+                                    <option value="SA" data-lang="ar">المملكة العربية السعودية</option>
+                                    <option value="SA" data-lang="en" style="display: none;">Saudi Arabia</option>
+                                    <option value="AE" data-lang="ar">الإمارات العربية المتحدة</option>
+                                    <option value="AE" data-lang="en" style="display: none;">United Arab Emirates</option>
+                                    <option value="KW" data-lang="ar">الكويت</option>
+                                    <option value="KW" data-lang="en" style="display: none;">Kuwait</option>
+                                    <option value="QA" data-lang="ar">قطر</option>
+                                    <option value="QA" data-lang="en" style="display: none;">Qatar</option>
+                                    <option value="BH" data-lang="ar">البحرين</option>
+                                    <option value="BH" data-lang="en" style="display: none;">Bahrain</option>
+                                    <option value="OM" data-lang="ar">عمان</option>
+                                    <option value="OM" data-lang="en" style="display: none;">Oman</option>
+                                </select>
+                                <i class="fas fa-chevron-down input-icon"></i>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="toCity" data-lang="ar">المدينة الوجهة *</label>
+                                <label for="toCity" data-lang="en" style="display: none;">To City *</label>
+                                <input type="text" id="toCity" name="toCity" required placeholder="أدخل اسم المدينة">
+                                <input type="text" id="toCityEn" name="toCity" style="display: none;" required placeholder="Enter city name" data-lang="en">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trip Details -->
+                    <div class="form-section">
+                        <h2 data-lang="ar">تفاصيل الرحلة</h2>
+                        <h2 data-lang="en" style="display: none;">Trip Details</h2>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tripDate" data-lang="ar">تاريخ الرحلة *</label>
+                                <label for="tripDate" data-lang="en" style="display: none;">Trip Date *</label>
+                                <input type="date" id="tripDate" name="tripDate" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="pricePerKg" data-lang="ar">السعر لكل كجم (اختياري)</label>
+                                <label for="pricePerKg" data-lang="en" style="display: none;">Price per kg (Optional)</label>
+                                <div class="input-with-unit">
+                                    <input type="number" id="pricePerKg" name="pricePerKg" min="0" step="0.01">
+                                    <span class="input-unit" data-lang="ar">ر.س</span>
+                                    <span class="input-unit" style="display: none;" data-lang="en">SAR</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tripDescription" data-lang="ar">وصف الرحلة (اختياري)</label>
+                            <label for="tripDescription" data-lang="en" style="display: none;">Trip Description (Optional)</label>
+                            <textarea id="tripDescription" name="tripDescription" rows="4" placeholder="أضف أي تفاصيل إضافية عن رحلتك..."></textarea>
+                            <textarea id="tripDescriptionEn" name="tripDescription" style="display: none;" rows="4" placeholder="Add any additional details about your trip..." data-lang="en"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Additional Options -->
+                    <div class="form-section">
+                        <h2 data-lang="ar">خيارات إضافية</h2>
+                        <h2 data-lang="en" style="display: none;">Additional Options</h2>
+                        
+                        <div class="form-options">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="flexibleDate" name="flexibleDate">
+                                <span class="checkmark"></span>
+                                <span data-lang="ar">التاريخ مرن (±3 أيام)</span>
+                                <span data-lang="en" style="display: none;">Flexible date (±3 days)</span>
+                            </label>
+                            
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="returnTrip" name="returnTrip">
+                                <span class="checkmark"></span>
+                                <span data-lang="ar">رحلة ذهاب وعودة</span>
+                                <span data-lang="en" style="display: none;">Round trip</span>
+                            </label>
+                            
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="multipleStops" name="multipleStops">
+                                <span class="checkmark"></span>
+                                <span data-lang="ar">محطات متعددة على الطريق</span>
+                                <span data-lang="en" style="display: none;">Multiple stops along the way</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" onclick="window.history.back()" data-lang="ar">إلغاء</button>
+                        <button type="button" class="btn btn-outline" onclick="window.history.back()" data-lang="en" style="display: none;">Cancel</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span data-lang="ar">إضافة الرحلة</span>
+                            <span data-lang="en" style="display: none;">Add Trip</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Form Tips -->
+                <div class="form-tips">
+                    <h3 data-lang="ar">نصائح لإضافة رحلة ناجحة</h3>
+                    <h3 data-lang="en" style="display: none;">Tips for Adding a Successful Trip</h3>
+                    <ul>
+                        <li data-lang="ar">اكتب وصفاً واضحاً للرحلة لزيادة فرص المطابقة</li>
+                        <li data-lang="en" style="display: none;">Write a clear trip description to increase matching chances</li>
+                        <li data-lang="ar">حدد الوزن المتاح بدقة لتجنب المشاكل</li>
+                        <li data-lang="en" style="display: none;">Specify the available weight accurately to avoid issues</li>
+                        <li data-lang="ar">استخدم الخيارات المرنة لجذب المزيد من الشحنات</li>
+                        <li data-lang="en" style="display: none;">Use flexible options to attract more shipments</li>
+                        <li data-lang="ar">سعر تنافسي يزيد من فرصك في الحصول على شحنات</li>
+                        <li data-lang="en" style="display: none;">Competitive pricing increases your chances of getting shipments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <script src="../../assets/js/auth-manager.js"></script>
+    <script src="../../assets/js/auth-guard.js"></script>
+    <script src="../../assets/js/main.js"></script>
+    <script src="../../assets/js/language-switcher.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    <script src="../../assets/js/forms.js"></script>
+    <script src="../../assets/js/city-search-geonames.js"></script>
+</body>
+</html>
