@@ -197,55 +197,12 @@ async function handleLogin(e) {
         // Fetch profile to find user_type
         let profile = await fetchUserProfile(user.id);
 
-        // If profile doesn't exist, check pending_users and create it
+        // If profile doesn't exist, show error - user must register first
         if (!profile) {
-            console.log('Profile not found, attempting to create from pending data...');
-            
-            const { data: pendingUser, error: pendingError } = await window.supabaseClient
-                .from('pending_users')
-                .select('*')
-                .eq('email', user.email)
-                .single();
-
-            if (pendingError || !pendingUser) {
-                console.error('No pending user data found for:', user.email, pendingError);
-                showAlert('error', 'لم يتم العثور على ملفك الشخصي. يرجى التسجيل مرة أخرى أو الاتصال بالدعم.', 'Your profile was not found. Please register again or contact support.');
-                // Optional: sign out the user if profile is mandatory
-                await window.supabaseClient.auth.signOut();
-                return;
-            }
-
-            // Create profile from pending data
-            const newUserData = {
-                auth_user_id: user.id,
-                email: pendingUser.email,
-                name: pendingUser.name,
-                phone: pendingUser.phone,
-                user_type: pendingUser.user_type,
-                carrier_type: pendingUser.carrier_type,
-                shipper_type: pendingUser.shipper_type
-            };
-
-            const { data: createdProfile, error: createError } = await window.supabaseClient
-                .from('users')
-                .insert([newUserData])
-                .select()
-                .single();
-
-            if (createError) {
-                console.error('Error creating profile from pending data:', createError);
-                showAlert('error', 'فشل إنشاء الملف الشخصي. يرجى المحاولة مرة أخرى.', 'Failed to create profile. Please try again.');
-                return;
-            }
-
-            profile = createdProfile;
-            console.log('Profile created successfully from pending data.');
-
-            // Clean up pending_users table
-            await window.supabaseClient
-                .from('pending_users')
-                .delete()
-                .eq('email', user.email);
+            console.error('No profile found for user:', user.email);
+            showAlert('error', 'لم يتم العثور على ملفك الشخصي. يرجى التسجيل مرة أخرى.', 'Your profile was not found. Please register again.');
+            await window.supabaseClient.auth.signOut();
+            return;
         }
 
         // Store safe user info immediately
@@ -344,47 +301,37 @@ async function handleRegister(e) {
 
             const { data: dbData, error: dbError } = await window.supabaseClient
                 .from('users')
-                .insert([userData]);
+                .insert([userData])
+                .select()
+                .single();
 
             if (dbError) {
-                console.warn('Failed to insert profile:', dbError);
-                // Attempt to rollback auth user? Typically admin action required; inform user
-                showAlert('error', 'حدث خطأ أثناء إنشاء الملف الشخصي. يرجى التواصل مع الدعم', 'Failed to create profile. Contact support');
-            } else {
-                // success - store safe info (no tokens)
-                storeSafeUser({
-                    id: createdUser.id,
-                    email: email,
-                    user_type: userType,
-                    name: fullName
-                }, false);
+                console.error('Failed to insert profile:', dbError);
+                showAlert('error', 'حدث خطأ أثناء إنشاء الملف الشخصي. يرجى المحاولة مرة أخرى.', 'Failed to create profile. Please try again.');
+                // Try to delete the auth user
+                await window.supabaseClient.auth.signOut();
+                return;
             }
-        } else {
-            // createdUser not returned: store as pending to create profile after confirmation
-            // Insert into pending_users so an admin/background worker can link later
-            const pending = {
+            
+            // Success - store safe info
+            storeSafeUser({
+                id: createdUser.id,
                 email: email,
-                phone: phone,
-                name: fullName,
                 user_type: userType,
-                carrier_type: userType === 'carrier' ? carrierType : null,
-                shipper_type: userType === 'shipper' ? shipperType : null
-            };
-            const { data: pData, error: pErr } = await window.supabaseClient
-                .from('pending_users')
-                .upsert(pending, { onConflict: ['email'] });
-
-            if (pErr) {
-                console.warn('Failed to save pending user:', pErr);
-            }
+                name: fullName
+            }, false);
+            
+            console.log('✅ Profile created successfully:', userData);
+        } else {
+            console.warn('⚠️ User was not created immediately - email confirmation may be required');
         }
 
         // Inform user to check email if project sends confirmation
-        showAlert('success', 'تم إنشاء الحساب! يرجى التحقق من بريدك لتأكيد الحساب', 'Account created! Please check your email to confirm the account');
+        showAlert('success', 'تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول', 'Account created successfully! You can now login');
 
         setTimeout(() => {
-            window.location.href = 'verification.html';
-        }, 1400);
+            window.location.href = 'login.html';
+        }, 1500);
 
     } catch (error) {
         console.error('Registration error:', error);
