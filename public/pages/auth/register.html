@@ -249,20 +249,35 @@
                 });
                 
                 if (error) throw error;
-                
-                showMessage('تم إنشاء الحساب بنجاح! جاري تحويلك...', 'success');
-                
-                // Redirect based on account type
-                setTimeout(() => {
-                    if (selectedAccountType === 'carrier') {
-                        window.location.href = '../carrier/index.html';
-                    } else {
-                        window.location.href = '../shipper/index.html';
-                    }
-                }, 2000);
+
+                // Check if email confirmation is required
+                if (data.user && !data.session) {
+                    showMessage('تم إنشاء الحساب بنجاح! الرجاء التحقق من بريدك الإلكتروني لتفعيل الحساب.', 'success');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-user-plus ml-2"></i> إنشاء الحساب';
+                } else if (data.user && data.session) {
+                    // User is logged in directly (email confirmation might be disabled)
+                    showMessage('تم إنشاء الحساب بنجاح! جاري تحويلك...', 'success');
+                    
+                    // Redirect based on account type
+                    setTimeout(() => {
+                        if (selectedAccountType === 'carrier') {
+                            window.location.href = '../carrier/index.html';
+                        } else {
+                            window.location.href = '../shipper/index.html';
+                        }
+                    }, 2000);
+                } else {
+                     throw new Error('لم يتم استلام بيانات المستخدم أو الجلسة بعد التسجيل.');
+                }
                 
             } catch (error) {
-                showMessage(error.message || 'حدث خطأ أثناء التسجيل', 'error');
+                console.error('Registration Error:', error);
+                let errorMessage = 'حدث خطأ أثناء التسجيل. الرجاء المحاولة مرة أخرى.';
+                if (error.message.includes('User already registered')) {
+                    errorMessage = 'هذا البريد الإلكتروني مسجل بالفعل. الرجاء تسجيل الدخول أو استخدام بريد آخر.';
+                }
+                showMessage(errorMessage, 'error');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-user-plus ml-2"></i> إنشاء الحساب';
             }
