@@ -1,0 +1,13 @@
+{
+  "name": "الشحنة السريعة - Fast Ship Global",
+  "short_name": "الشحنة السريعة",
+  "description": "منصة ربط الشاحنين بأصحاب الشحنات حول العالم باستخدام تقنيات المطابقة الذكية",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#5E72E4",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["logistics", "transportation", "business"]
+}

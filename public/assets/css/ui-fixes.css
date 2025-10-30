@@ -1,0 +1,247 @@
+/* Enhanced UI Fixes for Fast Ship SA */
+
+/* Fix dropdown visibility issues */
+.user-dropdown {
+    background: white !important;
+    color: #333 !important;
+    border: 1px solid #e0e0e0;
+}
+
+.dropdown-item {
+    color: #333 !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 20px !important;
+    transition: all 0.2s ease !important;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa !important;
+    color: #5E72E4 !important;
+}
+
+.dropdown-item i {
+    color: #5E72E4 !important;
+    margin-left: 12px !important;
+    width: 20px !important;
+    text-align: center !important;
+}
+
+.dropdown-name {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+.dropdown-role {
+    color: rgba(255,255,255,0.9) !important;
+    font-size: 13px !important;
+}
+
+/* Fix alert positioning */
+.alert-message {
+    position: fixed !important;
+    top: 20px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 10001 !important;
+    max-width: 500px !important;
+    width: 90% !important;
+}
+
+/* Improve button styles */
+.btn {
+    transition: all 0.3s ease !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* Fix loading states */
+.fa-spinner {
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Improve mobile responsiveness */
+@media (max-width: 768px) {
+    .user-dropdown {
+        right: 0 !important;
+        left: auto !important;
+        min-width: 280px !important;
+    }
+    
+    .alert-message {
+        width: 95% !important;
+        top: 10px !important;
+    }
+}
+
+/* Fix navigation issues */
+.nav-link {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+.nav-link:hover {
+    color: var(--primary) !important;
+}
+
+/* Ensure proper z-index for modals and dropdowns */
+.user-dropdown.show {
+    z-index: 1050 !important;
+}
+
+/* Fix text visibility */
+.dropdown-item span {
+    color: inherit !important;
+}
+
+/* Loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #5E72E4;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Accessibility improvements */
+/* Focus styles for better keyboard navigation */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus,
+[tabindex]:focus {
+    outline: 2px solid #007bff !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25) !important;
+}
+
+/* High contrast focus for dark backgrounds */
+.btn-primary:focus,
+.btn-success:focus,
+.btn-info:focus,
+.btn-dark:focus {
+    outline-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Skip link for screen readers */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 1000;
+    border-radius: 4px;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* Screen reader only text */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Ensure minimum touch target size */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn,
+a.btn {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Improve color contrast for links */
+a {
+    color: #0056b3;
+}
+
+a:hover,
+a:focus {
+    color: #004085;
+    text-decoration: underline;
+}
+
+/* Loading state accessibility */
+[aria-busy="true"] {
+    cursor: wait;
+}
+
+/* Form validation improvements */
+input:invalid,
+select:invalid,
+textarea:invalid {
+    border-color: #dc3545;
+}
+
+input:valid,
+select:valid,
+textarea:valid {
+    border-color: #28a745;
+}
+
+/* Required field indicator */
+.required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Interactive element states */
+[role="button"]:hover,
+[role="button"]:focus {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Password toggle button improvements */
+.toggle-password {
+    border: none;
+    background: transparent;
+    color: #6c757d;
+    cursor: pointer;
+}
+
+.toggle-password:hover,
+.toggle-password:focus {
+    color: #495057;
+}

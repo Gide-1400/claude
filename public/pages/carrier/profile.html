@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إعدادات الملف الشخصي - الناقل | Fast Ship</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/forms.css">
+    <link rel="stylesheet" href="../../assets/css/rating-notifications.css">
+    <style>
+        .profile-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 40px;
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 3rem;
+            color: var(--primary);
+            border: 5px solid rgba(255,255,255,0.3);
+        }
+        
+        .profile-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        
+        .profile-section h3 {
+            color: var(--dark);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+            font-size: 1.3rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 15px;
+            background: var(--success);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+        
+        .verification-badge.pending {
+            background: var(--warning);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 10px;
+        }
+        
+        .stat-item .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: block;
+        }
+        
+        .stat-item .label {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-shipping-fast"></i>
+                <h2>Fast Ship</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../../index.html" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-bottom: 15px;">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>الصفحة الرئيسية</span>
+                </a>
+                <a href="index.html">
+                    <i class="fas fa-home"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+                <a href="add-trip.html">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>إضافة رحلة</span>
+                </a>
+                <a href="my-trips.html">
+                    <i class="fas fa-route"></i>
+                    <span>رحلاتي</span>
+                </a>
+                <a href="matches.html">
+                    <i class="fas fa-handshake"></i>
+                    <span>المطابقات</span>
+                </a>
+                <a href="../messaging/index.html">
+                    <i class="fas fa-comments"></i>
+                    <span>الرسائل</span>
+                </a>
+                <a href="profile.html" class="active">
+                    <i class="fas fa-user-circle"></i>
+                    <span>الملف الشخصي</span>
+                </a>
+                <a href="#" onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>تسجيل الخروج</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h1 id="profileName">جاري التحميل...</h1>
+                    <p id="profileEmail">---</p>
+                    <div id="verificationBadge"></div>
+                </div>
+                
+                <!-- Personal Information Section -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-user-edit"></i> المعلومات الشخصية</h3>
+                    <form id="personalInfoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">
+                                    <i class="fas fa-user"></i> الاسم الكامل
+                                </label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">
+                                    <i class="fas fa-phone"></i> رقم الجوال
+                                </label>
+                                <input type="tel" id="phone" name="phone" required placeholder="+966XXXXXXXXX">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">
+                                    <i class="fas fa-envelope"></i> البريد الإلكتروني
+                                </label>
+                                <input type="email" id="email" name="email" readonly disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="carrierType">
+                                    <i class="fas fa-truck"></i> نوع الناقل
+                                </label>
+                                <select id="carrierType" name="carrierType">
+                                    <option value="individual">فرد</option>
+                                    <option value="company">شركة</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ التغييرات
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Vehicle Information Section -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-truck"></i> معلومات المركبة</h3>
+                    <form id="vehicleInfoForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicleType">
+                                    <i class="fas fa-car"></i> نوع المركبة
+                                </label>
+                                <select id="vehicleType" name="vehicleType">
+                                    <option value="">اختر نوع المركبة</option>
+                                    <option value="sedan">سيدان</option>
+                                    <option value="suv">دفع رباعي</option>
+                                    <option value="van">فان</option>
+                                    <option value="pickup">بيك أب</option>
+                                    <option value="truck">شاحنة صغيرة</option>
+                                    <option value="large_truck">شاحنة كبيرة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="vehiclePlate">
+                                    <i class="fas fa-id-card"></i> رقم اللوحة
+                                </label>
+                                <input type="text" id="vehiclePlate" name="vehiclePlate" placeholder="ABC-1234">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vehicleModel">
+                                    <i class="fas fa-car-side"></i> موديل المركبة
+                                </label>
+                                <input type="text" id="vehicleModel" name="vehicleModel" placeholder="تويوتا كامري 2020">
+                            </div>
+                            <div class="form-group">
+                                <label for="maxCapacity">
+                                    <i class="fas fa-weight"></i> السعة القصوى (كجم)
+                                </label>
+                                <input type="number" id="maxCapacity" name="maxCapacity" min="0" placeholder="500">
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> حفظ معلومات المركبة
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Statistics Section -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-chart-line"></i> إحصائياتي</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="number" id="totalTrips">0</span>
+                            <span class="label">إجمالي الرحلات</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number" id="completedTrips">0</span>
+                            <span class="label">رحلات مكتملة</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number" id="totalEarnings">0</span>
+                            <span class="label">الأرباح (ريال)</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="number" id="rating">0.0</span>
+                            <span class="label">التقييم</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Section -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-lock"></i> الأمان</h3>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label for="currentPassword">
+                                <i class="fas fa-key"></i> كلمة المرور الحالية
+                            </label>
+                            <input type="password" id="currentPassword" name="currentPassword">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="newPassword">
+                                    <i class="fas fa-lock"></i> كلمة المرور الجديدة
+                                </label>
+                                <input type="password" id="newPassword" name="newPassword" minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">
+                                    <i class="fas fa-lock"></i> تأكيد كلمة المرور
+                                </label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" minlength="6">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-shield-alt"></i> تغيير كلمة المرور
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../config/supabase-config.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/rating-system.js"></script>
+    <script src="../../assets/js/notification-system.js"></script>
+    <script src="../../assets/js/profile-settings.js"></script>
+</body>
+</html>

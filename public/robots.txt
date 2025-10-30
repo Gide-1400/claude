@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemaps (Update this with your Vercel domain)
+Sitemap: https://your-vercel-domain.vercel.app/sitemap.xml
+
+# Disallow sensitive pages
+Disallow: /config/
+Disallow: /utils/
+Disallow: /assets/js/supabase-config.js
+Disallow: /_next/
+Disallow: /api/
+
+# Allow important pages
+Allow: /
+Allow: /pages/general/
+Allow: /pages/auth/login.html
+Allow: /pages/auth/register.html
+Allow: /assets/css/
+Allow: /assets/images/
+
+# Disallow dashboard pages (require authentication)
+Disallow: /pages/carrier/
+Disallow: /pages/shipper/
+Disallow: /pages/messaging/
+
+# Crawl delay
+Crawl-delay: 1
